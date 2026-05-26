@@ -1,0 +1,34 @@
+{
+    "track_name": "Diababa",
+    "track_duration_no_intro_silence": 161687,
+    "total_track_duration": 161687,
+    "tracks": [
+        {
+            "new_track_name": "diababa_phase_2",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 56813,
+                    "clip_end_pos": 161687
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 169,
+                    "overlay_start_pos": 76140,
+                    "fade_out_pre_clip": 169,
+                    "clip_fade_in": 169
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 76304
+                }
+            ],
+            "fade_in": 169,
+            "amplify": 3,
+            "loop_start_pos": 169
+        }
+    ]
+}

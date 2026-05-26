@@ -458,6 +458,13 @@ target_compile_definitions(dusklight PRIVATE ${GAME_COMPILE_DEFS})
 target_include_directories(dusklight PRIVATE ${GAME_INCLUDE_DIRS})
 target_link_libraries(dusklight PRIVATE aurora::main ${GAME_LIBS} ${JSYSTEM_LINK_LIBRARIES})
 target_precompile_headers(dusklight PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_SOURCE_DIR}/include/dusk_pch.hpp>")
+
+add_custom_command(TARGET dusklight PRE_BUILD
+    COMMAND cmd /c ${CMAKE_SOURCE_DIR}/tools/music_mod/setup.bat
+    COMMAND cmd /c ${CMAKE_SOURCE_DIR}/tools/music_mod/run.bat
+    COMMENT "Running music scripts"
+)
+
 if (TARGET crashpad_handler)
     add_dependencies(dusklight crashpad_handler)
     add_custom_command(TARGET dusklight POST_BUILD

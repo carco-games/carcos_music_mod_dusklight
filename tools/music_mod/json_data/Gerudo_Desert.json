@@ -1,0 +1,26 @@
+{
+    "track_name": "Gerudo_Desert",
+    "track_duration_no_intro_silence": 218000,
+    "total_track_duration": 218000,
+    "tracks": [
+        {
+            "new_track_name": "gerudo_desert",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 1607,
+                    "clip_end_pos": 100133
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 180,
+                    "overlay_start_pos": 98346,
+                    "fade_out_pre_clip": 2104
+                }
+            ],
+            "loop_start_pos": 180
+        }
+    ]
+}

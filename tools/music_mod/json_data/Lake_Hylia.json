@@ -1,0 +1,28 @@
+{
+    "track_name": "Lake_Hylia",
+    "track_duration_no_intro_silence": 221788,
+    "total_track_duration": 221788,
+    "tracks": [
+        {
+            "new_track_name": "lake_hylia",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 19575,
+                    "clip_end_pos": 157136
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 24095,
+                    "clip_end_pos": 25087,
+                    "fade_out_pre_clip": 621,
+                    "clip_fade_in": 990,
+                    "overlay_start_pos": 137292
+                }
+            ],
+            "fade_in": 400,
+            "loop_start_pos": 25087
+        }
+    ]
+}

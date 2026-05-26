@@ -1,0 +1,30 @@
+{
+    "track_name": "Ilia",
+    "track_duration_no_intro_silence": 230368,
+    "total_track_duration": 230368,
+    "tracks": [
+        {
+            "new_track_name": "ToalVillage_d02",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 35111,
+                    "clip_end_pos": 81341
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 6961,
+                    "post_silence_fade": {
+                        "type": "fade_in",
+                        "fade_amount": 39
+                    }
+                }
+            ],
+            "fade_out": 4103,
+            "amplify": 4,
+            "loop_start_pos": 6961
+        }
+    ]
+}

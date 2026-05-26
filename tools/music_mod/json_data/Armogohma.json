@@ -1,0 +1,29 @@
+{
+    "track_name": "Armogohma",
+    "track_duration_no_intro_silence": 188378,
+    "total_track_duration": 188378,
+    "tracks": [
+        {
+            "new_track_name": "diababa_vuln",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 89725,
+                    "clip_end_pos": 103619
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 1515,
+                    "overlay_start_pos": 12380,
+                    "fade_out_pre_clip": 692,
+                    "clip_fade_in": 1515
+                }
+            ],
+            "loop_start_pos": 1515,
+            "fade_in": 215,
+            "amplify": 5
+        }
+    ]
+}

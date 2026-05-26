@@ -1,0 +1,85 @@
+{
+    "track_name": "Ganon",
+    "track_duration_no_intro_silence": 168419,
+    "total_track_duration": 168739,
+    "tracks": [
+        {
+            "new_track_name": "e_ganon_d01",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 26859,
+                    "clip_end_pos": 130609,
+                    "fade_in": 462
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 18848
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 3483
+                }
+            ],
+            "fade_out": 1391,
+            "amplify": 1
+        },
+        {
+            "new_track_name": "ganon_bgm",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 45850,
+                    "clip_end_pos": 108138,
+                    "fade_in": 157
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 159,
+                    "clip_fade_in": 159,
+                    "overlay_start_pos": 61982,
+                    "fade_out_pre_clip": 637
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 62141
+                }
+            ],
+            "amplify": 2, 
+            "loop_start_pos": 159
+        },
+        {
+            "new_track_name": "ganon_bgm_portal",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 107573,
+                    "clip_end_pos": 129199,
+                    "fade_in": 628
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 328,
+                    "clip_fade_in": 328,
+                    "overlay_start_pos": 21180,
+                    "fade_out_pre_clip": 530
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 21507
+                }
+            ],
+            "amplify": 2,
+            "loop_start_pos": 328
+        }
+    ]
+}

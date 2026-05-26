@@ -53,3 +53,13 @@ compile_commands.json
 pipeline_cache.bin
 
 extract
+
+# Music editor stuff
+venv/
+*.pyc
+__pycache__/
+*.wav
+ast_to_wav.exe
+ASTCreate.exe
+*.baa
+*.ast

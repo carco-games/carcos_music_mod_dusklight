@@ -1,0 +1,32 @@
+{
+    "track_name": "Ook",
+    "track_duration_no_intro_silence": 228403,
+    "total_track_duration": 228403,
+    "tracks": [
+        {
+            "new_track_name": "ook",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 13264,
+                    "clip_end_pos": 166527
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 40127,
+                    "clip_end_pos": 40595,
+                    "overlay_start_pos": 151825,
+                    "fade_out_pre_clip": 3711,
+                    "clip_fade_in": 331
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 152156
+                }
+            ],
+            "loop_start_pos": 40458
+        }
+    ]
+}

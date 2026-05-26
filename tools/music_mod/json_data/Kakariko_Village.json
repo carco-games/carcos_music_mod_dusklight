@@ -1,0 +1,32 @@
+{
+    "track_name": "Kakariko_Village",
+    "track_duration_no_intro_silence": 277127,
+    "total_track_duration": 277127,
+    "tracks": [
+        {
+            "new_track_name": "kakariko_village",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 35963,
+                    "clip_end_pos": 277127
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 192157
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 35098,
+                    "clip_end_pos": 36275,
+                    "fade_out_pre_clip": 2049,
+                    "clip_fade_in": 1177,
+                    "overlay_start_pos": 190980
+                }
+            ],
+            "loop_start_pos": 36275
+        }
+    ]
+}

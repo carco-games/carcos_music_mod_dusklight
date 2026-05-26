@@ -1,0 +1,57 @@
+{
+  "track_name": "Ganondorf",
+  "track_duration_no_intro_silence": 196749,
+  "total_track_duration": 197010,
+  "tracks": [
+    {
+        "new_track_name": "ganondorf",
+        "clips": [
+            {
+                "type": "trim",
+                "clip_start_pos": 263,
+                "clip_end_pos": 197010
+            },
+            {
+                "type": "trim",
+                "clip_start_pos": 0,
+                "clip_end_pos": 106548
+            },
+            {
+                "type": "overlay",
+                "overlay_type": "loop_setup",
+                "clip_start_pos": 3504,
+                "clip_end_pos": 4130,
+                "clip_fade_in": 627,
+                "overlay_start_pos": 105921,
+                "fade_out_pre_clip": 920
+            }
+        ],
+        "amplify": 4,
+        "loop_start_pos": 4130
+    },
+    {
+        "new_track_name": "ganondorf_duel",
+        "clips": [
+            {
+                "type": "trim",
+                "clip_start_pos": 123553,
+                "clip_end_pos": 137364
+            },
+            {
+                "type": "trim",
+                "clip_start_pos": 0,
+                "clip_end_pos": 6928
+            },
+            {
+                "type": "overlay",
+                "overlay_type": "loop_setup",
+                "clip_start_pos": 0,
+                "clip_end_pos": 629,
+                "clip_fade_in": 629,
+                "overlay_start_pos": 6299,
+                "fade_out_pre_clip": 222
+            }
+        ]
+    }
+  ]
+}

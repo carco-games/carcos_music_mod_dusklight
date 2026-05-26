@@ -1,0 +1,40 @@
+{
+    "track_name": "Midna",
+    "track_duration_no_intro_silence": 289702,
+    "total_track_duration": 289702,
+    "tracks": [
+        {
+            "new_track_name": "demo06_01_a",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 36822,
+                    "clip_end_pos": 289702
+                },
+                {
+                    "is_external_clip": 1,
+                    "external_wav_name": "demo06_01_a",
+                    "ext_clip_start_pos": 0,
+                    "ext_clip_end_pos": 20809,
+                    "start_pos_in_track": 0,
+                    "main_track_new_start_pos": 20809,
+                    "main_track_fade_in": 50
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 100086
+                }
+            ],
+            "amplify_blocks": [
+                {
+                    "amplify_start": 20811,
+                    "amplify_end": 52622,
+                    "amplify_amount": 10
+                }
+            ],
+            "fade_out": 3500,
+            "loop_start_pos": 20553
+        }
+    ]
+}

@@ -1,0 +1,96 @@
+{
+    "track_name": "History_of_Light_and_Shadow",
+    "track_duration_no_intro_silence": 196152,
+    "total_track_duration": 196152,
+    "tracks": [
+        {
+            "new_track_name": "demo18_02",
+            "clips": [
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 63116,
+                    "clip_end_pos": 196152,
+                    "fade_in": 148,
+                    "working_track_new_end": 63116,
+                    "fade_out": 1877,
+                    "clip_placement_pos": 61525
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 70177,
+                    "clip_end_pos": 194561,
+                    "fade_in": 133,
+                    "working_track_new_end": 70177,
+                    "fade_out": 1107,
+                    "clip_placement_pos": 69199
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 79575,
+                    "clip_end_pos": 193583,
+                    "fade_in": 20,
+                    "working_track_new_end": 79575,
+                    "fade_out": 1681,
+                    "clip_placement_pos": 78242
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 113429,
+                    "clip_end_pos": 192250,
+                    "fade_in": 468,
+                    "working_track_new_end": 113429,
+                    "fade_out": 1680,
+                    "clip_placement_pos": 111748
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 151403,
+                    "clip_end_pos": 190569,
+                    "fade_in": 3978,
+                    "working_track_new_end": 151403,
+                    "fade_out": 2969,
+                    "clip_placement_pos": 147424
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 180813
+                }
+            ],
+            "amplify_blocks": [
+                {
+                    "amplify_amount": 4
+                },
+                {
+                    "amplify_start": 61650,
+                    "amplify_end": 78242,
+                    "amplify_amount": 9 
+                },
+                {
+                    "amplify_start": 9986,
+                    "amplify_end": 49854,
+                    "rise": 10,
+                    "rise_end": 19346
+                },
+                {
+                    "amplify_start": 97593,
+                    "amplify_end": 130799,
+                    "rise": 5,
+                    "rise_end": 99864
+                },
+                {
+                    "amplify_start": 156492,
+                    "amplify_end": 171675,
+                    "rise": 3, 
+                    "rise_end": 168568
+                }
+            ],
+            "fade_out": 1760
+        }
+    ]
+}

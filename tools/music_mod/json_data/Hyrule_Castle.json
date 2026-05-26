@@ -1,0 +1,25 @@
+{
+    "track_name": "Hyrule_Castle",
+    "track_duration_no_intro_silence": 261245,
+    "total_track_duration": 261245,
+    "tracks": [
+        {
+            "new_track_name": "d_lv09_01",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 92611,
+                    "clip_end_pos": 161083
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 1590,
+                    "overlay_start_pos": 66882,
+                    "fade_out_pre_clip": 3608
+                }
+            ]
+        }
+    ]
+}

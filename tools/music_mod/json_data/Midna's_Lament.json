@@ -1,0 +1,39 @@
+{
+    "track_name": "Midna's_Lament",
+    "track_duration_no_intro_silence": 254427,
+    "total_track_duration": 254709,
+    "tracks": [
+        {
+            "new_track_name": "midnas_lament",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 278,
+                    "clip_end_pos": 254709  
+                },
+                {
+                    "type": "cut",
+                    "clip_start_pos": 124730,
+                    "clip_end_pos": 194520
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 173813
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 22614,
+                    "clip_end_pos": 23721,
+                    "overlay_start_pos": 172706,
+                    "clip_fade_in": 958
+                }
+            ],
+            "fade_in": 53,
+            "loop_start_pos": 23721,
+            "amplify": 8,
+            "sample_rate": 10000
+        }
+    ]
+}

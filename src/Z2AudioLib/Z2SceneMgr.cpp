@@ -102,6 +102,10 @@ void Z2SceneMgr::setFadeInStart(u8 fadeType) {
     inGame = true;
 }
 
+// Modified - Carco: Bools to check if not in twilight
+static bool inFaronWoodsLight;
+static bool inKakarikoVillageLight;
+
 void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
     OS_REPORT("[Z2SceneMgr::setSceneName] spot = %s, room = %d, layer = %d\n", spot, room, layer);
     JAISoundID bgm_id = -1;
@@ -145,6 +149,20 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
         if (spotNo == ARRAY_SIZE(sSpotName)) {
             spotNo = Z2SCENE_NONE;
         }
+    }
+
+    // Modified - Carco:
+    // Sets the inFaronWoodsLight boolean to false in order to reset the value upon
+    // exiting Faron Woods.
+    if (spotNo != Z2SCENE_FARON_WOODS) {
+        inFaronWoodsLight = false;
+    }
+
+    // Modified - Carco:
+    // Sets the inKakarikoVillageLight boolean to false in order to reset the value upon
+    // exiting Kakariko Village or upon it being night.
+    if (spotNo != Z2SCENE_KAKARIKO_VILLAGE || !Z2GetStatusMgr()->checkDayTime()) {
+        inKakarikoVillageLight = false;
     }
 
     switch (spotNo) {
@@ -437,15 +455,24 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
     case Z2SCENE_CORO_SHOP:
         se_wave1 = 0x31;
         if (inDarkness_) {
+            // Modified - Carco: Sets the inFaronWoodsLight boolean to false.
+            inFaronWoodsLight = false;
+
             bgm_id = Z2BGM_TWILIGHT;
             bgm_wave1 = 0xe;
             se_wave2 = 0x33;
         } else {
             if (layer == 1) {
+                // Modified - Carco: Sets the inFaronWoodsLight boolean to false.
+                inFaronWoodsLight = false;
+
                 bgm_id = Z2BGM_EVENT05;
                 bgm_wave1 = 0x55;
                 se_wave2 = 0x32;
             } else {
+                // Modified - Carco: Sets the inFaronWoodsLight boolean to true.
+                inFaronWoodsLight = true;
+
                 bgm_id = Z2BGM_FILONE_FOREST;
                 bgm_wave1 = 0xf;
                 time_proc_vol_mod = true;
@@ -455,6 +482,11 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
         }
         break;
     case Z2SCENE_FARON_WOODS:
+        // Modified - Carco: Don't play normal bgm if in Faron Woods
+        if (inFaronWoodsLight) {
+            return;
+        }
+
         se_wave1 = 0x31;
         if (layer == 11) {
             demo_wave = 0x6c;
@@ -462,6 +494,9 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
         } else if (layer == 9) {
             demo_wave = 0x6a;
         } else if (inDarkness_) {
+            // Modified - Carco: Sets the inFaronWoodsLight boolean to false.
+            inFaronWoodsLight = false;
+
             if (layer == 7) {
                 demo_wave = 0x78;
             } else if (layer == 8) {
@@ -489,6 +524,9 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
                 demo_wave = 0x5c;
                 break;
             case 1:
+                // Modified - Carco: Sets the inFaronWoodsLight boolean to false.
+                inFaronWoodsLight = false;
+
                 /* dSv_event_flag_c::F_0014 - Ordon Village - sword tutorial ends */
                 if (dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[18])
                         /* dSv_event_flag_c::F_0625 - Faron Woods - Saved Talo and a monkey */
@@ -499,6 +537,9 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
                 }
                 break;
             default:
+                // Modified - Carco: Sets the inFaronWoodsLight boolean to true.
+                inFaronWoodsLight = true;
+
                 bgm_id = Z2BGM_FILONE_FOREST;
                 bgm_wave1 = 0xf;
                 time_proc_vol_mod = true;
@@ -513,6 +554,11 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
         }
         break;
     case Z2SCENE_KAKARIKO_VILLAGE:
+        // Modified - Carco: Don't play normal bgm if in Kakariko Village
+        if (inKakarikoVillageLight) {
+            return;
+        }
+
         se_wave1 = 0x34;
         if (layer == 8) {
             demo_wave = 0x6e;
@@ -548,6 +594,11 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
                 bgm_wave1 = 0x2c;
                 break;
             case 0:
+                // Modified - Carco: Check if daytime
+                if (Z2GetStatusMgr()->checkDayTime()) {
+                    inKakarikoVillageLight = true;
+                }
+
                 bgm_id = Z2BGM_KAKARIKO;
                 bgm_wave1 = 0x10;
                 bgm_wave2 = 0x18;
@@ -565,6 +616,11 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
                 bgm_wave1 = 0x2c;
                 break;
             default:
+                // Modified - Carco: Check if daytime
+                if (Z2GetStatusMgr()->checkDayTime()) {
+                    inKakarikoVillageLight = true;
+                }
+
                 bgm_id = Z2BGM_KAKARIKO;
                 bgm_wave1 = 0x10;
                 bgm_wave2 = 0x23;
@@ -634,6 +690,10 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
             case 4:
             case 5:
             case 6:
+                // Modified - Carco: Check if daytime
+                if (Z2GetStatusMgr()->checkDayTime()) {
+                    inKakarikoVillageLight = true;
+                }
                 break;
             }
             se_wave2 = 0x86;
@@ -1863,7 +1923,8 @@ void Z2SceneMgr::sceneBgmStart() {
         return;
     }
 
-    if (!BGM_ID.isAnonymous() && var_r28 == 0 && Z2GetStatusMgr()->getDemoStatus() != 11) {
+    // Modified - Carco: Don't start normal bgm if in Faron Woods
+    if (!BGM_ID.isAnonymous() && var_r28 == 0 && Z2GetStatusMgr()->getDemoStatus() != 11 && !inFaronWoodsLight) {
         bool var;
         int section = BGM_ID.id_.info.type.parts.sectionID;
         switch (section) {
@@ -1937,6 +1998,12 @@ void Z2SceneMgr::sceneBgmStart() {
             Z2GetSeqMgr()->bgmStreamPlay();
             break;
         }
+    }
+
+    if (inFaronWoodsLight) {
+        // Modified - Carco: Play custom Faron Woods Stream
+        Z2GetSeqMgr()->bgmStreamPrepare(0x2000086);
+        Z2GetSeqMgr()->bgmStreamPlay();
     }
 
     Z2GetSeqMgr()->bgmAllUnMute(0);

@@ -1,0 +1,84 @@
+{
+    "track_name": "Puppet_Zelda",
+    "track_duration_no_intro_silence": 221744,
+    "total_track_duration": 222083,
+    "tracks": [
+        {
+            "new_track_name": "demo27-4628",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 43269,
+                    "clip_end_pos": 72183
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 5949,
+                    "clip_end_pos": 28914,
+                    "fade_in": 138,
+                    "working_track_new_end": 5949,
+                    "fade_out": 619,
+                    "clip_placement_pos": 5192
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 16299,
+                    "silence_end": 20063
+                },
+                {
+                    "silence_start": 31921,
+                    "silence_end": 33838,
+                    "pre_silence_fade": {
+                        "type": "fade_out",
+                        "fade_amount": 1008
+                    }
+                }
+            ],
+            "fade_in": 300
+        },
+        {
+            "new_track_name": "demo27-5750loop",
+            "clips": [
+                {
+                   "type": "trim",
+                   "clip_start_pos": 71731,
+                   "clip_end_pos": 83200
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 3287,
+                    "clip_end_pos": 3485,
+                    "overlay_start_pos": 11268,
+                    "fade_out_pre_clip": 320
+                }
+            ],
+            "fade_in": 102,
+            "loop_start_pos": 3485
+        },
+        {
+            "new_track_name": "puppet_zelda",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 110663,
+                    "clip_end_pos": 194519
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 1980,
+                    "clip_end_pos": 2098,
+                    "overlay_start_pos": 83738,
+                    "fade_out_pre_clip": 920,
+                    "clip_fade_in": 59
+                }
+            ],
+            "fade_in": 329,
+            "amplify": 1,
+            "loop_start_pos": 2098
+        }
+    ]
+}

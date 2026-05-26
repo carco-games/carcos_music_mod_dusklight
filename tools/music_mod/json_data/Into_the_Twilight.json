@@ -1,0 +1,94 @@
+{
+    "track_name": "Into_the_Twilight",
+    "track_duration_no_intro_silence": 164037,
+    "total_track_duration": 164037,
+    "tracks": [
+        {
+            "new_track_name": "ToalVillage_d03",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 1618,
+                    "clip_end_pos": 164037
+                },
+                {
+                    "type": "cut",
+                    "clip_start_pos": 13734,
+                    "clip_end_pos": 13994
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 31845,
+                    "clip_end_pos": 162226,
+                    "working_track_new_end": 30256,
+                    "fade_out": 791,
+                    "clip_placement_pos": 29630
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 100696
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 2696
+                },
+                {
+                    "silence_start": 46381,
+                    "silence_end": 51179
+                },
+                {
+                    "silence_start": 68800,
+                    "silence_end": 75071,
+                    "pre_silence_fade": {
+                        "type": "fade_out",
+                        "fade_amount": 1820
+                    },
+                    "post_silence_fade": {
+                        "type": "fade_in",
+                        "fade_amount": 1700
+                    }
+                }
+            ],
+            "fade_out": 1980,
+            "amplify": 5
+        },
+        {
+            "new_track_name": "demo04_B",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 129649,
+                    "clip_end_pos": 164037
+                },
+                {
+                    "is_external_clip": 1,
+                    "external_wav_name": "demo04_B",
+                    "ext_clip_start_pos": 0,
+                    "ext_clip_end_pos": 24776,
+                    "start_pos_in_track": 0,
+                    "main_track_new_start_pos": 24776
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "insert_and_cut",
+                    "clip_start_pos": 35046,
+                    "clip_end_pos": 59164,
+                    "working_track_new_end": 35046,
+                    "fade_in": 568,
+                    "fade_out": 1138,
+                    "clip_placement_pos": 33908
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 55747
+                }
+            ],
+            "fade_out": 2381
+        }
+    ]
+}

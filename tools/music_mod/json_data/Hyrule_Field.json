@@ -1,0 +1,33 @@
+{
+    "track_name": "Hyrule_Field",
+    "track_duration_no_intro_silence": 250688,
+    "total_track_duration": 251057,
+    "tracks": [
+        {
+            "new_track_name": "hyrule_field",
+            "loop_start_pos": "none",
+            "clips" : [
+                {
+                    "clip_start_pos": 659,
+                    "clip_end_pos": 251057,
+                    "type": "trim"
+                },
+                {
+                    "clip_start_pos": 79045,
+                    "clip_end_pos": 123955,
+                    "type": "cut",
+                    "fade_out_pre_clip": 4000,
+                    "silence": 500,
+                    "fade_in_post_clip": 2000
+                },
+                {
+                    "clip_start_pos": 184552,
+                    "clip_end_pos": 205988,
+                    "type": "cut"
+                }
+            ],
+            "fade_out": 4000,
+            "amplify": 3
+        }
+    ]
+}

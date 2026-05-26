@@ -1,0 +1,5 @@
+pydub==0.25.1
+numpy
+imageio_ffmpeg
+wav_editor_lite @ git+https://github.com/carco-games/wav_editor-lite.git
+gclib[speedups] @ git+https://github.com/LagoLunatic/gclib.git

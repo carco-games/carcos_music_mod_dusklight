@@ -2515,7 +2515,10 @@ void daB_MGN_c::demo_skip(int param_1) {
     mKankyoBlend = 1.0f;
 
     Z2GetAudioMgr()->bgmStreamStop(0x1e);
-    Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_02, 0, 0);
+    // Modified - Carco
+    Z2GetAudioMgr()->bgmStreamPrepare(0x2000089);
+    Z2GetAudioMgr()->bgmStreamPlay();
+    // Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_02, 0, 0);
 
     setActionMode(ACTION_DASH_e, 0);
 }
@@ -2810,7 +2813,10 @@ void daB_MGN_c::executeOpening() {
             camera->mCamera.SetTrimSize(0);
             dComIfGp_event_reset();
 
-            Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_02, 0, 0);
+            // Modified - Carco
+            Z2GetAudioMgr()->bgmStreamPrepare(0x2000089);
+            Z2GetAudioMgr()->bgmStreamPlay();
+            // Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_02, 0, 0);
             return;
         }
     }

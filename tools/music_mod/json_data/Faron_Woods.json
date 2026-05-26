@@ -1,0 +1,21 @@
+{
+    "track_name": "Faron_Woods",
+    "track_duration_no_intro_silence": 167427,
+    "total_track_duration": 167427,
+    "tracks": [
+        {
+            "new_track_name": "faron_woods",
+            "clips": [
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 22679,
+                    "clip_end_pos": 24795,
+                    "clip_fade_in": 2116,
+                    "overlay_start_pos": 165311
+                }
+            ],
+            "loop_start_pos": 24795
+        }
+    ]
+}

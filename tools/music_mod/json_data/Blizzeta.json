@@ -1,0 +1,58 @@
+{
+    "track_name": "Blizzeta",
+    "track_duration_no_intro_silence": 346809,
+    "total_track_duration": 346809,
+    "tracks": [
+        {
+            "new_track_name": "Blizzeta_a",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 57547
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 16435
+                },
+                {
+                    "silence_start": 73982,
+                    "silence_end": 75873,
+                    "surrounding_fade": [
+                        {
+                            "type": "fade_out",
+                            "fade_amount": 1794
+                        }
+                    ]
+                }
+            ],
+            "amplify": 8
+        },
+        {
+            "new_track_name": "Blizzeta_b",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 57490,
+                    "clip_end_pos": 111109
+                }
+            ],
+            "amplify": 8,
+            "loop_start_pos": 20248 
+        },
+        {
+            "new_track_name": "Blizzeta_c",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 125440,
+                    "clip_end_pos": 265172
+                }
+            ],
+            "amplify": 8,
+            "loop_start_pos": 10357
+        }
+    ]
+}

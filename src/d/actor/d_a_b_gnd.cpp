@@ -3290,7 +3290,10 @@ static void demo_camera(b_gnd_class* i_this) {
         if (i_this->mDemoCamTimer == 290) {
             anm_init(i_this, B_GND_BCK_EGND_KAMAE, 3.0f, 0, 1.0f);
             i_this->mGndEyeBtkNo = 5;
-            Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_04, 0, 0);
+            // Modified - Carco's Music Mod
+            Z2GetAudioMgr()->bgmStreamPrepare(0x2000087);
+            Z2GetAudioMgr()->bgmStreamPlay();
+            // Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_04, 0, 0);
             kankyo->wether = 3;
         }
 
@@ -3971,7 +3974,10 @@ static int daB_GND_Execute(b_gnd_class* i_this) {
             a_this->health = 100;
             i_this->field_0x1e0a = 0;
 
-            Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_04, 0, 0);
+            // Modified - Carco's Music Mod
+            Z2GetAudioMgr()->bgmStreamPrepare(0x2000087);
+            Z2GetAudioMgr()->bgmStreamPlay();
+            // Z2GetAudioMgr()->bgmStart(Z2BGM_VS_GANON_04, 0, 0);
             dComIfGs_onOneZoneSwitch(15, -1);
         } else {
             return 1;

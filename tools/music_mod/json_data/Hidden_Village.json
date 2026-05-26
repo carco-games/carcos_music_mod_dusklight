@@ -1,0 +1,33 @@
+{
+    "track_name": "Hidden_Village",
+    "track_duration_no_intro_silence": 273767,
+    "total_track_duration": 273767,
+    "tracks": [
+        {
+            "new_track_name": "hidden_village",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 48913,
+                    "clip_end_pos": 167988
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 117445
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 3290,
+                    "clip_end_pos": 3752,
+                    "clip_fade_in": 463,
+                    "overlay_start_pos": 116983,
+                    "fade_out_pre_clip": 834
+                }
+            ],
+            "amplify": 3,
+            "loop_start_pos": 3752
+        }
+    ]
+}

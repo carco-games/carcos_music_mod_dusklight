@@ -1,0 +1,64 @@
+{
+    "track_name": "Ralis",
+    "track_duration_no_intro_silence": 242255,
+    "total_track_duration": 242732,
+    "tracks": [
+        {
+            "new_track_name": "demo35",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 127098,
+                    "clip_end_pos": 242732
+                },
+                {
+                    "is_external_clip": 1,
+                    "external_wav_name": "demo35",
+                    "ext_clip_start_pos": 0,
+                    "ext_clip_end_pos": 126809,
+                    "start_pos_in_track": 0,
+                    "main_track_fade_in": 1663,
+                    "ext_clip_fade_out": 5687,
+                    "main_track_amplify": 7,
+                    "main_track_new_start_pos": 121123
+                },
+                {
+                    "is_external_clip": 1,
+                    "external_wav_name": "demo35",
+                    "ext_clip_start_pos": 164690,
+                    "ext_clip_end_pos": 245337,
+                    "main_track_new_end_pos": 165975,
+                    "start_pos_in_track": 164690,
+                    "main_track_fade_out": 1170,
+                    "ext_clip_fade_in": 665
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 245337
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 84359,
+                    "clip_end_pos": 85372,
+                    "overlay_start_pos": 244324,
+                    "fade_out_pre_clip": 806,
+                    "clip_fade_in": 402
+                }
+            ],
+            "loop_start_pos": 85372
+        },
+        {
+            "new_track_name": "our_children_taken",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 699,
+                    "clip_end_pos": 120430
+                }
+            ],
+            "fade_out": 5627
+        }
+    ]
+}

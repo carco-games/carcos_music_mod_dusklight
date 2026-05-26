@@ -1,0 +1,107 @@
+{
+    "track_name": "Faron_Light_Spirit",
+    "track_duration_no_intro_silence": 243775,
+    "total_track_duration": 243775,
+    "tracks": [
+        {
+            "new_track_name": "demo11_01",
+            "clips": [
+                {
+                    "type": "cut",
+                    "clip_start_pos": 22000,
+                    "clip_end_pos": 47804,
+                    "fade_out_pre_clip": 2341,
+                    "silence": 2526,
+                    "fade_in_post_clip": 283
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 54491
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 24496,
+                    "clip_end_pos": 24890,
+                    "overlay_start_pos": 54097,
+                    "fade_out_pre_clip": 250
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 7163
+                }
+            ],
+            "amplify_blocks": [
+                {
+                    "amplify_start": 7000,
+                    "amplify_end": 29347,
+                    "rise": 4,
+                    "rise_end": 19300
+                },
+                {
+                    "amplify_start": 31511,
+                    "amplify_end": 61654,
+                    "amplify_amount": 5
+                }
+            ],
+            "loop_start_pos": 32053
+        },
+        {
+            "new_track_name": "demo11_02",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 136633,
+                    "clip_end_pos": 203538
+                },
+                {
+                    "is_external_clip": 1,
+                    "external_wav_name": "demo11_02",
+                    "ext_clip_start_pos": 0,
+                    "ext_clip_end_pos": 2604,
+                    "start_pos_in_track": 0,
+                    "ext_clip_fade_out": 850,
+                    "main_track_new_start_pos": 1704,
+                    "main_track_fade_in": 469
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 39283,
+                    "clip_end_pos": 39655,
+                    "overlay_start_pos": 68143,
+                    "fade_out_pre_clip": 620
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 68509
+                }
+            ],
+            "amplify_blocks": [
+                {
+                    "amplify_start": 1994,
+                    "amplify_end": 7974,
+                    "rise": 5,
+                    "rise_end": 3500
+                },
+                {
+                    "amplify_start": 10029,
+                    "amplify_end": 39027,
+                    "rise": 8,
+                    "rise_end": 13170
+                },
+                {
+                    "amplify_start": 39470,
+                    "amplify_end": 68509,
+                    "rise": 6,
+                    "rise_end": 39954
+                }
+            ],
+            "loop_start_pos": 39656
+        }
+    ]
+}

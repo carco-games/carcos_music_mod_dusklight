@@ -1,0 +1,26 @@
+{
+    "track_name": "Opening_Demo",
+    "track_duration_no_intro_silence": 226720,
+    "total_track_duration": 226753,
+    "tracks": [
+        {
+            "new_track_name": "opening_demo",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 101714,
+                    "clip_end_pos": 176000,
+                    "fade_in": 50
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 8580
+                }
+            ],
+            "amplify": 3,
+            "sample_rate": 30000
+        }
+    ]
+}
