@@ -1473,6 +1473,35 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
             "Recording Mode",
             "Disables the game HUD and all background music.<br/><br/>Useful for recording footage.");
     });
+
+    add_tab("Carco's Music Mod", [this](Rml::Element* content) {
+        auto& leftPane = add_child<Pane>(content, Pane::Type::Controlled);
+        auto& rightPane = add_child<Pane>(content, Pane::Type::Uncontrolled);
+
+        leftPane.add_section("Volume");
+        leftPane.register_control(
+            leftPane.add_child<NumberButton>(NumberButton::Props{
+                .key = "Music Volume",
+                .getValue = [] { return getSettings().audio.masterVolume.getValue(); },
+                .setValue =
+                    [](int value) {
+                        getSettings().audio.masterVolume.setValue(value);
+                        config::Save();
+                        audio::SetMasterVolume(audio::MasterVolumeToLinear(value / 100.0f));
+                    },
+                .isModified =
+                    [] {
+                        return getSettings().audio.masterVolume.getValue() !=
+                               getSettings().audio.masterVolume.getDefaultValue();
+                    },
+                .max = 200,
+                .suffix = "%",
+            }),
+            rightPane, [](Pane& pane) {
+                pane.clear();
+                pane.add_text("Adjusts the volume of all sounds in the game.");
+            });
+    });
 }
 
 void SettingsWindow::update() {

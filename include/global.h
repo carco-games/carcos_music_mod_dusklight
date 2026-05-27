@@ -245,3 +245,17 @@ using std::isnan;
 #endif
 
 #endif
+
+// Carco's Music Mod
+#pragma once
+#include <filesystem>
+namespace fs = std::filesystem;
+
+inline fs::path GetWavFolder()
+{
+    static const fs::path wav_folder =
+        fs::current_path().parent_path().parent_path()
+        / "tools" / "music_mod" / "output_wavs";
+
+    return wav_folder;
+}

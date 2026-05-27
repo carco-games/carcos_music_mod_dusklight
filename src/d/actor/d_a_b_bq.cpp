@@ -18,6 +18,9 @@
 #include "c/c_damagereaction.h"
 #include <cmath>
 
+// Carco's Music Mod
+#include "dusk/audio/DuskAudioSystem.h"
+
 enum B_bq_RES_File_ID {
     /* BCK */
     /* 0x07 */ BCK_BQ_APPEAR = 0x7,
@@ -908,6 +911,33 @@ static void action(b_bq_class* i_this) {
     fopAc_ac_c* a_this = (fopAc_ac_c*)i_this;
     cXyz sp40;
     cXyz sp4C;
+
+    switch (i_this->mSwitchToStreamFlag) {
+        case 1: {
+            i_this->mAudioFrameCounter++;
+            if (i_this->mAudioFrameCounter >= 42) {
+                Z2GetAudioMgr()->bgmStop(30, 0);
+                dusk::audio::PlayWav((GetWavFolder() / "diababa_phase_2.wav").string().c_str(), "diababa_phase_2", 169);
+                dusk::audio::SetWavVolume(0.3f);
+                i_this->mSwitchToStreamFlag = 0;
+                i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again
+                i_this->mAudioFrameCounter = 0;
+            }
+            break;
+        }
+
+        case 2: {
+            i_this->mAudioFrameCounter++;
+            if (i_this->mAudioFrameCounter >= 42) {
+                Z2GetAudioMgr()->bgmStop(15, 0);
+                dusk::audio::PlayWav((GetWavFolder() / "diababa_phase_2.wav").string().c_str(), "diababa_phase_2", 169);
+                dusk::audio::SetWavVolume(0.3f);
+                i_this->mSwitchToStreamFlag = 0;
+                i_this->mAudioFrameCounter = 0;
+            }
+            break;
+        }
+    }
 
     i_this->mAngleToPlayer = fopAcM_searchPlayerAngleY(a_this);
     i_this->mDistToPlayer = fopAcM_searchPlayerDistance(a_this);
@@ -2194,6 +2224,10 @@ static void demo_camera(b_bq_class* i_this) {
 
     if (i_this->mSetDeadColor) {
         cLib_addCalc2(&i_this->mDeadColor, -20.0f, 1.0f, 0.16667f);
+    }
+
+    if (i_this->mDemoMode == 35 && i_this->mSwitchToStreamFlag != 1) {
+        i_this->mSwitchToStreamFlag = 1;
     }
 }
 

@@ -250,6 +250,10 @@ struct UserSettings {
         std::array<ActionBindConfigVar, 4> openDusklightMenu;
         std::array<ActionBindConfigVar, 4> turboSpeedButton;
     } actionBindings;
+
+    struct {
+        ConfigVar<int> musicVolume;
+    } musicMod;
 };
 
 UserSettings& getSettings();

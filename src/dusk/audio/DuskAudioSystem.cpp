@@ -135,12 +135,89 @@ static void InterleaveOutputData(const OutputSubframe& data, std::span<f32> targ
     }
 }
 
+// Carco's Music Mod
+struct Wav {
+    std::vector<float> samples;
+    float pos = 0.0f;
+    float step = 1.0f;
+    int sampleRate = 0;
+    int channels = 0;
+    float volume = 1.0f;
+    bool loop = true;
+    float loopStart = 0.0f;
+    float loopEnd = 0.0f;
+    bool paused = false;
+    char* name = "";
+};
+
+static std::vector<Wav> ActiveWavs;
+
+void dusk::audio::PlayWav(const char* path, char* name, int loop_start_pos) {
+    SDL_AudioSpec spec;
+    Uint8* data = nullptr;
+    Uint32 len = 0;
+
+    SDL_LoadWAV(path, &spec, &data, &len);
+
+    Wav wav;
+    wav.sampleRate = spec.freq;
+    wav.channels = spec.channels;
+    wav.volume = 0.2f;
+    wav.loopStart = ((loop_start_pos / 1000.0f) * wav.sampleRate);
+    wav.name = name;
+
+    wav.step = (float)wav.sampleRate / (float)SampleRate;
+
+    int sampleCount = len / sizeof(int16_t);
+
+    int16_t* pcm = (int16_t*)data;
+
+    wav.samples.resize(sampleCount);
+
+    for (int i = 0; i < sampleCount; i++) {
+        wav.samples[i] = pcm[i] / 32768.0f;
+    }
+
+    SDL_free(data);
+
+    ActiveWavs.push_back(std::move(wav));
+}
+
 void RenderAudioSubframe() {
     ZoneScoped;
     OutBuffer = {};
 
     JASDriver::updateDSP();
     DspRender(OutBuffer);
+
+    // Carco's Music Mod
+    // Add WAV samples to buffer
+    for (auto& wav : ActiveWavs) {
+        if (wav.paused)
+            continue;
+
+        for (int i = 0; i < DSP_SUBFRAME_SIZE; i++) {
+            float frame = wav.pos;
+
+            int f0 = (int)frame;
+            int f1 = f0 + 1;
+
+            if ((f1 * wav.channels + 1) >= wav.samples.size()) break;
+
+            float t = frame - f0;
+
+            int i0 = f0 * wav.channels;
+            int i1 = f1 * wav.channels;
+
+            float l0 = wav.samples[i0];
+            float r0 = wav.samples[i0 + 1];
+
+            OutBuffer.channels[0][i] += (l0 + (wav.samples[i1] - l0) * t) * wav.volume;
+            OutBuffer.channels[1][i] += (r0 + (wav.samples[i1 + 1] - r0) * t) * wav.volume;
+
+            wav.pos += wav.step;
+        }
+    }
 
     InterleaveOutputData(OutBuffer, OutInterleaveBuffer);
 
@@ -159,6 +236,21 @@ void RenderAudioSubframe() {
     }
 
     SDL_PutAudioStreamData(PlaybackStream, &OutInterleaveBuffer, sizeof(OutInterleaveBuffer));
+
+    // Carco's Music Mod
+    // Clean WAV samples
+    for (size_t i = 0; i < ActiveWavs.size(); i++) {
+        auto& wav = ActiveWavs[i];
+        int maxFrame = (wav.samples.size() / wav.channels);
+        if (wav.pos >= maxFrame) {
+            if (wav.loop) {
+                wav.pos = fmod(wav.pos - wav.loopStart, maxFrame - wav.loopStart) + wav.loopStart;
+            } else {
+                ActiveWavs.erase(ActiveWavs.begin() + i);
+                continue;
+            }
+        }
+    }
 }
 
 u32 dusk::audio::GetResetCount(int channelIdx) {
@@ -167,4 +259,19 @@ u32 dusk::audio::GetResetCount(int channelIdx) {
 
 f32 dusk::audio::VolumeFromU16(u16 value) {
     return static_cast<f32>(value) / static_cast<f32>(JASDriver::getChannelLevel_dsp());
+}
+
+// Carco's Music Mod
+void dusk::audio::SetWavVolume(f32 volume) {
+    for (auto& wav : ActiveWavs) {
+        wav.volume = volume;
+    }
+}
+
+void dusk::audio::PauseWav(char* name) {
+    for (auto& wav : ActiveWavs) {
+        if (wav.name == name) {
+            wav.paused = true;
+        }
+    }
 }

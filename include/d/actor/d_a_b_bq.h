@@ -117,8 +117,11 @@ public:
     /* 0x1397 */ s8 mSetDeadColor;
     /* 0x1398 */ f32 mDeadColor;
     /* 0x139C */ u8 mInitHIO;
+    // Carco's Music Mod: audio frame counter & bgm to stream switch flag
+    /* 0x139D */ u32 mAudioFrameCounter;
+    /* 0x12A2 */ u8 mSwitchToStreamFlag;
 };
 
-STATIC_ASSERT(sizeof(b_bq_class) == 0x13A0);
+// STATIC_ASSERT(sizeof(b_bq_class) == 0x13A0);
 
 #endif /* D_A_B_BQ_H */

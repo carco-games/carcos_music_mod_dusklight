@@ -14,6 +14,9 @@
 #include <cstring>
 #include "Z2AudioLib/SpotName.h"
 
+// Carco's Music Mod
+#include "dusk/audio/DuskAudioSystem.h"
+
 Z2SceneMgr::Z2SceneMgr() : JASGlobalInstance<Z2SceneMgr>(true) {
     sceneNum = -1;
     BGM_ID = -1;
@@ -2000,13 +2003,12 @@ void Z2SceneMgr::sceneBgmStart() {
         }
     }
 
+    // Carco's Music Mod
     if (inFaronWoodsLight) {
-        // Modified - Carco: Play custom Faron Woods Stream
-        Z2GetSeqMgr()->bgmStreamPrepare(0x2000086);
-        Z2GetSeqMgr()->bgmStreamPlay();
+        dusk::audio::PlayWav((GetWavFolder() / "faron_woods.wav").string().c_str(), "faron_woods", 24795);
+    } else {
+        Z2GetSeqMgr()->bgmAllUnMute(0);
     }
-
-    Z2GetSeqMgr()->bgmAllUnMute(0);
     field_0x1a = false;
 }
 

@@ -28,4 +28,8 @@ namespace dusk::audio {
     u32 GetResetCount(int channelIdx);
 
     f32 VolumeFromU16(u16 value);
+
+    void PlayWav(const char* path, char* name, int loop_start_pos);
+    void SetWavVolume(f32 volume);
+    void PauseWav(char* name);
 }

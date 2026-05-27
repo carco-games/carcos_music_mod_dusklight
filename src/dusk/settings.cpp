@@ -169,6 +169,11 @@ UserSettings g_userSettings = {
             ActionBindConfigVar{"actionBindings.turboButton_port2", PAD_NATIVE_BUTTON_INVALID},
             ActionBindConfigVar{"actionBindings.turboButton_port3", PAD_NATIVE_BUTTON_INVALID},
         },
+    },
+
+    // Carco's Music Mod
+    .musicMod = {
+        .musicVolume {"musicMod.musicVolume", 100},
     }
 };
 
@@ -309,6 +314,8 @@ void registerSettings() {
     Register(g_userSettings.actionBindings.turboSpeedButton[1]);
     Register(g_userSettings.actionBindings.turboSpeedButton[2]);
     Register(g_userSettings.actionBindings.turboSpeedButton[3]);
+
+    Register(g_userSettings.musicMod.musicVolume);
 }
 
 // Transient settings

@@ -63,3 +63,4 @@ ast_to_wav.exe
 ASTCreate.exe
 *.baa
 *.ast
+*.env
