@@ -32,4 +32,6 @@ namespace dusk::audio {
     void PlayWav(const char* path, char* name, int loop_start_pos);
     void SetWavVolume(f32 volume);
     void PauseWav(char* name);
+    void ResumeWav(char* name);
+    void SetFadeOutFrames(char* name, int frames);
 }

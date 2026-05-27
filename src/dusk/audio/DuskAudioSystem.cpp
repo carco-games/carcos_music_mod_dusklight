@@ -136,44 +136,101 @@ static void InterleaveOutputData(const OutputSubframe& data, std::span<f32> targ
 }
 
 // Carco's Music Mod
-struct Wav {
+class Wav {
+public:
+    Wav(char* name, int loop_start_pos, int freq, int channels);
+    void setStep(float value) { step = value; }
+    void fadeOut();
+    void fadeIn();
+
     std::vector<float> samples;
     float pos = 0.0f;
     float step = 1.0f;
     int sampleRate = 0;
     int channels = 0;
-    float volume = 1.0f;
+    float volume = 0.2f;
+    float targetVolume = 0.2f;
     bool loop = true;
     float loopStart = 0.0f;
-    float loopEnd = 0.0f;
     bool paused = false;
     char* name = "";
+    int fadeOutFrames = 0;
+    int fadeOutTimer = 0;
+    bool pauseOnceFadedOut = false;
+    int fadeInFrames = 0;
+    int fadeInTimer = 0;
 };
+
+Wav::Wav(char* name, int loop_start_pos, int freq, int channels) {
+    sampleRate = freq;
+    this.channels = channels;
+    loopStart = ((loop_start_pos / 1000.0f) * sampleRate);
+    this.name = name;
+}
+
+void Wav::fadeOut() {
+    if (fadeOutFrames > 0 && !paused) {
+        int divisor = fadeOutFrames - fadeOutTimer;
+        if (divisor > 0) {
+            volume -= 1.0f / divisor;
+        } else {
+            volume = 0.0f;
+        }
+
+        fadeOutTimer++;
+
+        if (volume <= 0.0f) {
+            volume = 0.0f;
+            fadeOutFrames = 0;
+            fadeOutTimer = 0;
+
+            if (pauseOnceFadedOut) {
+                paused = true;
+                // to-do: delete wav stream if not pausing after fade
+            }
+        }
+    }
+}
+
+void Wav::fadeIn() {
+    if (fadeInFrames > 0 && !paused) {
+        int divisor = fadeInFrames - fadeInTimer;
+        if (divisor > 0) {
+            volume += targetVolume / divisor;
+        } else {
+            volume = targetVolume;
+        }
+
+        fadeInTimer++;
+
+        if (volume >= targetVolume) {
+            volume = targetVolume;
+            fadeInFrames = 0;
+            fadeInTimer = 0;
+        }
+    }
+}
 
 static std::vector<Wav> ActiveWavs;
 
 void dusk::audio::PlayWav(const char* path, char* name, int loop_start_pos) {
     SDL_AudioSpec spec;
     Uint8* data = nullptr;
-    Uint32 len = 0;
+    u32 len = 0;
 
     SDL_LoadWAV(path, &spec, &data, &len);
 
-    Wav wav;
-    wav.sampleRate = spec.freq;
-    wav.channels = spec.channels;
-    wav.volume = 0.2f;
-    wav.loopStart = ((loop_start_pos / 1000.0f) * wav.sampleRate);
-    wav.name = name;
+    Wav wav = new Wav(name, loop_start_pos, spec.freq, spec.channels);
+    // wav.sampleRate = spec.freq;
+    // wav.channels = spec.channels;
+    // wav.loopStart = ((loop_start_pos / 1000.0f) * wav.sampleRate);
+    // wav.name = name;
+    wav.setStep((float)wav.sampleRate / (float)SampleRate);
+    // wav.step = (float)wav.sampleRate / (float)SampleRate;
 
-    wav.step = (float)wav.sampleRate / (float)SampleRate;
-
-    int sampleCount = len / sizeof(int16_t);
-
+    int sampleCount = len / 2;
     int16_t* pcm = (int16_t*)data;
-
     wav.samples.resize(sampleCount);
-
     for (int i = 0; i < sampleCount; i++) {
         wav.samples[i] = pcm[i] / 32768.0f;
     }
@@ -192,29 +249,29 @@ void RenderAudioSubframe() {
 
     // Carco's Music Mod
     // Add WAV samples to buffer
-    for (auto& wav : ActiveWavs) {
+    for (Wav& wav : ActiveWavs) {
+        // Handle fading out or fading in if necessary
+        wav.fadeOut();
+        wav.fadeIn();
+
         if (wav.paused)
             continue;
 
         for (int i = 0; i < DSP_SUBFRAME_SIZE; i++) {
             float frame = wav.pos;
-
             int f0 = (int)frame;
             int f1 = f0 + 1;
 
             if ((f1 * wav.channels + 1) >= wav.samples.size()) break;
 
             float t = frame - f0;
-
             int i0 = f0 * wav.channels;
             int i1 = f1 * wav.channels;
-
             float l0 = wav.samples[i0];
             float r0 = wav.samples[i0 + 1];
 
             OutBuffer.channels[0][i] += (l0 + (wav.samples[i1] - l0) * t) * wav.volume;
             OutBuffer.channels[1][i] += (r0 + (wav.samples[i1 + 1] - r0) * t) * wav.volume;
-
             wav.pos += wav.step;
         }
     }
@@ -272,6 +329,23 @@ void dusk::audio::PauseWav(char* name) {
     for (auto& wav : ActiveWavs) {
         if (wav.name == name) {
             wav.paused = true;
+        }
+    }
+}
+
+void dusk::audio::ResumeWav(char* name) {
+    for (auto& wav : ActiveWavs) {
+        if (wav.name == name) {
+            wav.paused = false;
+        }
+    }
+}
+
+void dusk::audio::FadeOutToPause(char* name, int frames) {
+    for (auto& wav : ActiveWavs) {
+        if (wav.name == name) {
+            wav.fadeOutFrames = frames;
+            wav.pauseOnceFadedOut = true;
         }
     }
 }
