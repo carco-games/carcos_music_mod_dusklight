@@ -600,6 +600,10 @@ static void b_bq_damage(b_bq_class* i_this) {
         i_this->field_0x1392 = 4;
         // fallthrough
     case 1:
+        // Carco's Music Mod
+        dusk::audio::FadeOutToPause("diababa_phase_2", 3000);
+        dusk::audio::PlayWav(GetWavFile("diababa_vuln.wav"), "diababa_vuln", 1515, 0);
+
         if (i_this->mpMorf->checkFrame(YREG_F(8) + 113)) {
             dComIfGp_getVibration().StartShock(YREG_S(2) + 5, 14, cXyz(0.0f, 1.0f, 0.0f));
             dComIfGp_getVibration().StartShock(8, 31, cXyz(0.0f, 1.0f, 0.0f));
@@ -917,7 +921,7 @@ static void action(b_bq_class* i_this) {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
                 Z2GetAudioMgr()->bgmStop(30, 0);
-                dusk::audio::PlayWav((GetWavFolder() / "diababa_phase_2.wav").string().c_str(), "diababa_phase_2", 169);
+                dusk::audio::PlayWav(GetWavFile("diababa_phase_2.wav"), "diababa_phase_2", 169, 0);
                 dusk::audio::SetWavVolume(0.3f);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again
@@ -930,7 +934,7 @@ static void action(b_bq_class* i_this) {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
                 Z2GetAudioMgr()->bgmStop(15, 0);
-                dusk::audio::PlayWav((GetWavFolder() / "diababa_phase_2.wav").string().c_str(), "diababa_phase_2", 169);
+                dusk::audio::PlayWav(GetWavFile("diababa_phase_2.wav"), "diababa_phase_2", 169, 0);
                 dusk::audio::SetWavVolume(0.3f);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mAudioFrameCounter = 0;

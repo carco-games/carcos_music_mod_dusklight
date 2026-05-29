@@ -251,11 +251,10 @@ using std::isnan;
 #include <filesystem>
 namespace fs = std::filesystem;
 
-inline fs::path GetWavFolder()
-{
+inline const char * GetWavFile(const char* filename) {
     static const fs::path wav_folder =
         fs::current_path().parent_path().parent_path()
         / "tools" / "music_mod" / "output_wavs";
 
-    return wav_folder;
+    return (wav_folder / filename).string().c_str();
 }
