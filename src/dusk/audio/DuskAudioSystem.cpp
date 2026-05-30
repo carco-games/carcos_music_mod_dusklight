@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <span>
+#include <mutex>
 
 #include "JSystem/JAudio2/JASAiCtrl.h"
 #include "JSystem/JAudio2/JASChannel.h"
@@ -211,7 +212,10 @@ void Wav::fadeIn() {
     }
 }
 
-static std::vector<std::unique_ptr<Wav>> ActiveWavs;
+std::mutex audioMutex;
+
+std::vector<std::unique_ptr<Wav>> ActiveWavs;
+std::vector<std::unique_ptr<Wav>> PendingWavs;
 
 void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos, int fade_in_frames) {
     SDL_AudioSpec spec;
@@ -225,14 +229,10 @@ void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos
         SDL_free(data);
         return;
     }
-    // wav.sampleRate = spec.freq;
-    // wav.channels = spec.channels;
-    // wav.loopStart = ((loop_start_pos / 1000.0f) * wav.sampleRate);
-    // wav.name = name;
-    wav->setStep((float)wav->sampleRate / (float)SampleRate);
-    // wav.step = (float)wav.sampleRate / (float)SampleRate;
 
-    int sampleCount = len / 2;
+    wav->setStep((float)wav->sampleRate / (float)SampleRate);
+
+    int sampleCount = len / sizeof(int16_t);
     int16_t* pcm = (int16_t*)data;
     wav->samples.resize(sampleCount);
     for (int i = 0; i < sampleCount; i++) {
@@ -241,15 +241,33 @@ void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos
 
     SDL_free(data);
 
-    ActiveWavs.emplace_back(std::move(wav));
+    {
+        std::lock_guard<std::mutex> lock(audioMutex);
+        PendingWavs.emplace_back(std::move(wav));
+    }
 
     if (fade_in_frames > 0) {
         dusk::audio::FadeIn(name, fade_in_frames);
     }
 }
 
+void CommitAudioWavs() {
+    std::lock_guard<std::mutex> lock(audioMutex);
+
+    if (!PendingWavs.empty()) {
+        ActiveWavs.insert(
+            ActiveWavs.end(),
+            std::make_move_iterator(PendingWavs.begin()),
+            std::make_move_iterator(PendingWavs.end())
+        );
+        PendingWavs.clear();
+    }
+}
+
 void RenderAudioSubframe() {
     ZoneScoped;
+    CommitAudioWavs();
+
     OutBuffer = {};
 
     JASDriver::updateDSP();
