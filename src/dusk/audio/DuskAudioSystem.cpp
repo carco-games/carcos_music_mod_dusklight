@@ -158,6 +158,7 @@ public:
     int fadeOutFrames = 0;
     int fadeOutTimer = 0;
     bool pauseOnceFadedOut = false;
+    bool deleteOnceFadedOut = false;
     int fadeInFrames = 0;
     int fadeInTimer = 0;
 };
@@ -188,6 +189,8 @@ void Wav::fadeOut() {
             if (pauseOnceFadedOut) {
                 paused = true;
                 // to-do: delete wav stream if not pausing after fade
+            } else if (deleteOnceFadedOut) {
+                dusk::audio::DeleteWav(name);
             }
         }
     }
@@ -217,7 +220,7 @@ std::mutex audioMutex;
 std::vector<std::unique_ptr<Wav>> ActiveWavs;
 std::vector<std::unique_ptr<Wav>> PendingWavs;
 
-void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos, int fade_in_frames) {
+void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos) {
     SDL_AudioSpec spec;
     Uint8* data = nullptr;
     u32 len = 0;
@@ -244,10 +247,6 @@ void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos
     {
         std::lock_guard<std::mutex> lock(audioMutex);
         PendingWavs.emplace_back(std::move(wav));
-    }
-
-    if (fade_in_frames > 0) {
-        dusk::audio::FadeIn(name, fade_in_frames);
     }
 }
 
@@ -277,11 +276,13 @@ void RenderAudioSubframe() {
     // Add WAV samples to buffer
     for (auto& wav : ActiveWavs) {
         // Handle fading out or fading in if necessary
+        if (wav->targetVolume != wav->volume) {
+            wav->fadeOut();
+            wav->fadeIn();
+        }
+        
         if (wav->paused)
             continue;
-
-        wav->fadeOut();
-        wav->fadeIn();
 
         int maxFrame = wav->samples.size() / wav->channels;
         if (maxFrame <= 1)
@@ -352,8 +353,7 @@ void RenderAudioSubframe() {
 
         if (wav->pos >= maxFrame) {
             if (wav->loop) {
-                wav->pos = fmod(wav->pos - wav->loopStart, (maxFrame - wav->loopStart)) + wav->loopStart;
-
+                wav->pos = wav->loopStart;
                 i++;
             } else {
                 ActiveWavs.erase(ActiveWavs.begin() + i);
@@ -373,9 +373,17 @@ f32 dusk::audio::VolumeFromU16(u16 value) {
 }
 
 // Carco's Music Mod
-void dusk::audio::SetWavVolume(f32 volume) {
+void dusk::audio::SetWavVolume(std::string name, f32 volume) {
     for (auto& wav : ActiveWavs) {
         wav->volume = volume;
+    }
+}
+
+void dusk::audio::SetWavTargetVolume(std::string name, f32 targetVolume) {
+    for (auto& wav : ActiveWavs) {
+        if (wav->name == name) {
+            wav->targetVolume = targetVolume;
+        }
     }
 }
 
@@ -387,10 +395,11 @@ void dusk::audio::PauseWav(std::string name) {
     }
 }
 
-void dusk::audio::ResumeWav(std::string name) {
+void dusk::audio::ResumeWav(std::string name, int fadeInFrames) {
     for (auto& wav : ActiveWavs) {
         if (wav->name == name) {
             wav->paused = false;
+            wav->fadeInFrames = fadeInFrames;
         }
     }
 }
@@ -399,15 +408,43 @@ void dusk::audio::FadeOutToPause(std::string name, int frames) {
     for (auto& wav : ActiveWavs) {
         if (wav->name == name) {
             wav->fadeOutFrames = frames;
+            wav->targetVolume = 0.0f;
             wav->pauseOnceFadedOut = true;
         }
     }
 }
 
-void dusk::audio::FadeIn(std::string name, int frames) {
+void dusk::audio::FadeOutToDelete(std::string name, int frames) {
+    for (auto& wav : ActiveWavs) {
+        if (wav->name == name) {
+            wav->fadeOutFrames = frames;
+            wav->targetVolume = 0.0f;
+            wav->deleteOnceFadedOut = true;
+        }
+    }
+}
+
+void dusk::audio::FadeOutToDeleteAll(int frames) {
+    for (auto& wav : ActiveWavs) {
+        wav->fadeOutFrames = frames;
+        wav->targetVolume = 0.0f;
+        wav->deleteOnceFadedOut = true;
+    }
+}
+
+void dusk::audio::FadeIn(std::string name, int frames, f32 targetVolume) {
     for (auto& wav : ActiveWavs) {
         if (wav->name == name) {
             wav->fadeInFrames = frames;
+            wav->targetVolume = targetVolume;
+        }
+    }
+}
+
+void dusk::audio::DeleteWav(std::string name) {
+    for (int i = 0; i < ActiveWavs.size(); i++) {
+        if (ActiveWavs[i]->name == name) {
+            ActiveWavs.erase(ActiveWavs.begin() + i);
         }
     }
 }

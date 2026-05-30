@@ -2005,7 +2005,7 @@ void Z2SceneMgr::sceneBgmStart() {
 
     // Carco's Music Mod
     if (inFaronWoodsLight) {
-        dusk::audio::PlayWav(GetWavFile("faron_woods.wav"), "faron_woods", 24795, 0);
+        dusk::audio::PlayWav(GetWavFile("faron_woods.wav"), "faron_woods", 24795);
     } else {
         Z2GetSeqMgr()->bgmAllUnMute(0);
     }

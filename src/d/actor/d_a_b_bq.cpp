@@ -601,9 +601,6 @@ static void b_bq_damage(b_bq_class* i_this) {
         // fallthrough
     case 1:
         // Carco's Music Mod
-        dusk::audio::FadeOutToPause("diababa_phase_2", 3000);
-        dusk::audio::PlayWav(GetWavFile("diababa_vuln.wav"), "diababa_vuln", 1515, 0);
-
         if (i_this->mpMorf->checkFrame(YREG_F(8) + 113)) {
             dComIfGp_getVibration().StartShock(YREG_S(2) + 5, 14, cXyz(0.0f, 1.0f, 0.0f));
             dComIfGp_getVibration().StartShock(8, 31, cXyz(0.0f, 1.0f, 0.0f));
@@ -624,7 +621,10 @@ static void b_bq_damage(b_bq_class* i_this) {
                 a_this->health = 50;
             }
 
-            Z2GetAudioMgr()->changeBgmStatus(2);
+            // Z2GetAudioMgr()->changeBgmStatus(2);
+            dusk::audio::FadeOutToPause("diababa_phase_2", 1000);
+            dusk::audio::PlayWav(GetWavFile("diababa_vuln.wav"), "diababa_vuln", 1515);
+            dusk::audio::FadeIn("diababa_vuln", 1000, 0.3f);
         }
 
         if (i_this->mpMorf->isStop()) {
@@ -703,7 +703,9 @@ static void b_bq_damage(b_bq_class* i_this) {
         i_this->field_0x6f6 = 0;
         i_this->mTimers[0] = 0;
         i_this->mTimers[2] = 80;
-        Z2GetAudioMgr()->changeBgmStatus(1);
+        // Z2GetAudioMgr()->changeBgmStatus(1);
+        // Carco's Music Mod
+        i_this->mSwitchToStreamFlag = 2;
     }
 
     MTXCopy(i_this->mpMorf->getModel()->getAnmMtx(YREG_S(0) + 53), mDoMtx_stack_c::get());
@@ -916,13 +918,14 @@ static void action(b_bq_class* i_this) {
     cXyz sp40;
     cXyz sp4C;
 
+    // Carco's Music Mod
     switch (i_this->mSwitchToStreamFlag) {
         case 1: {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
                 Z2GetAudioMgr()->bgmStop(30, 0);
-                dusk::audio::PlayWav(GetWavFile("diababa_phase_2.wav"), "diababa_phase_2", 169, 0);
-                dusk::audio::SetWavVolume(0.3f);
+                dusk::audio::PlayWav(GetWavFile("diababa_phase_2.wav"), "diababa_phase_2", 169);
+                dusk::audio::SetWavVolume("diababa_phase_2", 0.3f);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again
                 i_this->mAudioFrameCounter = 0;
@@ -933,9 +936,9 @@ static void action(b_bq_class* i_this) {
         case 2: {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
-                Z2GetAudioMgr()->bgmStop(15, 0);
-                dusk::audio::PlayWav(GetWavFile("diababa_phase_2.wav"), "diababa_phase_2", 169, 0);
-                dusk::audio::SetWavVolume(0.3f);
+                dusk::audio::FadeOutToDelete("diababa_vuln", 1000);
+                dusk::audio::ResumeWav("diababa_phase_2", 1000);
+                dusk::audio::SetWavTargetVolume("diababa_phase_2", 0.3f);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mAudioFrameCounter = 0;
             }
@@ -1855,6 +1858,8 @@ static void demo_camera(b_bq_class* i_this) {
         i_this->field_0x1288.set(0.0f, 0.0f, 0.0f);
         i_this->field_0x129c = 0.0f;
 
+        // Carco's Music Mod
+        dusk::audio::FadeOutToDeleteAll(1000);
         Z2GetAudioMgr()->bgmStop(30, 0);
         Z2GetAudioMgr()->bgmStreamPrepare(0x2000016);
         Z2GetAudioMgr()->bgmStreamPlay();
