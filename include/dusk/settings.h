@@ -253,6 +253,35 @@ struct UserSettings {
 
     struct {
         ConfigVar<int> musicVolume;
+        // Diababa
+        ConfigVar<bool> diababaOriginal;
+        ConfigVar<std::string> diababaTrack;
+        ConfigVar<f32> diababaVolume;
+        ConfigVar<int> diababaLoopStartMs;
+
+        // Faron Woods
+        ConfigVar<bool> faronWoodsOriginal;
+        ConfigVar<std::string> faronWoodsTrack;
+        ConfigVar<f32> faronWoodsVolume;
+        ConfigVar<int> faronWoodsLoopStartMs;
+
+        // Hyurle Field
+        ConfigVar<bool> hyruleFieldOriginal;
+        ConfigVar<std::string> hyruleFieldTrack;
+        ConfigVar<f32> hyruleFieldVolume;
+        ConfigVar<int> hyruleFieldLoopStartMs;
+
+        // Kakariko Village
+        ConfigVar<bool> kakarikoVillageOriginal;
+        ConfigVar<std::string> kakarikoVillageTrack;
+        ConfigVar<f32> kakarikoVillageVolume;
+        ConfigVar<int> kakarikoVillageLoopStartMs;
+
+        // Midna's Lament (MDH)
+        ConfigVar<bool> midnaLamentOriginal;
+        ConfigVar<std::string> midnaLamentTrack;
+        ConfigVar<f32> midnaLamentVolume;
+        ConfigVar<int> midnaLamentLoopStartMs;
     } musicMod;
 };
 

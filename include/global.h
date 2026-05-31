@@ -251,10 +251,14 @@ using std::isnan;
 #include <filesystem>
 namespace fs = std::filesystem;
 
-inline const char * GetWavFile(const char* filename) {
+inline std::string GetCarcoWavFile(const char* filename) {
     static const fs::path wav_folder =
         fs::current_path().parent_path().parent_path()
         / "tools" / "music_mod" / "output_wavs";
 
-    return (wav_folder / filename).string().c_str();
+    return (wav_folder / filename).string();
+}
+
+inline const char* GetWavFile(std::string filepath) {
+    return filepath.c_str();
 }

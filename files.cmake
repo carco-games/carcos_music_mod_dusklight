@@ -1477,6 +1477,8 @@ set(DUSK_FILES
         src/dusk/ui/editor.hpp
         src/dusk/ui/event.cpp
         src/dusk/ui/event.hpp
+        src/dusk/ui/file_picker.cpp
+        src/dusk/ui/file_picker.hpp
         src/dusk/ui/graphics_tuner.cpp
         src/dusk/ui/graphics_tuner.hpp
         src/dusk/ui/input.cpp

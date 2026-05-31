@@ -139,7 +139,7 @@ static void InterleaveOutputData(const OutputSubframe& data, std::span<f32> targ
 // Carco's Music Mod
 class Wav {
 public:
-    Wav(std::string name, int loop_start_pos, int freq, int channels);
+    Wav(const char* name, int loop_start_pos, int freq, int channels);
     void setStep(float value) { step = value; }
     void fadeOut();
     void fadeIn();
@@ -154,7 +154,7 @@ public:
     bool loop = true;
     float loopStart = 0.0f;
     bool paused = false;
-    std::string name = "";
+    std::string name;
     int fadeOutFrames = 0;
     int fadeOutTimer = 0;
     bool pauseOnceFadedOut = false;
@@ -163,7 +163,7 @@ public:
     int fadeInTimer = 0;
 };
 
-Wav::Wav(std::string name, int loop_start_pos, int freq, int channels) {
+Wav::Wav(const char* name, int loop_start_pos, int freq, int channels) : name(name) {
     sampleRate = freq;
     this->channels = channels;
     loopStart = ((loop_start_pos / 1000.0f) * sampleRate);
@@ -220,18 +220,21 @@ std::mutex audioMutex;
 std::vector<std::unique_ptr<Wav>> ActiveWavs;
 std::vector<std::unique_ptr<Wav>> PendingWavs;
 
-void dusk::audio::PlayWav(const char* path, std::string name, int loop_start_pos) {
+void dusk::audio::PlayWav(const char* path, int loop_start_pos, f32 volume) {
     SDL_AudioSpec spec;
     Uint8* data = nullptr;
     u32 len = 0;
 
     SDL_LoadWAV(path, &spec, &data, &len);
 
-    auto wav = std::make_unique<Wav>(name, loop_start_pos, spec.freq, spec.channels);
+    auto wav = std::make_unique<Wav>(path, loop_start_pos, spec.freq, spec.channels);
     if (spec.channels != 2) {
         SDL_free(data);
         return;
     }
+
+    wav->volume = volume;
+    wav->targetVolume = volume;
 
     wav->setStep((float)wav->sampleRate / (float)SampleRate);
 
@@ -353,7 +356,7 @@ void RenderAudioSubframe() {
 
         if (wav->pos >= maxFrame) {
             if (wav->loop) {
-                wav->pos = wav->loopStart;
+                wav->pos = fmod(wav->pos - wav->loopStart, (maxFrame - wav->loopStart)) + wav->loopStart;
                 i++;
             } else {
                 ActiveWavs.erase(ActiveWavs.begin() + i);
@@ -375,7 +378,9 @@ f32 dusk::audio::VolumeFromU16(u16 value) {
 // Carco's Music Mod
 void dusk::audio::SetWavVolume(std::string name, f32 volume) {
     for (auto& wav : ActiveWavs) {
-        wav->volume = volume;
+        if (wav->name == name) {
+            wav->volume = volume;
+        }
     }
 }
 

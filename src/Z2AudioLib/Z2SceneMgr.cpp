@@ -108,6 +108,7 @@ void Z2SceneMgr::setFadeInStart(u8 fadeType) {
 // Modified - Carco: Bools to check if not in twilight
 static bool inFaronWoodsLight;
 static bool inKakarikoVillageLight;
+static bool hasStartedMidnaSOSMusic;
 
 void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
     OS_REPORT("[Z2SceneMgr::setSceneName] spot = %s, room = %d, layer = %d\n", spot, room, layer);
@@ -166,6 +167,11 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
     // exiting Kakariko Village or upon it being night.
     if (spotNo != Z2SCENE_KAKARIKO_VILLAGE || !Z2GetStatusMgr()->checkDayTime()) {
         inKakarikoVillageLight = false;
+    }
+
+    // Modified - Carco: Reset hasStartedMidnaSOSMusic flag if MDH is complete
+    if (dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[250])) {
+        hasStartedMidnaSOSMusic = false;
     }
 
     switch (spotNo) {
@@ -1717,12 +1723,14 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
     Z2GetSeqMgr()->setFieldBgmPlay(field_bgm_play);
     Z2GetEnvSeMgr()->initSceneEnvSe(spotNo, room, fVar1);
 
-    if (sceneNum != spotNo || bgm_id != BGM_ID || se_wave1 != loadedSeWave_1
-        || se_wave2 != loadedSeWave_2 || bgm_wave1 != loadedBgmWave_1
-        || bgm_wave2 != loadedBgmWave_2 || demo_wave != loadedDemoWave)
-    {
-        sceneNum = spotNo;
-        sceneChange(bgm_id, se_wave1, se_wave2, bgm_wave1, bgm_wave2, demo_wave, false);
+    if (!hasStartedMidnaSOSMusic) {
+        if (sceneNum != spotNo || bgm_id != BGM_ID || se_wave1 != loadedSeWave_1
+            || se_wave2 != loadedSeWave_2 || bgm_wave1 != loadedBgmWave_1
+            || bgm_wave2 != loadedBgmWave_2 || demo_wave != loadedDemoWave)
+        {
+            sceneNum = spotNo;
+            sceneChange(bgm_id, se_wave1, se_wave2, bgm_wave1, bgm_wave2, demo_wave, false);
+        }
     }
 
     roomNum = room;
@@ -1730,6 +1738,7 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
 
 void Z2SceneMgr::sceneChange(JAISoundID bgm, u8 seWave1, u8 seWave2, u8 bgmWave1, u8 bgmWave2,
                              u8 demoWave, bool param_6) {
+    dusk::audio::FadeOutToDeleteAll(4000);
     OS_REPORT("[Z2SceneMgr::sceneChange] bgm:0x%08x, SeWave1:%d, SeWave2:%d BgmWave1:%d BgmWave2:%d demoWave:%d (%d)\n",
         *(u32*)&bgm, seWave1, seWave2, bgmWave1, bgmWave2, demoWave, param_6);
 
@@ -1926,8 +1935,57 @@ void Z2SceneMgr::sceneBgmStart() {
         return;
     }
 
-    // Modified - Carco: Don't start normal bgm if in Faron Woods
-    if (!BGM_ID.isAnonymous() && var_r28 == 0 && Z2GetStatusMgr()->getDemoStatus() != 11 && !inFaronWoodsLight) {
+    // Carco's Music Mod
+    if (BGM_ID == Z2BGM_MIDNA_SOS && !hasStartedMidnaSOSMusic) {
+        hasStartedMidnaSOSMusic = true;
+        Z2GetSeqMgr()->mFlags.mFieldBgmPlay = 0;
+        dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.midnaLamentTrack.getValue()),
+                                dusk::getSettings().musicMod.midnaLamentLoopStartMs,
+                                dusk::getSettings().musicMod.midnaLamentVolume);
+        field_0x1a = false;
+    }
+
+    if (!hasStartedMidnaSOSMusic) {
+        switch (sceneNum) {
+            // Faron Woods
+            case Z2SCENE_FARON_WOODS:
+            case Z2SCENE_CORO_SHOP:
+                if (!dusk::getSettings().musicMod.faronWoodsOriginal) {
+                    if (inFaronWoodsLight) {
+                        dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.faronWoodsTrack.getValue()),
+                                            dusk::getSettings().musicMod.faronWoodsLoopStartMs,
+                                            dusk::getSettings().musicMod.faronWoodsVolume);
+                    }
+                    field_0x1a = false;
+                    return;
+                }
+                break;
+
+            // Hyrule Field
+            case Z2SCENE_HYRULE_FIELD:
+                if (!dusk::getSettings().musicMod.hyruleFieldOriginal) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.hyruleFieldTrack.getValue()),
+                                                        dusk::getSettings().musicMod.hyruleFieldLoopStartMs,
+                                                        dusk::getSettings().musicMod.hyruleFieldVolume);
+                    field_0x1a = false;
+                    return;
+                }
+                break;
+
+            // Kakariko Village
+            case Z2SCENE_KAKARIKO_VILLAGE:
+                if (!dusk::getSettings().musicMod.kakarikoVillageOriginal) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.kakarikoVillageTrack.getValue()),
+                                                        dusk::getSettings().musicMod.kakarikoVillageLoopStartMs,
+                                                        dusk::getSettings().musicMod.kakarikoVillageVolume);
+                    field_0x1a = false;
+                    return;
+                }
+                break;
+        }
+    }
+
+    if (!BGM_ID.isAnonymous() && var_r28 == 0 && Z2GetStatusMgr()->getDemoStatus() != 11) {
         bool var;
         int section = BGM_ID.id_.info.type.parts.sectionID;
         switch (section) {
@@ -1940,8 +1998,10 @@ void Z2SceneMgr::sceneBgmStart() {
                 var = true;
                 break;
             }
-            Z2GetSeqMgr()->bgmStart(BGM_ID, 0, var);
-            Z2GetSeqMgr()->unMuteSceneBgm(0);
+            if (!hasStartedMidnaSOSMusic) {
+                Z2GetSeqMgr()->bgmStart(BGM_ID, 0, var);
+                Z2GetSeqMgr()->unMuteSceneBgm(0);
+            }
 
             switch (BGM_ID) {
             case Z2BGM_DUNGEON_FOREST:
@@ -2003,12 +2063,7 @@ void Z2SceneMgr::sceneBgmStart() {
         }
     }
 
-    // Carco's Music Mod
-    if (inFaronWoodsLight) {
-        dusk::audio::PlayWav(GetWavFile("faron_woods.wav"), "faron_woods", 24795);
-    } else {
-        Z2GetSeqMgr()->bgmAllUnMute(0);
-    }
+    Z2GetSeqMgr()->bgmAllUnMute(0);
     field_0x1a = false;
 }
 

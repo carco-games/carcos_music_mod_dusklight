@@ -174,6 +174,35 @@ UserSettings g_userSettings = {
     // Carco's Music Mod
     .musicMod = {
         .musicVolume {"musicMod.musicVolume", 100},
+        // Diababa
+        .diababaOriginal {"musicMod.diababaOriginal", false},
+        .diababaTrack {"musicMod.diababaTrack", GetCarcoWavFile("diababa_phase_2.wav")},
+        .diababaVolume {"musicMod.diababaVolume", 0.2f},
+        .diababaLoopStartMs {"musicMod.diababaLoopStartMs", 169},
+
+        // Faron Woods
+        .faronWoodsOriginal {"musicMod.faronWoodsOriginal", false},
+        .faronWoodsTrack {"musicMod.faronWoodsTrack", GetCarcoWavFile("faron_woods.wav")},
+        .faronWoodsVolume {"musicMod.faronWoodsVolume", 0.2f},
+        .faronWoodsLoopStartMs {"musicMod.faronWoodsLoopStartMs", 24795},
+
+        // Hyrule Field
+        .hyruleFieldOriginal {"musicMod.hyruleFieldOriginal", false},
+        .hyruleFieldTrack {"musicMod.hyruleFieldTrack", GetCarcoWavFile("hyrule_field.wav")},
+        .hyruleFieldVolume {"musicMod.hyruleFieldVolume", 0.2f},
+        .hyruleFieldLoopStartMs {"musicMod.hyruleFieldLoopStartMs", 0},
+
+        // Kakariko Village
+        .kakarikoVillageOriginal {"musicMod.kakarikoVillageOriginal", false},
+        .kakarikoVillageTrack {"musicMod.kakarikoVillageTrack", GetCarcoWavFile("kakariko_village.wav")},
+        .kakarikoVillageVolume {"musicMod.kakarikoVillageVolume", 0.2f},
+        .kakarikoVillageLoopStartMs {"musicMod.kakarikoVillageLoopStartMs", 36275},
+
+        // Midna's Lament (MDH)
+        .midnaLamentOriginal {"musicMod.midnaLamentOriginal", false},
+        .midnaLamentTrack {"musicMod.midnaLamentTrack", GetCarcoWavFile("midnas_lament.wav")},
+        .midnaLamentVolume {"musicMod.midnaLamentVolume", 0.2f},
+        .midnaLamentLoopStartMs {"musicMod.midnaLamentLoopStartMs", 23721},
     }
 };
 
@@ -315,7 +344,37 @@ void registerSettings() {
     Register(g_userSettings.actionBindings.turboSpeedButton[2]);
     Register(g_userSettings.actionBindings.turboSpeedButton[3]);
 
+    // Carco's Music Mod
     Register(g_userSettings.musicMod.musicVolume);
+    // Diababa
+    Register(g_userSettings.musicMod.diababaOriginal);
+    Register(g_userSettings.musicMod.diababaTrack);
+    Register(g_userSettings.musicMod.diababaVolume);
+    Register(g_userSettings.musicMod.diababaLoopStartMs);
+
+    // Faron Woods
+    Register(g_userSettings.musicMod.faronWoodsOriginal);
+    Register(g_userSettings.musicMod.faronWoodsTrack);
+    Register(g_userSettings.musicMod.faronWoodsVolume);
+    Register(g_userSettings.musicMod.faronWoodsLoopStartMs);
+
+    // Hyrule Field
+    Register(g_userSettings.musicMod.hyruleFieldOriginal);
+    Register(g_userSettings.musicMod.hyruleFieldTrack);
+    Register(g_userSettings.musicMod.hyruleFieldVolume);
+    Register(g_userSettings.musicMod.hyruleFieldLoopStartMs);
+
+    // Kakariko Village
+    Register(g_userSettings.musicMod.kakarikoVillageOriginal);
+    Register(g_userSettings.musicMod.kakarikoVillageTrack);
+    Register(g_userSettings.musicMod.kakarikoVillageVolume);
+    Register(g_userSettings.musicMod.kakarikoVillageLoopStartMs);
+
+    // Midna's Lament (MDH)
+    Register(g_userSettings.musicMod.midnaLamentOriginal);
+    Register(g_userSettings.musicMod.midnaLamentTrack);
+    Register(g_userSettings.musicMod.midnaLamentVolume);
+    Register(g_userSettings.musicMod.midnaLamentLoopStartMs);
 }
 
 // Transient settings

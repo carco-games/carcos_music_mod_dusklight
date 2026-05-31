@@ -29,7 +29,7 @@ namespace dusk::audio {
 
     f32 VolumeFromU16(u16 value);
 
-    void PlayWav(const char* path, std::string name, int loop_start_pos);
+    void PlayWav(const char* path, int loop_start_pos, f32 volume);
     void SetWavVolume(std::string name, f32 volume);
     void SetWavTargetVolume(std::string name, f32 targetVolume);
     void PauseWav(std::string name);
