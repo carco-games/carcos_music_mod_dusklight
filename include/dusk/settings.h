@@ -252,42 +252,41 @@ struct UserSettings {
     } actionBindings;
 
     struct {
+        struct {
+            ConfigVar<bool> original;
+            ConfigVar<std::string> track;
+            ConfigVar<f32> volume;
+            ConfigVar<int> loopStartMs;
+        } entry;
+
         ConfigVar<int> musicVolume;
+
+        // Blizzeta Intro
+        entry blizzetaIntro;
+        
         // Diababa
-        ConfigVar<bool> diababaOriginal;
-        ConfigVar<std::string> diababaTrack;
-        ConfigVar<f32> diababaVolume;
-        ConfigVar<int> diababaLoopStartMs;
+        entry diababa;
 
         // Faron Woods
-        ConfigVar<bool> faronWoodsOriginal;
-        ConfigVar<std::string> faronWoodsTrack;
-        ConfigVar<f32> faronWoodsVolume;
-        ConfigVar<int> faronWoodsLoopStartMs;
+        entry faronWoods;
+
+        // Gerudo Desert
+        entry gerudoDesert
 
         // Hidden Village
-        ConfigVar<bool> hiddenVillageOriginal;
-        ConfigVar<std::string> hiddenVillageTrack;
-        ConfigVar<f32> hiddenVillageVolume;
-        ConfigVar<int> hiddenVillageLoopStartMs;
+        entry hiddenVillage;
 
         // Hyurle Field
-        ConfigVar<bool> hyruleFieldOriginal;
-        ConfigVar<std::string> hyruleFieldTrack;
-        ConfigVar<f32> hyruleFieldVolume;
-        ConfigVar<int> hyruleFieldLoopStartMs;
+        entry hyruleField;
 
         // Kakariko Village
-        ConfigVar<bool> kakarikoVillageOriginal;
-        ConfigVar<std::string> kakarikoVillageTrack;
-        ConfigVar<f32> kakarikoVillageVolume;
-        ConfigVar<int> kakarikoVillageLoopStartMs;
+        entry kakarikoVillage;
+
+        // Lake Hylia
+        entry lakeHylia;
 
         // Midna's Lament (MDH)
-        ConfigVar<bool> midnaLamentOriginal;
-        ConfigVar<std::string> midnaLamentTrack;
-        ConfigVar<f32> midnaLamentVolume;
-        ConfigVar<int> midnaLamentLoopStartMs;
+        entry midnaLament;
     } musicMod;
 };
 

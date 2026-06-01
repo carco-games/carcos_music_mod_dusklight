@@ -403,12 +403,12 @@ void Z2SeqMgr::subBgmStop() {
         break;
     case Z2BGM_HIDDEN_VIL_D1:
         // Carco's Music Mod
-        if (dusk::getSettings().musicMod.hiddenVillageOriginal) {
+        if (dusk::getSettings().musicMod.hiddenVillage.original) {
             bgmStart(Z2BGM_HIDDEN_VILLAGE, 0, 0);
         } else {
-            dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.hiddenVillageTrack.getValue()),
-                                                dusk::getSettings().musicMod.hiddenVillageLoopStartMs,
-                                                dusk::getSettings().musicMod.hiddenVillageVolume);
+            dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.hiddenVillage.track.getValue()),
+                                                dusk::getSettings().musicMod.hiddenVillage.loopStartMs,
+                                                dusk::getSettings().musicMod.hiddenVillage.volume);
         }
         // fallthrough
     case Z2BGM_BOSSBABA_0:
