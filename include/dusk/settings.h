@@ -265,6 +265,12 @@ struct UserSettings {
         ConfigVar<f32> faronWoodsVolume;
         ConfigVar<int> faronWoodsLoopStartMs;
 
+        // Hidden Village
+        ConfigVar<bool> hiddenVillageOriginal;
+        ConfigVar<std::string> hiddenVillageTrack;
+        ConfigVar<f32> hiddenVillageVolume;
+        ConfigVar<int> hiddenVillageLoopStartMs;
+
         // Hyurle Field
         ConfigVar<bool> hyruleFieldOriginal;
         ConfigVar<std::string> hyruleFieldTrack;

@@ -13,6 +13,9 @@
 
 #include "dusk/audio.h"
 
+// Carco's Music Mod
+#include "dusk/audio/DuskAudioSystem.h"
+
 Z2SeqMgr::Z2SeqMgr() : JASGlobalInstance<Z2SeqMgr>(true) {
     mMainBgmMaster.forceIn();
     mSubBgmMaster.forceIn();
@@ -399,7 +402,14 @@ void Z2SeqMgr::subBgmStop() {
         field_0xb8 = 0;
         break;
     case Z2BGM_HIDDEN_VIL_D1:
-        bgmStart(Z2BGM_HIDDEN_VILLAGE, 0, 0);
+        // Carco's Music Mod
+        if (dusk::getSettings().musicMod.hiddenVillageOriginal) {
+            bgmStart(Z2BGM_HIDDEN_VILLAGE, 0, 0);
+        } else {
+            dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.hiddenVillageTrack.getValue()),
+                                                dusk::getSettings().musicMod.hiddenVillageLoopStartMs,
+                                                dusk::getSettings().musicMod.hiddenVillageVolume);
+        }
         // fallthrough
     case Z2BGM_BOSSBABA_0:
     case Z2BGM_MAGNE_GORON:

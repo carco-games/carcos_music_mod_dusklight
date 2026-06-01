@@ -186,6 +186,12 @@ UserSettings g_userSettings = {
         .faronWoodsVolume {"musicMod.faronWoodsVolume", 0.2f},
         .faronWoodsLoopStartMs {"musicMod.faronWoodsLoopStartMs", 24795},
 
+        // Hidden Village
+        .hiddenVillageOriginal {"musicMod.hiddenVillageOriginal", false},
+        .hiddenVillageTrack {"musicMod.hiddenVillageTrack", GetCarcoWavFile("hidden_village.wav")},
+        .hiddenVillageVolume {"musicMod.hiddenVillageVolume", 0.2f},
+        .hiddenVillageLoopStartMs {"musicMod.hiddenVillageLoopStartMs", 3752},
+
         // Hyrule Field
         .hyruleFieldOriginal {"musicMod.hyruleFieldOriginal", false},
         .hyruleFieldTrack {"musicMod.hyruleFieldTrack", GetCarcoWavFile("hyrule_field.wav")},
@@ -357,6 +363,12 @@ void registerSettings() {
     Register(g_userSettings.musicMod.faronWoodsTrack);
     Register(g_userSettings.musicMod.faronWoodsVolume);
     Register(g_userSettings.musicMod.faronWoodsLoopStartMs);
+
+    // Hidden Village
+    Register(g_userSettings.musicMod.hiddenVillageOriginal);
+    Register(g_userSettings.musicMod.hiddenVillageTrack);
+    Register(g_userSettings.musicMod.hiddenVillageVolume);
+    Register(g_userSettings.musicMod.hiddenVillageLoopStartMs);
 
     // Hyrule Field
     Register(g_userSettings.musicMod.hyruleFieldOriginal);

@@ -1951,11 +1951,9 @@ void Z2SceneMgr::sceneBgmStart() {
             case Z2SCENE_FARON_WOODS:
             case Z2SCENE_CORO_SHOP:
                 if (!dusk::getSettings().musicMod.faronWoodsOriginal) {
-                    if (inFaronWoodsLight) {
-                        dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.faronWoodsTrack.getValue()),
-                                            dusk::getSettings().musicMod.faronWoodsLoopStartMs,
-                                            dusk::getSettings().musicMod.faronWoodsVolume);
-                    }
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.faronWoodsTrack.getValue()),
+                                        dusk::getSettings().musicMod.faronWoodsLoopStartMs,
+                                        dusk::getSettings().musicMod.faronWoodsVolume);
                     field_0x1a = false;
                     return;
                 }

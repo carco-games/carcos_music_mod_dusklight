@@ -1618,7 +1618,52 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
             });
         // -----------------------------------------------------------------------------------
 
-        // Hyrule Field -----------------------------------------------------------------------
+        // Hidden Village --------------------------------------------------------------------
+        leftPane.register_control(
+            leftPane.add_select_button({
+                .key = "Hidden Village",
+            }),
+            rightPane, [](Pane& pane) {
+                pane.clear();
+                config_bool_select(pane, getSettings().musicMod.hiddenVillageOriginal, {
+                    .key = "Original Audio",
+                });
+                pane.add_child<FilePickerButton>(FilePickerButton::Props{
+                    .key = "Track",
+                    .getValue = [] {
+                        return std::string(getSettings().musicMod.hiddenVillageTrack.getValue());
+                    },
+                    .setValue = [](const std::string& path) {
+                        getSettings().musicMod.hiddenVillageTrack.setValue(path);
+                        config::Save();
+                    },
+                });
+                pane.add_text("Select a .wav file for Hidden Village");
+                pane.add_child<NumberButton>(NumberButton::Props{
+                    .key = "Individual Track Volume",
+                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.hiddenVillageVolume.getValue() * 500.0f)); },
+                    .setValue = [](int percent) {
+                        getSettings().musicMod.hiddenVillageVolume.setValue(percent / 500.0f);
+                        dusk::audio::SetWavVolume(getSettings().musicMod.hiddenVillageTrack.getValue(),  getSettings().musicMod.hiddenVillageVolume.getValue());
+                        config::Save();
+                    },
+                    .max = 200,
+                    .suffix = "%",
+                });
+                pane.add_child<NumberButton>(NumberButton::Props{
+                    .key = "Loop Start Pos (in milliseconds)",
+                    .getValue = [] { return static_cast<int>(getSettings().musicMod.hiddenVillageLoopStartMs.getValue()); },
+                    .setValue = [](int value) {
+                        getSettings().musicMod.hiddenVillageLoopStartMs.setValue(value);
+                        config::Save();
+                    },
+                    .min = 0,
+                    .max = 999999,
+                });
+            });
+        // -----------------------------------------------------------------------------------
+
+        // Hyrule Field ----------------------------------------------------------------------
         leftPane.register_control(
             leftPane.add_select_button({
                 .key = "Hyrule Field",
