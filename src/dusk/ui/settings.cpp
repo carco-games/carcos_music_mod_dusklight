@@ -1528,274 +1528,106 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
 
         leftPane.add_section("Track Selection");
 
-        // Diababa ---------------------------------------------------------------------------
-        leftPane.register_control(
-            leftPane.add_select_button({
-                .key = "Diababa Phase 2",
-            }),
-            rightPane, [](Pane& pane) {
-                pane.clear();
-                config_bool_select(pane, getSettings().musicMod.diababaOriginal, {
-                    .key = "Original Audio",
-                });
-                pane.add_child<FilePickerButton>(FilePickerButton::Props{
-                    .key = "Track",
-                    .getValue = [] {
-                        return std::string(getSettings().musicMod.diababaTrack.getValue());
-                    },
-                    .setValue = [](const std::string& path) {
-                        getSettings().musicMod.diababaTrack.setValue(path);
-                        config::Save();
-                    },
-                });
-                pane.add_text("Select a .wav file for Diababa Phase 2");
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Individual Track Volume",
-                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.diababaVolume.getValue() * 500.0f)); },
-                    .setValue = [](int percent) {
-                        getSettings().musicMod.diababaVolume.setValue(percent / 500.0f);
-                        dusk::audio::SetWavVolume(getSettings().musicMod.diababaTrack.getValue(),  getSettings().musicMod.diababaVolume.getValue());
-                        config::Save();
-                    },
-                    .max = 200,
-                    .suffix = "%",
-                });
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Loop Start Pos (in milliseconds)",
-                    .getValue = [] { return static_cast<int>(getSettings().musicMod.diababaLoopStartMs.getValue()); },
-                    .setValue = [](int value) {
-                        getSettings().musicMod.diababaLoopStartMs.setValue(value);
-                        config::Save();
-                    },
-                    .min = 0,
-                    .max = 999999,
-                });
-            });
+        auto addOption = [&](const Rml::String& key, ConfigVar<bool>& originalAudio,
+                             ConfigVar<std::string>& trackName, const Rml::String& text,
+                             ConfigVar<f32>& volume, ConfigVar<int>& loopStartPos) {
+            leftPane.register_control(
+                leftPane.add_select_button({
+                    .key = key,
+                }),
+                rightPane, [](Pane& pane) {
+                    pane.clear();
+                    config_bool_select(pane, originalAudio, {
+                        .key = "Original Audio",
+                    });
+                    pane.add_child<FilePickerButton>(FilePickerButton::Props{
+                        .key = "Track",
+                        .getValue = [] {
+                            return trackName.getValue();
+                        },
+                        .setValue = [](const std::string& path) {
+                            trackName.setValue(path);
+                            config::Save();
+                        },
+                    });
+                    pane.add_text(text);
+                    pane.add_child<NumberButton>(NumberButton::Props{
+                        .key = "Individual Song Volume",
+                        .getValue = [] { return static_cast<int>(std::round(volume.getValue() * 500.0f)); },
+                        .setValue = [](int percent) {
+                            volume.setValue(percent / 500.0f);
+                            dusk::audio::SetWavVolume(trackName.getValue(), volume.getValue());
+                            config::Save();
+                        },
+                        .max = 200,
+                        .suffix = "%",
+                    });
+                    pane.add_child<NumberButton>(NumberButton::Props{
+                        .key = "Loop Start Pos (in milliseconds)",
+                        .getValue = [] { return static_cast<int>(loopStartPos.getValue()); },
+                        .setValue = [](int value) {
+                            loopStartPos.setValue(value);
+                            config::Save();
+                        },
+                        .min = 0,
+                        .max = 999999,
+                    });
+                }
+            );
+        }
+
+        // Blizzeta Intro --------------------------------------------------------------------
+        addOption("Blizzeta Intro", getSettings().musicMod.blizzetaIntro.original, getSettings().musicMod.blizzetaIntro.track,
+                  "Select a .wav file for Blizzeta Intro", getSettings().musicMod.blizzetaIntro.volume,
+                  getSettings().musicMod.blizzetaIntro.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Diababa Phase 2 -------------------------------------------------------------------
+        addOption("Diababa Phase 2", getSettings().musicMod.diababa.original, getSettings().musicMod.diababa.track,
+                  "Select a .wav file for Diababa Phase 2", getSettings().musicMod.diababa.volume,
+                  getSettings().musicMod.diababa.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Faron Woods -----------------------------------------------------------------------
-        leftPane.register_control(
-            leftPane.add_select_button({
-                .key = "Faron Woods",
-            }),
-            rightPane, [](Pane& pane) {
-                pane.clear();
-                config_bool_select(pane, getSettings().musicMod.faronWoodsOriginal, {
-                    .key = "Original Audio",
-                });
-                pane.add_child<FilePickerButton>(FilePickerButton::Props{
-                    .key = "Track",
-                    .getValue = [] {
-                        return std::string(getSettings().musicMod.faronWoodsTrack.getValue());
-                    },
-                    .setValue = [](const std::string& path) {
-                        getSettings().musicMod.faronWoodsTrack.setValue(path);
-                        config::Save();
-                    },
-                });
-                pane.add_text("Select a .wav file for Faron Woods");
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Individual Track Volume",
-                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.faronWoodsVolume.getValue() * 500.0f)); },
-                    .setValue = [](int percent) {
-                        getSettings().musicMod.faronWoodsVolume.setValue(percent / 500.0f);
-                        dusk::audio::SetWavVolume(getSettings().musicMod.faronWoodsTrack.getValue(),  getSettings().musicMod.faronWoodsVolume.getValue());
-                        config::Save();
-                    },
-                    .max = 200,
-                    .suffix = "%",
-                });
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Loop Start Pos (in milliseconds)",
-                    .getValue = [] { return static_cast<int>(getSettings().musicMod.faronWoodsLoopStartMs.getValue()); },
-                    .setValue = [](int value) {
-                        getSettings().musicMod.faronWoodsLoopStartMs.setValue(value);
-                        config::Save();
-                    },
-                    .min = 0,
-                    .max = 999999,
-                });
-            });
+        addOption("Faron Woods", getSettings().musicMod.faronWoods.original, getSettings().musicMod.faronWoods.track,
+                  "Select a .wav file for Faron Woods", getSettings().musicMod.faronWoods.volume,
+                  getSettings().musicMod.faronWoods.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Gerudo Desert ---------------------------------------------------------------------
+        addOption("Gerudo Desert", getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
+                  "Select a .wav file for Gerudo Desert", getSettings().musicMod.gerudoDesert.volume,
+                  getSettings().musicMod.gerudoDesert.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Hidden Village --------------------------------------------------------------------
-        leftPane.register_control(
-            leftPane.add_select_button({
-                .key = "Hidden Village",
-            }),
-            rightPane, [](Pane& pane) {
-                pane.clear();
-                config_bool_select(pane, getSettings().musicMod.hiddenVillageOriginal, {
-                    .key = "Original Audio",
-                });
-                pane.add_child<FilePickerButton>(FilePickerButton::Props{
-                    .key = "Track",
-                    .getValue = [] {
-                        return std::string(getSettings().musicMod.hiddenVillageTrack.getValue());
-                    },
-                    .setValue = [](const std::string& path) {
-                        getSettings().musicMod.hiddenVillageTrack.setValue(path);
-                        config::Save();
-                    },
-                });
-                pane.add_text("Select a .wav file for Hidden Village");
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Individual Track Volume",
-                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.hiddenVillageVolume.getValue() * 500.0f)); },
-                    .setValue = [](int percent) {
-                        getSettings().musicMod.hiddenVillageVolume.setValue(percent / 500.0f);
-                        dusk::audio::SetWavVolume(getSettings().musicMod.hiddenVillageTrack.getValue(),  getSettings().musicMod.hiddenVillageVolume.getValue());
-                        config::Save();
-                    },
-                    .max = 200,
-                    .suffix = "%",
-                });
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Loop Start Pos (in milliseconds)",
-                    .getValue = [] { return static_cast<int>(getSettings().musicMod.hiddenVillageLoopStartMs.getValue()); },
-                    .setValue = [](int value) {
-                        getSettings().musicMod.hiddenVillageLoopStartMs.setValue(value);
-                        config::Save();
-                    },
-                    .min = 0,
-                    .max = 999999,
-                });
-            });
+        addOption("Hidden Village", getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
+                  "Select a .wav file for Hidden Village", getSettings().musicMod.hiddenVillage.volume,
+                  getSettings().musicMod.hiddenVillage.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Hyrule Field ----------------------------------------------------------------------
-        leftPane.register_control(
-            leftPane.add_select_button({
-                .key = "Hyrule Field",
-            }),
-            rightPane, [](Pane& pane) {
-                pane.clear();
-                config_bool_select(pane, getSettings().musicMod.hyruleFieldOriginal, {
-                    .key = "Original Audio",
-                });
-                pane.add_child<FilePickerButton>(FilePickerButton::Props{
-                    .key = "Track",
-                    .getValue = [] {
-                        return std::string(getSettings().musicMod.hyruleFieldTrack.getValue());
-                    },
-                    .setValue = [](const std::string& path) {
-                        getSettings().musicMod.hyruleFieldTrack.setValue(path);
-                        config::Save();
-                    },
-                });
-                pane.add_text("Select a .wav file for Hyrule Field");
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Individual Track Volume",
-                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.hyruleFieldVolume.getValue() * 500.0f)); },
-                    .setValue = [](int percent) {
-                        getSettings().musicMod.hyruleFieldVolume.setValue(percent / 500.0f);
-                        dusk::audio::SetWavVolume(getSettings().musicMod.hyruleFieldTrack.getValue(),  getSettings().musicMod.hyruleFieldVolume.getValue());
-                        config::Save();
-                    },
-                    .max = 200,
-                    .suffix = "%",
-                });
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Loop Start Pos (in milliseconds)",
-                    .getValue = [] { return static_cast<int>(getSettings().musicMod.hyruleFieldLoopStartMs.getValue()); },
-                    .setValue = [](int value) {
-                        getSettings().musicMod.hyruleFieldLoopStartMs.setValue(value);
-                        config::Save();
-                    },
-                    .min = 0,
-                    .max = 999999,
-                });
-            });
+        addOption("Hyrule Field", getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
+                  "Select a .wav file for Hyrule Field", getSettings().musicMod.hyruleField.volume,
+                  getSettings().musicMod.hyruleField.loopStartMs);
         // -----------------------------------------------------------------------------------
 
-        // Kakariko Village -----------------------------------------------------------------------
-        leftPane.register_control(
-            leftPane.add_select_button({
-                .key = "Kakariko Village",
-            }),
-            rightPane, [](Pane& pane) {
-                pane.clear();
-                config_bool_select(pane, getSettings().musicMod.kakarikoVillageOriginal, {
-                    .key = "Original Audio",
-                });
-                pane.add_child<FilePickerButton>(FilePickerButton::Props{
-                    .key = "Track",
-                    .getValue = [] {
-                        return std::string(getSettings().musicMod.kakarikoVillageTrack.getValue());
-                    },
-                    .setValue = [](const std::string& path) {
-                        getSettings().musicMod.kakarikoVillageTrack.setValue(path);
-                        config::Save();
-                    },
-                });
-                pane.add_text("Select a .wav file for Kakariko Village");
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Individual Track Volume",
-                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.kakarikoVillageVolume.getValue() * 500.0f)); },
-                    .setValue = [](int percent) {
-                        getSettings().musicMod.kakarikoVillageVolume.setValue(percent / 500.0f);
-                        dusk::audio::SetWavVolume(getSettings().musicMod.kakarikoVillageTrack.getValue(),  getSettings().musicMod.kakarikoVillageVolume.getValue());
-                        config::Save();
-                    },
-                    .max = 200,
-                    .suffix = "%",
-                });
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Loop Start Pos (in milliseconds)",
-                    .getValue = [] { return static_cast<int>(getSettings().musicMod.kakarikoVillageLoopStartMs.getValue()); },
-                    .setValue = [](int value) {
-                        getSettings().musicMod.kakarikoVillageLoopStartMs.setValue(value);
-                        config::Save();
-                    },
-                    .min = 0,
-                    .max = 999999,
-                });
-            });
+        // Kakariko Village ------------------------------------------------------------------
+        addOption("Kakariko Village", getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
+                  "Select a .wav file for Kakariko Village", getSettings().musicMod.kakarikoVillage.volume,
+                  getSettings().musicMod.kakarikoVillage.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Lake Hylia ------------------------------------------------------------------------
+        addOption("Lake Hylia", getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
+                  "Select a .wav file for Lake Hylia", getSettings().musicMod.lakeHylia.volume,
+                  getSettings().musicMod.lakeHylia.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Midna's Lament --------------------------------------------------------------------
-        leftPane.register_control(
-            leftPane.add_select_button({
-                .key = "Midna's Lament",
-            }),
-            rightPane, [](Pane& pane) {
-                pane.clear();
-                config_bool_select(pane, getSettings().musicMod.midnaLamentOriginal, {
-                    .key = "Original Audio",
-                });
-                pane.add_child<FilePickerButton>(FilePickerButton::Props{
-                    .key = "Track",
-                    .getValue = [] {
-                        return std::string(getSettings().musicMod.midnaLamentTrack.getValue());
-                    },
-                    .setValue = [](const std::string& path) {
-                        getSettings().musicMod.midnaLamentTrack.setValue(path);
-                        config::Save();
-                    },
-                });
-                pane.add_text("Select a .wav file for Midna's Lament");
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Individual Track Volume",
-                    .getValue = [] { return static_cast<int>(std::round(getSettings().musicMod.midnaLamentVolume.getValue() * 500.0f)); },
-                    .setValue = [](int percent) {
-                        getSettings().musicMod.midnaLamentVolume.setValue(percent / 500.0f);
-                        dusk::audio::SetWavVolume(getSettings().musicMod.midnaLamentTrack.getValue(),  getSettings().musicMod.midnaLamentVolume);
-                        config::Save();
-                    },
-                    .max = 200,
-                    .suffix = "%",
-                });
-                pane.add_child<NumberButton>(NumberButton::Props{
-                    .key = "Loop Start Pos (in milliseconds)",
-                    .getValue = [] { return static_cast<int>(getSettings().musicMod.midnaLamentLoopStartMs.getValue()); },
-                    .setValue = [](int value) {
-                        getSettings().musicMod.midnaLamentLoopStartMs.setValue(value);
-                        config::Save();
-                    },
-                    .min = 0,
-                    .max = 999999,
-                });
-            });
+        addOption("Midna's Lament", getSettings().musicMod.midnaLament.original, getSettings().musicMod.midnaLament.track,
+                  "Select a .wav file for Midna's Lament", getSettings().musicMod.midnaLament.volume,
+                  getSettings().musicMod.midnaLament.loopStartMs);
         // -----------------------------------------------------------------------------------
     });
 }

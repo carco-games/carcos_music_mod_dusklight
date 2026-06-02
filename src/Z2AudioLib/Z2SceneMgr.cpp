@@ -1936,12 +1936,12 @@ void Z2SceneMgr::sceneBgmStart() {
     }
 
     // Carco's Music Mod
-    if (BGM_ID == Z2BGM_MIDNA_SOS && !hasStartedMidnaSOSMusic && !BGM_ID.isAnonymous() && Z2GetStatusMgr()->getDemoStatus() != 11) {
+    if (BGM_ID == Z2BGM_MIDNA_SOS && !hasStartedMidnaSOSMusic && !dusk::getSettings().musicMod.midnaLament.original && !BGM_ID.isAnonymous() && Z2GetStatusMgr()->getDemoStatus() != 11) {
         hasStartedMidnaSOSMusic = true;
         Z2GetSeqMgr()->mFlags.mFieldBgmPlay = 0;
-        dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.midnaLamentTrack.getValue()),
-                                dusk::getSettings().musicMod.midnaLamentLoopStartMs,
-                                dusk::getSettings().musicMod.midnaLamentVolume);
+        dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.midnaLament.track.getValue()),
+                                dusk::getSettings().musicMod.midnaLament.loopStartMs,
+                                dusk::getSettings().musicMod.midnaLament.volume);
         field_0x1a = false;
     }
 
@@ -1950,10 +1950,20 @@ void Z2SceneMgr::sceneBgmStart() {
             // Faron Woods
             case Z2SCENE_FARON_WOODS:
             case Z2SCENE_CORO_SHOP:
-                if (!dusk::getSettings().musicMod.faronWoodsOriginal) {
-                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.faronWoodsTrack.getValue()),
-                                        dusk::getSettings().musicMod.faronWoodsLoopStartMs,
-                                        dusk::getSettings().musicMod.faronWoodsVolume);
+                if (!dusk::getSettings().musicMod.faronWoods.original) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.faronWoods.track.getValue()),
+                                        dusk::getSettings().musicMod.faronWoods.loopStartMs,
+                                        dusk::getSettings().musicMod.faronWoods.volume);
+                    field_0x1a = false;
+                    return;
+                }
+                break;
+
+            case Z2SCENE_GERUDO_DESERT:
+                if (!dusk::getSettings().musicMod.gerudoDesert.original) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.gerudoDesert.track.getValue()),
+                                        dusk::getSettings().musicMod.gerudoDesert.loopStartMs,
+                                        dusk::getSettings().musicMod.gerudoDesert.volume);
                     field_0x1a = false;
                     return;
                 }
@@ -1961,10 +1971,10 @@ void Z2SceneMgr::sceneBgmStart() {
 
             // Hyrule Field
             case Z2SCENE_HYRULE_FIELD:
-                if (!dusk::getSettings().musicMod.hyruleFieldOriginal) {
-                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.hyruleFieldTrack.getValue()),
-                                                        dusk::getSettings().musicMod.hyruleFieldLoopStartMs,
-                                                        dusk::getSettings().musicMod.hyruleFieldVolume);
+                if (!dusk::getSettings().musicMod.hyruleField.original) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.hyruleField.track.getValue()),
+                                                        dusk::getSettings().musicMod.hyruleField.loopStartMs,
+                                                        dusk::getSettings().musicMod.hyruleField.volume);
                     field_0x1a = false;
                     return;
                 }
@@ -1972,10 +1982,21 @@ void Z2SceneMgr::sceneBgmStart() {
 
             // Kakariko Village
             case Z2SCENE_KAKARIKO_VILLAGE:
-                if (!dusk::getSettings().musicMod.kakarikoVillageOriginal) {
-                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.kakarikoVillageTrack.getValue()),
-                                                        dusk::getSettings().musicMod.kakarikoVillageLoopStartMs,
-                                                        dusk::getSettings().musicMod.kakarikoVillageVolume);
+                if (!dusk::getSettings().musicMod.kakarikoVillage.original) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.kakarikoVillage.track.getValue()),
+                                                        dusk::getSettings().musicMod.kakarikoVillage.loopStartMs,
+                                                        dusk::getSettings().musicMod.kakarikoVillage.volume);
+                    field_0x1a = false;
+                    return;
+                }
+                break;
+
+            // Lake Hylia
+            case Z2SCENE_LAKE_HYLIA:
+                if (!dusk::getSettings().musicMod.lakeHylia.original) {
+                    dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.lakeHylia.track.getValue()),
+                                                        dusk::getSettings().musicMod.lakeHylia.loopStartMs,
+                                                        dusk::getSettings().musicMod.lakeHylia.volume);
                     field_0x1a = false;
                     return;
                 }

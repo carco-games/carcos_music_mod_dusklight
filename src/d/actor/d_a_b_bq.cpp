@@ -622,10 +622,13 @@ static void b_bq_damage(b_bq_class* i_this) {
             }
 
             // Carco's Music Mod
-            // Z2GetAudioMgr()->changeBgmStatus(2);
-            dusk::audio::FadeOutToPause("diababa_phase_2", 1000);
-            // dusk::audio::PlayWav(GetWavFile("diababa_vuln.wav"), "diababa_vuln", 1515);
-            dusk::audio::FadeIn("diababa_vuln", 1000, 0.3f);
+            if (dusk::getSettings().musicMod.diababa.original) {
+                Z2GetAudioMgr()->changeBgmStatus(2);
+            } else {
+                dusk::audio::FadeOutToPause(dusk::getSettings().musicMod.diababa.track.getValue(), 1000);
+                // dusk::audio::PlayWav(GetWavFile("diababa_vuln.wav"), "diababa_vuln", 1515);
+                dusk::audio::FadeIn("diababa_vuln", 1000, 0.3f);
+            }
         }
 
         if (i_this->mpMorf->isStop()) {
@@ -925,10 +928,9 @@ static void action(b_bq_class* i_this) {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
                 Z2GetAudioMgr()->bgmStop(30, 0);
-                dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.diababaTrack.getValue()),
-                                     dusk::getSettings().musicMod.diababaLoopStartMs,
-                                     dusk::getSettings().musicMod.diababaVolume);
-                dusk::audio::SetWavVolume("diababa_phase_2", 0.3f);
+                dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.diababa.track.getValue()),
+                                     dusk::getSettings().musicMod.diababa,loopStartMs,
+                                     dusk::getSettings().musicMod.diababa.volume);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again
                 i_this->mAudioFrameCounter = 0;
@@ -940,8 +942,8 @@ static void action(b_bq_class* i_this) {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
                 dusk::audio::FadeOutToDelete("diababa_vuln", 1000);
-                dusk::audio::ResumeWav("diababa_phase_2", 1000);
-                dusk::audio::SetWavTargetVolume("diababa_phase_2", 0.3f);
+                dusk::audio::ResumeWav(dusk::getSettings().musicMod.diababa.track.getValue(), 1000);
+                dusk::audio::SetWavTargetVolume(dusk::getSettings().musicMod.diababa.track.getValue(), dusk::getSettings().musicMod.diababa.volume);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mAudioFrameCounter = 0;
             }
