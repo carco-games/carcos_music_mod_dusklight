@@ -4,6 +4,7 @@
 #include "JSystem/JAudio2/JAISoundHandles.h"
 #include "JSystem/JAudio2/JAIStreamDataMgr.h"
 #include "JSystem/JAudio2/JAISoundInfo.h"
+#include "dusk/logging.h"
 
 JAIStreamMgr::JAIStreamMgr(bool setInstance) : JASGlobalInstance<JAIStreamMgr>(setInstance) {
     streamDataMgr_ = NULL;
@@ -21,6 +22,10 @@ bool JAIStreamMgr::startSound(JAISoundID id, JAISoundHandle* handle, const JGeom
     }
 
     s32 streamFileEntry = streamDataMgr_->getStreamFileEntry(id);
+    DuskLog.debug("streamFileEntry={}", streamFileEntry);
+    if (streamFileEntry == 19) {
+        return false;
+    }
     if (streamFileEntry < 0) {
         JUT_WARN(46, "Cannot find the stream file entry for ID:%08x\n", id.id_.composite_)
         return false;

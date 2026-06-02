@@ -1936,7 +1936,7 @@ void Z2SceneMgr::sceneBgmStart() {
     }
 
     // Carco's Music Mod
-    if (BGM_ID == Z2BGM_MIDNA_SOS && !hasStartedMidnaSOSMusic) {
+    if (BGM_ID == Z2BGM_MIDNA_SOS && !hasStartedMidnaSOSMusic && !BGM_ID.isAnonymous() && Z2GetStatusMgr()->getDemoStatus() != 11) {
         hasStartedMidnaSOSMusic = true;
         Z2GetSeqMgr()->mFlags.mFieldBgmPlay = 0;
         dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.midnaLamentTrack.getValue()),
@@ -1945,7 +1945,7 @@ void Z2SceneMgr::sceneBgmStart() {
         field_0x1a = false;
     }
 
-    if (!hasStartedMidnaSOSMusic) {
+    if (!hasStartedMidnaSOSMusic && !BGM_ID.isAnonymous() && Z2GetStatusMgr()->getDemoStatus() != 11) {
         switch (sceneNum) {
             // Faron Woods
             case Z2SCENE_FARON_WOODS:
