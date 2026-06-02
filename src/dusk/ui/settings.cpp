@@ -539,6 +539,8 @@ void graphics_tuner_control(Window& window, Pane& leftPane, Pane& rightPane, Con
 
 }  // namespace
 
+static bool showAreaOptions = false;
+
 SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
     if (prelaunch) {
         mSuppressNavFallback = true;
@@ -1528,33 +1530,31 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
 
         leftPane.add_section("Track Selection");
 
-        auto addOption = [&](const Rml::String& key, ConfigVar<bool>& originalAudio,
-                             ConfigVar<std::string>& trackName, const Rml::String& text,
-                             ConfigVar<f32>& volume, ConfigVar<int>& loopStartPos) {
+        auto addOption = [&](const Rml::String& key, ConfigVar<bool>& originalAudio, ConfigVar<std::string>& trackName,
+                                       ConfigVar<f32>& volume, ConfigVar<int>& loopStartPos) {
             leftPane.register_control(
                 leftPane.add_select_button({
                     .key = key,
                 }),
-                rightPane, [](Pane& pane) {
+                rightPane, [&](Pane& pane) {
                     pane.clear();
                     config_bool_select(pane, originalAudio, {
-                        .key = "Original Audio",
+                        .key = "Original Audio"
                     });
                     pane.add_child<FilePickerButton>(FilePickerButton::Props{
                         .key = "Track",
-                        .getValue = [] {
+                        .getValue = [&] {
                             return trackName.getValue();
                         },
-                        .setValue = [](const std::string& path) {
+                        .setValue = [&](const std::string& path) {
                             trackName.setValue(path);
                             config::Save();
                         },
                     });
-                    pane.add_text(text);
                     pane.add_child<NumberButton>(NumberButton::Props{
                         .key = "Individual Song Volume",
-                        .getValue = [] { return static_cast<int>(std::round(volume.getValue() * 500.0f)); },
-                        .setValue = [](int percent) {
+                        .getValue = [&] { return static_cast<int>(std::round(volume.getValue() * 500.0f)); },
+                        .setValue = [&](int percent) {
                             volume.setValue(percent / 500.0f);
                             dusk::audio::SetWavVolume(trackName.getValue(), volume.getValue());
                             config::Save();
@@ -1564,8 +1564,8 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
                     });
                     pane.add_child<NumberButton>(NumberButton::Props{
                         .key = "Loop Start Pos (in milliseconds)",
-                        .getValue = [] { return static_cast<int>(loopStartPos.getValue()); },
-                        .setValue = [](int value) {
+                        .getValue = [&] { return static_cast<int>(loopStartPos.getValue()); },
+                        .setValue = [&](int value) {
                             loopStartPos.setValue(value);
                             config::Save();
                         },
@@ -1574,60 +1574,64 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
                     });
                 }
             );
+        };
+
+        auto& btn = leftPane.add_button({
+            .text = "Areas",
+        });
+
+        leftPane.register_control(btn, rightPane, [](Pane&){});
+        btn.on_pressed([&] {
+            showAreaOptions = !showAreaOptions;
+            leftPane.update();
+        });
+        
+
+        if (showAreaOptions) {
+            // Faron Woods -----------------------------------------------------------------------
+            addOption(Rml::String{"Faron Woods"}, getSettings().musicMod.faronWoods.original, getSettings().musicMod.faronWoods.track,
+                    getSettings().musicMod.faronWoods.volume, getSettings().musicMod.faronWoods.loopStartMs);
+            // -----------------------------------------------------------------------------------
+
+            // Gerudo Desert ---------------------------------------------------------------------
+            addOption(Rml::String{"Gerudo Desert"}, getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
+                    getSettings().musicMod.gerudoDesert.volume, getSettings().musicMod.gerudoDesert.loopStartMs);
+            // -----------------------------------------------------------------------------------
+
+            // Hidden Village --------------------------------------------------------------------
+            addOption(Rml::String{"Hidden Village"}, getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
+                    getSettings().musicMod.hiddenVillage.volume, getSettings().musicMod.hiddenVillage.loopStartMs);
+            // -----------------------------------------------------------------------------------
+
+            // Hyrule Field ----------------------------------------------------------------------
+            addOption(Rml::String{"Hyrule Field"}, getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
+                    getSettings().musicMod.hyruleField.volume, getSettings().musicMod.hyruleField.loopStartMs);
+            // -----------------------------------------------------------------------------------
+
+            // Kakariko Village ------------------------------------------------------------------
+            addOption(Rml::String{"Kakariko Village"}, getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
+                    getSettings().musicMod.kakarikoVillage.volume, getSettings().musicMod.kakarikoVillage.loopStartMs);
+            // -----------------------------------------------------------------------------------
+
+            // Lake Hylia ------------------------------------------------------------------------
+            addOption(Rml::String{"Lake Hylia"}, getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
+                    getSettings().musicMod.lakeHylia.volume, getSettings().musicMod.lakeHylia.loopStartMs);
+            // -----------------------------------------------------------------------------------
         }
 
         // Blizzeta Intro --------------------------------------------------------------------
         addOption("Blizzeta Intro", getSettings().musicMod.blizzetaIntro.original, getSettings().musicMod.blizzetaIntro.track,
-                  "Select a .wav file for Blizzeta Intro", getSettings().musicMod.blizzetaIntro.volume,
-                  getSettings().musicMod.blizzetaIntro.loopStartMs);
+                  getSettings().musicMod.blizzetaIntro.volume, getSettings().musicMod.blizzetaIntro.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Diababa Phase 2 -------------------------------------------------------------------
-        addOption("Diababa Phase 2", getSettings().musicMod.diababa.original, getSettings().musicMod.diababa.track,
-                  "Select a .wav file for Diababa Phase 2", getSettings().musicMod.diababa.volume,
-                  getSettings().musicMod.diababa.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Faron Woods -----------------------------------------------------------------------
-        addOption("Faron Woods", getSettings().musicMod.faronWoods.original, getSettings().musicMod.faronWoods.track,
-                  "Select a .wav file for Faron Woods", getSettings().musicMod.faronWoods.volume,
-                  getSettings().musicMod.faronWoods.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Gerudo Desert ---------------------------------------------------------------------
-        addOption("Gerudo Desert", getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
-                  "Select a .wav file for Gerudo Desert", getSettings().musicMod.gerudoDesert.volume,
-                  getSettings().musicMod.gerudoDesert.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Hidden Village --------------------------------------------------------------------
-        addOption("Hidden Village", getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
-                  "Select a .wav file for Hidden Village", getSettings().musicMod.hiddenVillage.volume,
-                  getSettings().musicMod.hiddenVillage.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Hyrule Field ----------------------------------------------------------------------
-        addOption("Hyrule Field", getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
-                  "Select a .wav file for Hyrule Field", getSettings().musicMod.hyruleField.volume,
-                  getSettings().musicMod.hyruleField.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Kakariko Village ------------------------------------------------------------------
-        addOption("Kakariko Village", getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
-                  "Select a .wav file for Kakariko Village", getSettings().musicMod.kakarikoVillage.volume,
-                  getSettings().musicMod.kakarikoVillage.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Lake Hylia ------------------------------------------------------------------------
-        addOption("Lake Hylia", getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
-                  "Select a .wav file for Lake Hylia", getSettings().musicMod.lakeHylia.volume,
-                  getSettings().musicMod.lakeHylia.loopStartMs);
+        addOption(Rml::String{"Diababa Phase 2"}, getSettings().musicMod.diababa.original, getSettings().musicMod.diababa.track,
+                  getSettings().musicMod.diababa.volume, getSettings().musicMod.diababa.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Midna's Lament --------------------------------------------------------------------
-        addOption("Midna's Lament", getSettings().musicMod.midnaLament.original, getSettings().musicMod.midnaLament.track,
-                  "Select a .wav file for Midna's Lament", getSettings().musicMod.midnaLament.volume,
-                  getSettings().musicMod.midnaLament.loopStartMs);
+        addOption(Rml::String{"Midna's Lament"}, getSettings().musicMod.midnaLament.original, getSettings().musicMod.midnaLament.track,
+                  getSettings().musicMod.midnaLament.volume, getSettings().musicMod.midnaLament.loopStartMs);
         // -----------------------------------------------------------------------------------
     });
 }

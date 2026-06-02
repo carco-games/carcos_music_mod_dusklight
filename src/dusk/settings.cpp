@@ -175,58 +175,76 @@ UserSettings g_userSettings = {
     .musicMod = {
         .musicVolume {"musicMod.musicVolume", 100},
         // Blizzeta Intro
-        .blizzetaIntro.original {"musicMod.blizzetaIntro.original", false},
-        .blizzetaIntro.track {"musicMod.blizzetaIntro.track", GetCarcoWavFile("Blizzeta_a.wav")},
-        .blizzetaIntro.volume {"musicMod.blizzetaIntro.volume", 0.2f},
-        .blizzetaIntro.loopStartMs {"musicMod.blizzetaIntro.loopStartMs", 0},
+        .blizzetaIntro = {
+            .original {"musicMod.blizzetaIntro.original", false},
+            .track {"musicMod.blizzetaIntro.track", GetCarcoWavFile("Blizzeta_a.wav")},
+            .volume {"musicMod.blizzetaIntro.volume", 0.2f},
+            .loopStartMs {"musicMod.blizzetaIntro.loopStartMs", 0},
+        },
         
         // Diababa
-        .diababa.original {"musicMod.diababa.original", false},
-        .diababa.track {"musicMod.diababa.track", GetCarcoWavFile("diababa_phase_2.wav")},
-        .diababa.volume {"musicMod.diababa.volume", 0.2f},
-        .diababa.loopStartMs {"musicMod.diababa.loopStartMs", 169},
+        .diababa = {
+            .original {"musicMod.diababa.original", false},
+            .track {"musicMod.diababa.track", GetCarcoWavFile("diababa_phase_2.wav")},
+            .volume {"musicMod.diababa.volume", 0.2f},
+            .loopStartMs {"musicMod.diababa.loopStartMs", 169},
+        },
 
         // Faron Woods
-        .faronWoods.original {"musicMod.faronWoods.original", false},
-        .faronWoods.track {"musicMod.faronWoods.track", GetCarcoWavFile("faron_woods.wav")},
-        .faronWoods.volume {"musicMod.faronWoods.volume", 0.2f},
-        .faronWoods.loopStartMs {"musicMod.faronWoods.loopStartMs", 24795},
+        .faronWoods = {
+            .original {"musicMod.faronWoods.original", false},
+            .track {"musicMod.faronWoods.track", GetCarcoWavFile("faron_woods.wav")},
+            .volume {"musicMod.faronWoods.volume", 0.2f},
+            .loopStartMs {"musicMod.faronWoods.loopStartMs", 24795},
+        },
 
         // Gerudo Desert
-        .gerudoDesert.original {"musicMod.gerudoDesert.original", false},
-        .gerudoDesert.track {"musicMod.gerudoDesert.track", GetCarcoWavFile("gerudo_desert.wav")},
-        .gerudoDesert.volume {"musicMod.gerudoDesert.volume", 0.2f},
-        .gerudoDesert.loopStartMs {"musicMod.gerudoDesert.loopStartMs", 180},
+        .gerudoDesert = {
+            .original {"musicMod.gerudoDesert.original", false},
+            .track {"musicMod.gerudoDesert.track", GetCarcoWavFile("gerudo_desert.wav")},
+            .volume {"musicMod.gerudoDesert.volume", 0.2f},
+            .loopStartMs {"musicMod.gerudoDesert.loopStartMs", 180},
+        },
 
         // Hidden Village
-        .hiddenVillage.original {"musicMod.hiddenVillage.original", false},
-        .hiddenVillage.track {"musicMod.hiddenVillage.track", GetCarcoWavFile("hidden_village.wav")},
-        .hiddenVillage.volume {"musicMod.hiddenVillage.volume", 0.2f},
-        .hiddenVillage.loopStartMs {"musicMod.hiddenVillage.loopStartMs", 3752},
+        .hiddenVillage = {
+            .original {"musicMod.hiddenVillage.original", false},
+            .track {"musicMod.hiddenVillage.track", GetCarcoWavFile("hidden_village.wav")},
+            .volume {"musicMod.hiddenVillage.volume", 0.2f},
+            .loopStartMs {"musicMod.hiddenVillage.loopStartMs", 3752},
+        },
 
         // Hyrule Field
-        .hyruleField.original {"musicMod.hyruleField.original", false},
-        .hyruleField.track {"musicMod.hyruleField.track", GetCarcoWavFile("hyrule_field.wav")},
-        .hyruleField.volume {"musicMod.hyruleField.volume", 0.2f},
-        .hyruleField.loopStartMs {"musicMod.hyruleField.loopStartMs", 0},
+        .hyruleField = {
+            .original {"musicMod.hyruleField.original", false},
+            .track {"musicMod.hyruleField.track", GetCarcoWavFile("hyrule_field.wav")},
+            .volume {"musicMod.hyruleField.volume", 0.2f},
+            .loopStartMs {"musicMod.hyruleField.loopStartMs", 0},
+        },
 
         // Kakariko Village
-        .kakarikoVillage.original {"musicMod.kakarikoVillage.original", false},
-        .kakarikoVillage.track {"musicMod.kakarikoVillage.track", GetCarcoWavFile("kakariko_village.wav")},
-        .kakarikoVillage.volume {"musicMod.kakarikoVillage.volume", 0.2f},
-        .kakarikoVillage.loopStartMs {"musicMod.kakarikoVillage.loopStartMs", 36275},
+        .kakarikoVillage = {
+            .original {"musicMod.kakarikoVillage.original", false},
+            .track {"musicMod.kakarikoVillage.track", GetCarcoWavFile("kakariko_village.wav")},
+            .volume {"musicMod.kakarikoVillage.volume", 0.2f},
+            .loopStartMs {"musicMod.kakarikoVillage.loopStartMs", 36275},
+        },
 
         // Lake Hylia
-        .lakeHylia.original {"musicMod.lakeHylia.original", false},
-        .lakeHylia.track {"musicMod.lakeHylia.track", GetCarcoWavFile("lake_hylia.wav")},
-        .lakeHylia.volume {"musicMod.lakeHylia.volume", 0.2f},
-        .lakeHylia.loopStartMs {"musicMod.lakeHylia.loopStartMs", 25087},
+        .lakeHylia = {
+            .original {"musicMod.lakeHylia.original", false},
+            .track {"musicMod.lakeHylia.track", GetCarcoWavFile("lake_hylia.wav")},
+            .volume {"musicMod.lakeHylia.volume", 0.2f},
+            .loopStartMs {"musicMod.lakeHylia.loopStartMs", 25087},
+        },
 
         // Midna's Lament (MDH)
-        .midnaLament.original {"musicMod.midnaLament.original", false},
-        .midnaLament.track {"musicMod.midnaLament.track", GetCarcoWavFile("midnas_lament.wav")},
-        .midnaLament.volume {"musicMod.midnaLament.volume", 0.2f},
-        .midnaLament.loopStartMs {"musicMod.midnaLament.loopStartMs", 23721},
+        .midnaLament = {
+            .original {"musicMod.midnaLament.original", false},
+            .track {"musicMod.midnaLament.track", GetCarcoWavFile("midnas_lament.wav")},
+            .volume {"musicMod.midnaLament.volume", 0.2f},
+            .loopStartMs {"musicMod.midnaLament.loopStartMs", 23721},
+        },
     }
 };
 

@@ -929,7 +929,7 @@ static void action(b_bq_class* i_this) {
             if (i_this->mAudioFrameCounter >= 42) {
                 Z2GetAudioMgr()->bgmStop(30, 0);
                 dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.diababa.track.getValue()),
-                                     dusk::getSettings().musicMod.diababa,loopStartMs,
+                                     dusk::getSettings().musicMod.diababa.loopStartMs,
                                      dusk::getSettings().musicMod.diababa.volume);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again

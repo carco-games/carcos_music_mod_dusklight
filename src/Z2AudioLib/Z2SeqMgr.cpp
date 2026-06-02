@@ -1910,7 +1910,7 @@ void Z2SeqMgr::battleBgmFramework() {
 }
 
 void Z2SeqMgr::startBattleBgm(bool isFadeIn) {
-    if ((Z2GetSceneMgr()->getCurrentSceneNum() == Z2SCENE_HYRULE_FIELD && !dusk::getSettings().musicMod.hyruleFieldOriginal) ||
+    if ((Z2GetSceneMgr()->getCurrentSceneNum() == Z2SCENE_HYRULE_FIELD && !dusk::getSettings().musicMod.hyruleField.original) ||
         (dComIfGs_isEventBit(dSv_event_flag_c::M_071) && !dComIfGs_isEventBit(dSv_event_flag_c::F_0250))) {
         return;
     }
@@ -2101,7 +2101,7 @@ void Z2SeqMgr::onFieldBgmJumpEnd() {
 
 void Z2SeqMgr::fieldBgmFramework() {
     // Carco's Music Mod
-    if (dusk::getSettings().musicMod.hyruleFieldOriginal) {
+    if (dusk::getSettings().musicMod.hyruleField.original) {
         if (Z2GetSceneMgr()->isSceneExist() && !Z2GetSceneMgr()->isInDarkness()
             && (Z2GetSceneMgr()->getCurrentSceneNum() == Z2SCENE_HYRULE_FIELD || Z2GetSceneMgr()->getCurrentSceneNum() == Z2SCENE_CASTLE_TOWN_GATES)
             && mFlags.mFieldBgmPlay)

@@ -251,42 +251,41 @@ struct UserSettings {
         std::array<ActionBindConfigVar, 4> turboSpeedButton;
     } actionBindings;
 
+    struct MusicEntry {
+        ConfigVar<bool> original;
+        ConfigVar<std::string> track;
+        ConfigVar<f32> volume;
+        ConfigVar<int> loopStartMs;
+    };
     struct {
-        struct {
-            ConfigVar<bool> original;
-            ConfigVar<std::string> track;
-            ConfigVar<f32> volume;
-            ConfigVar<int> loopStartMs;
-        } entry;
-
         ConfigVar<int> musicVolume;
 
         // Blizzeta Intro
-        entry blizzetaIntro;
+        MusicEntry blizzetaIntro;
         
         // Diababa
-        entry diababa;
+        MusicEntry diababa;
 
         // Faron Woods
-        entry faronWoods;
+        MusicEntry faronWoods;
 
         // Gerudo Desert
-        entry gerudoDesert
+        MusicEntry gerudoDesert;
 
         // Hidden Village
-        entry hiddenVillage;
+        MusicEntry hiddenVillage;
 
         // Hyurle Field
-        entry hyruleField;
+        MusicEntry hyruleField;
 
         // Kakariko Village
-        entry kakarikoVillage;
+        MusicEntry kakarikoVillage;
 
         // Lake Hylia
-        entry lakeHylia;
+        MusicEntry lakeHylia;
 
         // Midna's Lament (MDH)
-        entry midnaLament;
+        MusicEntry midnaLament;
     } musicMod;
 };
 
