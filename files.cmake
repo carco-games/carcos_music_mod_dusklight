@@ -1494,6 +1494,8 @@ set(DUSK_FILES
         src/dusk/ui/pane.hpp
         src/dusk/ui/menu_bar.cpp
         src/dusk/ui/menu_bar.hpp
+        src/dusk/ui/music_mod.cpp
+        src/dusk/ui/music_mod.hpp
         src/dusk/ui/prelaunch.cpp
         src/dusk/ui/prelaunch.hpp
         src/dusk/ui/preset.cpp
