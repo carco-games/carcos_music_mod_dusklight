@@ -22,7 +22,7 @@ bool JAIStreamMgr::startSound(JAISoundID id, JAISoundHandle* handle, const JGeom
     }
 
     s32 streamFileEntry = streamDataMgr_->getStreamFileEntry(id);
-    DuskLog.debug("streamFileEntry={}", streamFileEntry);
+    DuskLog.debug("id.id_.composite_={}", u32(id));
     if (streamFileEntry == 19) {
         return false;
     }
