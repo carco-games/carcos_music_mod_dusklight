@@ -245,6 +245,10 @@ UserSettings g_userSettings = {
             .volume {"musicMod.midnaLament.volume", 0.2f},
             .loopStartMs {"musicMod.midnaLament.loopStartMs", 23721},
         },
+
+        .areasPreset {"musicMod.areasPreset", false},
+        .cutscenesPreset {"musicMod.cutscenesPreset", false},
+        .bossesPreset {"musicMod.bossesPreset", false},
     }
 };
 
@@ -441,6 +445,11 @@ void registerSettings() {
     Register(g_userSettings.musicMod.midnaLament.track);
     Register(g_userSettings.musicMod.midnaLament.volume);
     Register(g_userSettings.musicMod.midnaLament.loopStartMs);
+
+    // Presets
+    Register(g_userSettings.musicMod.areasPreset);
+    Register(g_userSettings.musicMod.cutscenesPreset);
+    Register(g_userSettings.musicMod.bossesPreset);
 }
 
 // Transient settings

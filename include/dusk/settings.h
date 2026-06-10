@@ -286,6 +286,11 @@ struct UserSettings {
 
         // Midna's Lament (MDH)
         MusicEntry midnaLament;
+
+        // Presets
+        ConfigVar<bool> areasPreset;
+        ConfigVar<bool> cutscenesPreset;
+        ConfigVar<bool> bossesPreset;
     } musicMod;
 };
 
