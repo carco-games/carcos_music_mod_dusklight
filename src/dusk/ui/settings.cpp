@@ -1612,8 +1612,8 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
         // -----------------------------------------------------------------------------------
 
         // Diababa Phase 2 -------------------------------------------------------------------
-        addOption(Rml::String{"Diababa Phase 2"}, getSettings().musicMod.diababa.original, getSettings().musicMod.diababa.track,
-                  getSettings().musicMod.diababa.volume, getSettings().musicMod.diababa.loopStartMs);
+        addOption(Rml::String{"Diababa Phase 2"}, getSettings().musicMod.diababaPhase2.original, getSettings().musicMod.diababaPhase2.track,
+                  getSettings().musicMod.diababaPhase2.volume, getSettings().musicMod.diababaPhase2.loopStartMs);
         // -----------------------------------------------------------------------------------
 
         // Midna's Lament --------------------------------------------------------------------

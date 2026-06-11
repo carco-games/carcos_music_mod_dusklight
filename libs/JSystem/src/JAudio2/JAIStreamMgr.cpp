@@ -6,6 +6,12 @@
 #include "JSystem/JAudio2/JAISoundInfo.h"
 #include "dusk/logging.h"
 
+// Carco's Music Mod
+enum Audio_Streams {
+    /* 19 */ CUTSCENE_1 = 19,
+    /* 20 */ CUTSCENE_2,
+};
+
 JAIStreamMgr::JAIStreamMgr(bool setInstance) : JASGlobalInstance<JAIStreamMgr>(setInstance) {
     streamDataMgr_ = NULL;
     mStreamAramMgr = NULL;
@@ -22,10 +28,8 @@ bool JAIStreamMgr::startSound(JAISoundID id, JAISoundHandle* handle, const JGeom
     }
 
     s32 streamFileEntry = streamDataMgr_->getStreamFileEntry(id);
-    DuskLog.debug("id.id_.composite_={}", u32(id));
-    if (streamFileEntry == 19) {
-        return false;
-    }
+    DuskLog.debug("streamFileEntry={}", u32(streamFileEntry));
+    
     if (streamFileEntry < 0) {
         JUT_WARN(46, "Cannot find the stream file entry for ID:%08x\n", id.id_.composite_)
         return false;

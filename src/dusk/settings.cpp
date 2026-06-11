@@ -2,6 +2,21 @@
 #include "dusk/config.hpp"
 
 namespace dusk {
+dusk::UserSettings::MusicEntry SetMusicEntryDefaults(const std::string& name) {
+    return {
+        .original {("musicMod." + name + ".original").c_str(), false},
+        .track {("musicMod." + name + ".track").c_str(), ""},
+        .volume {("musicMod." + name + ".volume").c_str(), 0.2f},
+        .loopStartMs {("musicMod." + name + ".loopStartMs").c_str(), 0}
+    };
+}
+
+void RegisterMusicEntry(dusk::UserSettings::MusicEntry& entry) {
+    Register(entry.original);
+    Register(entry.track);
+    Register(entry.volume);
+    Register(entry.loopStartMs);
+}
 
 UserSettings g_userSettings = {
     .video = {
@@ -174,81 +189,56 @@ UserSettings g_userSettings = {
     // Carco's Music Mod
     .musicMod = {
         .musicVolume {"musicMod.musicVolume", 100},
-        // Blizzeta Intro
-        .blizzetaIntro = {
-            .original {"musicMod.blizzetaIntro.original", false},
-            .track {"musicMod.blizzetaIntro.track", GetCarcoWavFile("Blizzeta_a.wav")},
-            .volume {"musicMod.blizzetaIntro.volume", 0.2f},
-            .loopStartMs {"musicMod.blizzetaIntro.loopStartMs", 0},
-        },
-        
-        // Diababa
-        .diababa = {
-            .original {"musicMod.diababa.original", false},
-            .track {"musicMod.diababa.track", GetCarcoWavFile("diababa_phase_2.wav")},
-            .volume {"musicMod.diababa.volume", 0.2f},
-            .loopStartMs {"musicMod.diababa.loopStartMs", 169},
-        },
-
+        // Areas ---------------------
         // Faron Woods
-        .faronWoods = {
-            .original {"musicMod.faronWoods.original", false},
-            .track {"musicMod.faronWoods.track", GetCarcoWavFile("faron_woods.wav")},
-            .volume {"musicMod.faronWoods.volume", 0.2f},
-            .loopStartMs {"musicMod.faronWoods.loopStartMs", 24795},
-        },
+        .faronWoods = SetMusicEntryDefaults("faronWoods"),
 
         // Gerudo Desert
-        .gerudoDesert = {
-            .original {"musicMod.gerudoDesert.original", false},
-            .track {"musicMod.gerudoDesert.track", GetCarcoWavFile("gerudo_desert.wav")},
-            .volume {"musicMod.gerudoDesert.volume", 0.2f},
-            .loopStartMs {"musicMod.gerudoDesert.loopStartMs", 180},
-        },
+        .gerudoDesert = SetMusicEntryDefaults("gerudoDesert"),
 
         // Hidden Village
-        .hiddenVillage = {
-            .original {"musicMod.hiddenVillage.original", false},
-            .track {"musicMod.hiddenVillage.track", GetCarcoWavFile("hidden_village.wav")},
-            .volume {"musicMod.hiddenVillage.volume", 0.2f},
-            .loopStartMs {"musicMod.hiddenVillage.loopStartMs", 3752},
-        },
+        .hiddenVillage = SetMusicEntryDefaults("hiddenVillage"),
 
         // Hyrule Field
-        .hyruleField = {
-            .original {"musicMod.hyruleField.original", false},
-            .track {"musicMod.hyruleField.track", GetCarcoWavFile("hyrule_field.wav")},
-            .volume {"musicMod.hyruleField.volume", 0.2f},
-            .loopStartMs {"musicMod.hyruleField.loopStartMs", 0},
-        },
+        .hyruleField = SetMusicEntryDefaults("hyruleField"),
 
         // Kakariko Village
-        .kakarikoVillage = {
-            .original {"musicMod.kakarikoVillage.original", false},
-            .track {"musicMod.kakarikoVillage.track", GetCarcoWavFile("kakariko_village.wav")},
-            .volume {"musicMod.kakarikoVillage.volume", 0.2f},
-            .loopStartMs {"musicMod.kakarikoVillage.loopStartMs", 36275},
-        },
+        .kakarikoVillage = SetMusicEntryDefaults("kakarikoVillage"),
 
         // Lake Hylia
-        .lakeHylia = {
-            .original {"musicMod.lakeHylia.original", false},
-            .track {"musicMod.lakeHylia.track", GetCarcoWavFile("lake_hylia.wav")},
-            .volume {"musicMod.lakeHylia.volume", 0.2f},
-            .loopStartMs {"musicMod.lakeHylia.loopStartMs", 25087},
-        },
+        .lakeHylia = SetMusicEntryDefaults("lakeHylia"),
 
+        // Ordon Ranch
+        .ordonRanch = SetMusicEntryDefaults("ordonRanch"),
+        // ---------------------------
+
+        // Bosses --------------------
+        // Blizzeta
+        .blizzetaIntro = SetMusicEntryDefaults("blizzetaIntro"),
+        .blizzetaPhase1 = SetMusicEntryDefaults("blizzetaPhase1"),
+        .blizzetaPhase2 = SetMusicEntryDefaults("blizzetaPhase2"),
+        .blizzetaEnding = SetMusicEntryDefaults("blizzetaEnding"),
+        
+        // Diababa
+        .diababaIntro = SetMusicEntryDefaults("diababaIntro"),
+        .diababaPhase1 = SetMusicEntryDefaults("diababaPhase1"),
+        .diababaPhaseOok = SetMusicEntryDefaults("diababaPhaseOok"),
+        .diababaPhase2 = SetMusicEntryDefaults("diababaPhase2"),
+        .diababaVulnerable = SetMusicEntryDefaults("diababaVulnerable"),
+        .diababaEnding = SetMusicEntryDefaults("diababaEnding"),
+        // ---------------------------
+
+        // Misc ----------------------
         // Midna's Lament (MDH)
-        .midnaLament = {
-            .original {"musicMod.midnaLament.original", false},
-            .track {"musicMod.midnaLament.track", GetCarcoWavFile("midnas_lament.wav")},
-            .volume {"musicMod.midnaLament.volume", 0.2f},
-            .loopStartMs {"musicMod.midnaLament.loopStartMs", 23721},
-        },
+        .midnaLament = SetMusicEntryDefaults("midnaLament"),
+        // ---------------------------
 
+        // Presets -------------------
         .areasPreset {"musicMod.areasPreset", false},
         .cutscenesPreset {"musicMod.cutscenesPreset", false},
         .bossesPreset {"musicMod.bossesPreset", false},
+        .miscPreset {"musicMod.miscPreset", false},
+        // ---------------------------
     }
 };
 
@@ -392,64 +382,78 @@ void registerSettings() {
 
     // Carco's Music Mod
     Register(g_userSettings.musicMod.musicVolume);
-    // Blizzeta Intro
-    Register(g_userSettings.musicMod.blizzetaIntro.original);
-    Register(g_userSettings.musicMod.blizzetaIntro.track);
-    Register(g_userSettings.musicMod.blizzetaIntro.volume);
-    Register(g_userSettings.musicMod.blizzetaIntro.loopStartMs);
-    
-    // Diababa
-    Register(g_userSettings.musicMod.diababa.original);
-    Register(g_userSettings.musicMod.diababa.track);
-    Register(g_userSettings.musicMod.diababa.volume);
-    Register(g_userSettings.musicMod.diababa.loopStartMs);
 
+    // Areas ---------------------
     // Faron Woods
-    Register(g_userSettings.musicMod.faronWoods.original);
-    Register(g_userSettings.musicMod.faronWoods.track);
-    Register(g_userSettings.musicMod.faronWoods.volume);
-    Register(g_userSettings.musicMod.faronWoods.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.faronWoods);
 
     // Gerudo Desert
-    Register(g_userSettings.musicMod.gerudoDesert.original);
-    Register(g_userSettings.musicMod.gerudoDesert.track);
-    Register(g_userSettings.musicMod.gerudoDesert.volume);
-    Register(g_userSettings.musicMod.gerudoDesert.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.gerudoDesert);
 
     // Hidden Village
-    Register(g_userSettings.musicMod.hiddenVillage.original);
-    Register(g_userSettings.musicMod.hiddenVillage.track);
-    Register(g_userSettings.musicMod.hiddenVillage.volume);
-    Register(g_userSettings.musicMod.hiddenVillage.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.hiddenVillage);
 
     // Hyrule Field
-    Register(g_userSettings.musicMod.hyruleField.original);
-    Register(g_userSettings.musicMod.hyruleField.track);
-    Register(g_userSettings.musicMod.hyruleField.volume);
-    Register(g_userSettings.musicMod.hyruleField.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.hyruleField);
 
     // Kakariko Village
-    Register(g_userSettings.musicMod.kakarikoVillage.original);
-    Register(g_userSettings.musicMod.kakarikoVillage.track);
-    Register(g_userSettings.musicMod.kakarikoVillage.volume);
-    Register(g_userSettings.musicMod.kakarikoVillage.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.kakarikoVillage);
 
     // Lake Hylia
-    Register(g_userSettings.musicMod.lakeHylia.original);
-    Register(g_userSettings.musicMod.lakeHylia.track);
-    Register(g_userSettings.musicMod.lakeHylia.volume);
-    Register(g_userSettings.musicMod.lakeHylia.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.lakeHylia);
 
+    // Ordon Ranch
+    RegisterMusicEntry(g_userSettings.musicMod.ordonRanch);
+    // ---------------------------
+
+    // Bosses --------------------
+    // Blizzeta
+    RegisterMusicEntry(g_userSettings.musicMod.blizzetaIntro);
+    RegisterMusicEntry(g_userSettings.musicMod.blizzetaPhase1);
+    RegisterMusicEntry(g_userSettings.musicMod.blizzetaPhase2);
+    RegisterMusicEntry(g_userSettings.musicMod.blizzetaEnding);
+    
+    // Diababa
+    Register(g_userSettings.musicMod.diababaIntro.original);
+    Register(g_userSettings.musicMod.diababaIntro.track);
+    Register(g_userSettings.musicMod.diababaIntro.volume);
+    Register(g_userSettings.musicMod.diababaIntro.loopStartMs);
+    Register(g_userSettings.musicMod.diababaPhase1.original);
+    Register(g_userSettings.musicMod.diababaPhase1.track);
+    Register(g_userSettings.musicMod.diababaPhase1.volume);
+    Register(g_userSettings.musicMod.diababaPhase1.loopStartMs);
+    Register(g_userSettings.musicMod.diababaPhaseOok.original);
+    Register(g_userSettings.musicMod.diababaPhaseOok.track);
+    Register(g_userSettings.musicMod.diababaPhaseOok.volume);
+    Register(g_userSettings.musicMod.diababaPhaseOok.loopStartMs);
+    Register(g_userSettings.musicMod.diababaPhase2.original);
+    Register(g_userSettings.musicMod.diababaPhase2.track);
+    Register(g_userSettings.musicMod.diababaPhase2.volume);
+    Register(g_userSettings.musicMod.diababaPhase2.loopStartMs);
+    Register(g_userSettings.musicMod.diababaVulnerable.original);
+    Register(g_userSettings.musicMod.diababaVulnerable.track);
+    Register(g_userSettings.musicMod.diababaVulnerable.volume);
+    Register(g_userSettings.musicMod.diababaVulnerable.loopStartMs);
+    Register(g_userSettings.musicMod.diababaEnding.original);
+    Register(g_userSettings.musicMod.diababaEnding.track);
+    Register(g_userSettings.musicMod.diababaEnding.volume);
+    Register(g_userSettings.musicMod.diababaEnding.loopStartMs);
+    // ---------------------------
+
+    // Misc ----------------------
     // Midna's Lament (MDH)
     Register(g_userSettings.musicMod.midnaLament.original);
     Register(g_userSettings.musicMod.midnaLament.track);
     Register(g_userSettings.musicMod.midnaLament.volume);
     Register(g_userSettings.musicMod.midnaLament.loopStartMs);
+    // ---------------------------
 
-    // Presets
+    // Presets -------------------
     Register(g_userSettings.musicMod.areasPreset);
     Register(g_userSettings.musicMod.cutscenesPreset);
     Register(g_userSettings.musicMod.bossesPreset);
+    Register(g_userSettings.musicMod.miscPreset);
+    // ---------------------------
 }
 
 // Transient settings

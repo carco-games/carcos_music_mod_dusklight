@@ -260,12 +260,7 @@ struct UserSettings {
     struct {
         ConfigVar<int> musicVolume;
 
-        // Blizzeta Intro
-        MusicEntry blizzetaIntro;
-        
-        // Diababa
-        MusicEntry diababa;
-
+        // Areas ---------------------
         // Faron Woods
         MusicEntry faronWoods;
 
@@ -284,13 +279,39 @@ struct UserSettings {
         // Lake Hylia
         MusicEntry lakeHylia;
 
+        // Ordon Ranch
+        MusicEntry ordonRanch;
+        // ---------------------------
+
+        // Bosses --------------------
+        // Blizzeta
+        MusicEntry blizzetaIntro;
+        MusicEntry blizzetaPhase1;
+        MusicEntry blizzetaPhase2;
+        MusicEntry blizzetaEnding;
+        
+        // Diababa
+        MusicEntry diababaIntro;
+        MusicEntry diababaPhase1;
+        MusicEntry diababaPhaseOok;
+        MusicEntry diababaPhase2;
+        MusicEntry diababaVulnerable;
+        MusicEntry diababaEnding;
+        // ---------------------------
+
+        // Cutscenes -----------------
+        // ---------------------------
+
+        // Misc ----------------------
         // Midna's Lament (MDH)
         MusicEntry midnaLament;
+        // ---------------------------
 
         // Presets
         ConfigVar<bool> areasPreset;
         ConfigVar<bool> cutscenesPreset;
         ConfigVar<bool> bossesPreset;
+        ConfigVar<bool> miscPreset;
     } musicMod;
 };
 

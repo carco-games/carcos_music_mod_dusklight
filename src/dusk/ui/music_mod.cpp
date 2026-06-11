@@ -64,6 +64,16 @@ MusicModWindow::MusicModWindow() {
             }),
             rightPane, [](Pane& pane) {
                 pane.clear();
+                pane.add_button("Set All Area Music To Original").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.areasPreset.setValue(false);
+                    config::Save();
+                });
+                pane.add_button("Set All Area Music To Custom").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.areasPreset.setValue(true);
+                    config::Save();
+                });
         });
 
         leftPane.register_control(
@@ -82,7 +92,17 @@ MusicModWindow::MusicModWindow() {
                 },
             }),
             rightPane, [](Pane& pane) {
-                
+                pane.clear();
+                pane.add_button("Set All Cutscene Music To Original").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.cutscenesPreset.setValue(false);
+                    config::Save();
+                });
+                pane.add_button("Set All Cutscene Music To Custom").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.cutscenesPreset.setValue(true);
+                    config::Save();
+                });
         });
 
         leftPane.register_control(
@@ -101,7 +121,17 @@ MusicModWindow::MusicModWindow() {
                 },
             }),
             rightPane, [](Pane& pane) {
-                
+                pane.clear();
+                pane.add_button("Set All Boss Music To Original").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.bossesPreset.setValue(false);
+                    config::Save();
+                });
+                pane.add_button("Set All Boss Music To Custom").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.bossesPreset.setValue(true);
+                    config::Save();
+                });
         });
 
         leftPane.register_control(
@@ -115,7 +145,17 @@ MusicModWindow::MusicModWindow() {
                 },
             }),
             rightPane, [](Pane& pane) {
-                
+                pane.clear();
+                pane.add_button("Set All Misc Music To Original").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.miscPreset.setValue(false);
+                    config::Save();
+                });
+                pane.add_button("Set All Misc Music To Custom").on_pressed([] {
+                    mDoAud_seStartMenu(kSoundItemChange);
+                    getSettings().musicMod.miscPreset.setValue(true);
+                    config::Save();
+                });
         });
     });
 
@@ -168,14 +208,124 @@ MusicModWindow::MusicModWindow() {
                 }
             );
         };
-    });
 
-    add_tab("Cutscenes", [this](Rml::Element* content) {
-        auto& leftPane = add_child<Pane>(content, Pane::Type::Controlled);
-        auto& rightPane = add_child<Pane>(content, Pane::Type::Uncontrolled);
+        // Faron Woods -----------------------------------------------------------------------
+        addOption(Rml::String{"Faron Woods"}, getSettings().musicMod.faronWoods.original, getSettings().musicMod.faronWoods.track,
+                getSettings().musicMod.faronWoods.volume, getSettings().musicMod.faronWoods.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Gerudo Desert ---------------------------------------------------------------------
+        addOption(Rml::String{"Gerudo Desert"}, getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
+                getSettings().musicMod.gerudoDesert.volume, getSettings().musicMod.gerudoDesert.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Hidden Village --------------------------------------------------------------------
+        addOption(Rml::String{"Hidden Village"}, getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
+                getSettings().musicMod.hiddenVillage.volume, getSettings().musicMod.hiddenVillage.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Hyrule Field ----------------------------------------------------------------------
+        addOption(Rml::String{"Hyrule Field"}, getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
+                getSettings().musicMod.hyruleField.volume, getSettings().musicMod.hyruleField.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Kakariko Village ------------------------------------------------------------------
+        addOption(Rml::String{"Kakariko Village"}, getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
+                getSettings().musicMod.kakarikoVillage.volume, getSettings().musicMod.kakarikoVillage.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Lake Hylia ------------------------------------------------------------------------
+        addOption(Rml::String{"Lake Hylia"}, getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
+                getSettings().musicMod.lakeHylia.volume, getSettings().musicMod.lakeHylia.loopStartMs);
+        // -----------------------------------------------------------------------------------
+
+        // Ordon Ranch -----------------------------------------------------------------------
+        addOption(Rml::String{"Ordon Ranch"}, getSettings().musicMod.ordonRanch.original, getSettings().musicMod.ordonRanch.track,
+                getSettings().musicMod.ordonRanch.volume, getSettings().musicMod.ordonRanch.loopStartMs);
+        // -----------------------------------------------------------------------------------
     });
 
     add_tab("Bosses", [this](Rml::Element* content) {
+        auto& leftPane = add_child<Pane>(content, Pane::Type::Controlled);
+        auto& rightPane = add_child<Pane>(content, Pane::Type::Uncontrolled);
+
+        auto addOption = [&](const Rml::String& key, const std::vector<Rml::String>& button_keys, const std::vector<ConfigVar<bool>>& originalAudios,
+                                       const std::vector<ConfigVar<std::string>>& trackFilepaths, const std::vector<ConfigVar<f32>>& volumes,
+                                       const std::vector<ConfigVar<int>>& loopStartPos) {
+            leftPane.register_control(
+                leftPane.add_select_button({
+                    .key = key,
+                }),
+                rightPane, [&](Pane& pane) {
+                    pane.clear();
+                    for (size_t i = 0; i < button_keys.size(); i++) {
+                        config_bool_select(pane, originalAudios[i], {
+                            .key = "Original Audio"
+                        });
+                        pane.add_child<FilePickerButton>(FilePickerButton::Props{
+                            .key = "Track",
+                            .getValue = [&] {
+                                return trackFilepaths[i].getValue();
+                            },
+                            .setValue = [&](const std::string& path) {
+                                trackFilepaths[i].setValue(path);
+                                config::Save();
+                            },
+                        });
+                        pane.add_child<NumberButton>(NumberButton::Props{
+                            .key = "Individual Song Volume",
+                            .getValue = [&] { return static_cast<int>(std::round(volumes[i].getValue() * 500.0f)); },
+                            .setValue = [&](int percent) {
+                                volumes[i].setValue(percent / 500.0f);
+                                dusk::audio::SetWavVolume(trackFilepaths[i].getValue(), volumes[i].getValue());
+                                config::Save();
+                            },
+                            .max = 200,
+                            .suffix = "%",
+                        });
+                        pane.add_child<NumberButton>(NumberButton::Props{
+                            .key = "Loop Start Pos (in milliseconds)",
+                            .getValue = [&] { return static_cast<int>(loopStartPos[i].getValue()); },
+                            .setValue = [&](int value) {
+                                loopStartPos[i].setValue(value);
+                                config::Save();
+                            },
+                            .min = 0,
+                            .max = 999999,
+                        });
+                    }
+                }
+            );
+        };
+
+        // Blizzeta ---------------------------------------------------------------------------
+        addOption("Blizzeta", {"Blizzeta Intro", "Blizzeta Phase 1", "Blizzeta Phase 2", "Blizzeta Ending"},
+                  {getSettings().musicMod.blizzetaIntro.original, getSettings().musicMod.blizzetaPhase1.original, getSettings().musicMod.blizzetaPhase2.original,
+                                  getSettings().musicMod.blizzetaEnding.original},
+                  {getSettings().musicMod.blizzetaIntro.track, getSettings().musicMod.blizzetaPhase1.track, getSettings().musicMod.blizzetaPhase2.track,
+                                  getSettings().musicMod.blizzetaEnding.track},
+                  {getSettings().musicMod.blizzetaIntro.volume, getSettings().musicMod.blizzetaPhase1.volume, getSettings().musicMod.blizzetaPhase2.volume,
+                                  getSettings().musicMod.blizzetaEnding.volume},
+                  {getSettings().musicMod.blizzetaIntro.loopStartMs, getSettings().musicMod.blizzetaPhase1.loopStartMs, getSettings().musicMod.blizzetaPhase2.loopStartMs,
+                                  getSettings().musicMod.blizzetaEnding.loopStartMs}
+                );
+        // -----------------------------------------------------------------------------------
+        
+        // Diababa ---------------------------------------------------------------------------
+        addOption("Diababa", {"Diababa Intro", "Diababa Phase 1", "Diababa Ook Entrance", "Diababa Phase 2", "Diababa Vulnerable", "Diababa Ending"},
+                  {getSettings().musicMod.diababaIntro.original, getSettings().musicMod.diababaPhase1.original, getSettings().musicMod.diababaPhase2.original,
+                                  getSettings().musicMod.diababaPhaseOok.original, getSettings().musicMod.diababaVulnerable.original, getSettings().musicMod.diababaEnding.original},
+                  {getSettings().musicMod.diababaIntro.track, getSettings().musicMod.diababaPhase1.track, getSettings().musicMod.diababaPhase2.track,
+                                  getSettings().musicMod.diababaPhaseOok.track, getSettings().musicMod.diababaVulnerable.track, getSettings().musicMod.diababaEnding.track},
+                  {getSettings().musicMod.diababaIntro.volume, getSettings().musicMod.diababaPhase1.volume, getSettings().musicMod.diababaPhase2.volume,
+                           getSettings().musicMod.diababaPhaseOok.volume, getSettings().musicMod.diababaVulnerable.volume, getSettings().musicMod.diababaEnding.volume},
+                  {getSettings().musicMod.diababaIntro.loopStartMs, getSettings().musicMod.diababaPhase1.loopStartMs, getSettings().musicMod.diababaPhase2.loopStartMs,
+                                getSettings().musicMod.diababaPhaseOok.loopStartMs, getSettings().musicMod.diababaVulnerable.loopStartMs, getSettings().musicMod.diababaEnding.loopStartMs}
+                );
+        // -----------------------------------------------------------------------------------
+    });
+
+    add_tab("Cutscenes", [this](Rml::Element* content) {
         auto& leftPane = add_child<Pane>(content, Pane::Type::Controlled);
         auto& rightPane = add_child<Pane>(content, Pane::Type::Uncontrolled);
     });
