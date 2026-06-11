@@ -1575,36 +1575,6 @@ SettingsWindow::SettingsWindow(bool prelaunch) : mPrelaunch(prelaunch) {
                 }
             );
         };
-        
-        // Faron Woods -----------------------------------------------------------------------
-        addOption(Rml::String{"Faron Woods"}, getSettings().musicMod.faronWoods.original, getSettings().musicMod.faronWoods.track,
-                getSettings().musicMod.faronWoods.volume, getSettings().musicMod.faronWoods.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Gerudo Desert ---------------------------------------------------------------------
-        addOption(Rml::String{"Gerudo Desert"}, getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
-                getSettings().musicMod.gerudoDesert.volume, getSettings().musicMod.gerudoDesert.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Hidden Village --------------------------------------------------------------------
-        addOption(Rml::String{"Hidden Village"}, getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
-                getSettings().musicMod.hiddenVillage.volume, getSettings().musicMod.hiddenVillage.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Hyrule Field ----------------------------------------------------------------------
-        addOption(Rml::String{"Hyrule Field"}, getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
-                getSettings().musicMod.hyruleField.volume, getSettings().musicMod.hyruleField.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Kakariko Village ------------------------------------------------------------------
-        addOption(Rml::String{"Kakariko Village"}, getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
-                getSettings().musicMod.kakarikoVillage.volume, getSettings().musicMod.kakarikoVillage.loopStartMs);
-        // -----------------------------------------------------------------------------------
-
-        // Lake Hylia ------------------------------------------------------------------------
-        addOption(Rml::String{"Lake Hylia"}, getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
-                getSettings().musicMod.lakeHylia.volume, getSettings().musicMod.lakeHylia.loopStartMs);
-        // -----------------------------------------------------------------------------------
 
         // Blizzeta Intro --------------------------------------------------------------------
         addOption("Blizzeta Intro", getSettings().musicMod.blizzetaIntro.original, getSettings().musicMod.blizzetaIntro.track,
