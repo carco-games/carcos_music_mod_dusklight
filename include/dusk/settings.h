@@ -284,6 +284,14 @@ struct UserSettings {
         // ---------------------------
 
         // Bosses --------------------
+        // Argorok
+        MusicEntry argorokIntro;
+        MusicEntry argorokPhase1;
+        MusicEntry argorokPhase2Intro;
+        MusicEntry argorokPhase2;
+        MusicEntry argorokVulnerable;
+        MusicEntry argorokEnding;
+
         // Blizzeta
         MusicEntry blizzetaIntro;
         MusicEntry blizzetaPhase1;

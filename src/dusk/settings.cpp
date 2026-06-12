@@ -239,11 +239,20 @@ UserSettings g_userSettings = {
         .morpheelPhase2 = SetMusicEntryDefaults("morpheelPhase2"),
         .morpheelEnding = SetMusicEntryDefaults("morpheelEnding"),
 
+        // Stallord
         .stallordIntro = SetMusicEntryDefaults("stallordIntro"),
         .stallordPhase1 = SetMusicEntryDefaults("stallordPhase1"),
         .stallordPhase2Intro = SetMusicEntryDefaults("stallordPhase2Intro"),
         .stallordPhase2 = SetMusicEntryDefaults("stallordPhase2"),
         .stallordEnding = SetMusicEntryDefaults("stallordEnding"),
+
+        // Argorok
+        .argorokIntro = SetMusicEntryDefaults("argorokIntro"),
+        .argorokPhase1 = SetMusicEntryDefaults("argorokPhase1"),
+        .argorokPhase2Intro = SetMusicEntryDefaults("argorokPhase2Intro"),
+        .argorokPhase2 = SetMusicEntryDefaults("argorokPhase2"),
+        .argorokVulnerable = SetMusicEntryDefaults("argorokVulnerable"),
+        .argorokEnding = SetMusicEntryDefaults("argorokEnding"),
         // ---------------------------
 
         // Misc ----------------------
@@ -425,6 +434,14 @@ void registerSettings() {
     // ---------------------------
 
     // Bosses --------------------
+    // Argorok
+    RegisterMusicEntry(g_userSettings.musicMod.argorokIntro);
+    RegisterMusicEntry(g_userSettings.musicMod.argorokPhase1);
+    RegisterMusicEntry(g_userSettings.musicMod.argorokPhase2Intro);
+    RegisterMusicEntry(g_userSettings.musicMod.argorokPhase2);
+    RegisterMusicEntry(g_userSettings.musicMod.argorokVulnerable);
+    RegisterMusicEntry(g_userSettings.musicMod.argorokEnding);
+
     // Blizzeta
     RegisterMusicEntry(g_userSettings.musicMod.blizzetaIntro);
     RegisterMusicEntry(g_userSettings.musicMod.blizzetaPhase1);

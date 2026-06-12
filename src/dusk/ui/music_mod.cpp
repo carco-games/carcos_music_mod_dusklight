@@ -303,6 +303,18 @@ MusicModWindow::MusicModWindow() {
             );
         };
 
+        // Argarok ----------------------------------------------------------------------------
+        addOption("Argorok", {"Argorok Intro", "Argorok Phase 1", "Argorok Phase 2 Intro", "Argorok Phase 2", "Argorok Vulnerable", "Argorok Ending"},
+                  {&getSettings().musicMod.argorokIntro.original, &getSettings().musicMod.argorokPhase1.original, &getSettings().musicMod.argorokPhase2Intro.original,
+                  &getSettings().musicMod.argorokPhase2.original, &getSettings().musicMod.argorokVulnerable.original, &getSettings().musicMod.argorokEnding.original},
+                  {&getSettings().musicMod.argorokIntro.track, &getSettings().musicMod.argorokPhase1.track, &getSettings().musicMod.argorokPhase2Intro.track,
+                  &getSettings().musicMod.argorokPhase2.track, &getSettings().musicMod.argorokVulnerable.track, &getSettings().musicMod.argorokEnding.track},
+                  {&getSettings().musicMod.argorokIntro.volume, &getSettings().musicMod.argorokPhase1.volume, &getSettings().musicMod.argorokPhase2Intro.volume,
+                  &getSettings().musicMod.argorokPhase2.volume, &getSettings().musicMod.argorokVulnerable.volume, &getSettings().musicMod.argorokEnding.volume},
+                  {&getSettings().musicMod.argorokIntro.loopStartMs, &getSettings().musicMod.argorokPhase1.loopStartMs, &getSettings().musicMod.argorokPhase2Intro.loopStartMs,
+                  &getSettings().musicMod.argorokPhase2.loopStartMs, &getSettings().musicMod.argorokVulnerable.loopStartMs, &getSettings().musicMod.argorokEnding.loopStartMs});
+        // -----------------------------------------------------------------------------------
+
         // Blizzeta ---------------------------------------------------------------------------
         addOption("Blizzeta", {"Blizzeta Intro", "Blizzeta Phase 1", "Blizzeta Phase 2", "Blizzeta Ending"},
                   {&getSettings().musicMod.blizzetaIntro.original, &getSettings().musicMod.blizzetaPhase1.original, &getSettings().musicMod.blizzetaPhase2.original,
