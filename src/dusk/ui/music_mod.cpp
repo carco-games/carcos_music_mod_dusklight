@@ -338,6 +338,30 @@ MusicModWindow::MusicModWindow() {
                   {&getSettings().musicMod.fyrusIntro.loopStartMs, &getSettings().musicMod.fyrusMain.loopStartMs,
                   &getSettings().musicMod.fyrusVulnerable.loopStartMs, &getSettings().musicMod.fyrusEnding.loopStartMs});
         // -----------------------------------------------------------------------------------
+
+        // Morpheel --------------------------------------------------------------------------
+        addOption("Morpheel", {"Morpheel Intro", "Morpheel Phase 1", "Morpheel Phase 2", "Morpheel Ending"},
+                  {&getSettings().musicMod.morpheelIntro.original, &getSettings().musicMod.morpheelPhase1.original,
+                  &getSettings().musicMod.morpheelPhase2.original, &getSettings().musicMod.morpheelEnding.original},
+                  {&getSettings().musicMod.morpheelIntro.track, &getSettings().musicMod.morpheelPhase1.track,
+                  &getSettings().musicMod.morpheelPhase2.track, &getSettings().musicMod.morpheelEnding.track},
+                  {&getSettings().musicMod.morpheelIntro.volume, &getSettings().musicMod.morpheelPhase1.volume,
+                  &getSettings().musicMod.morpheelPhase2.volume, &getSettings().musicMod.morpheelEnding.volume},
+                  {&getSettings().musicMod.morpheelIntro.loopStartMs, &getSettings().musicMod.morpheelPhase1.loopStartMs,
+                  &getSettings().musicMod.morpheelPhase2.loopStartMs, &getSettings().musicMod.morpheelEnding.loopStartMs});
+        // -----------------------------------------------------------------------------------
+
+        // Stallord --------------------------------------------------------------------------
+        addOption("Stallord", {"Stallord Intro", "Stallord Phase 1", "Stallord Phase 2 Intro", "Stallord Phase 2", "Stallord Ending"},
+                  {&getSettings().musicMod.stallordIntro.original, &getSettings().musicMod.stallordPhase1.original, &getSettings().musicMod.stallordPhase2Intro.original,
+                  &getSettings().musicMod.stallordPhase2.original, &getSettings().musicMod.stallordEnding.original},
+                  {&getSettings().musicMod.stallordIntro.track, &getSettings().musicMod.stallordPhase1.track, &getSettings().musicMod.stallordPhase2Intro.track,
+                  &getSettings().musicMod.stallordPhase2.track, &getSettings().musicMod.stallordEnding.track},
+                  {&getSettings().musicMod.stallordIntro.volume, &getSettings().musicMod.stallordPhase1.volume, &getSettings().musicMod.stallordPhase2Intro.volume,
+                  &getSettings().musicMod.stallordPhase2.volume, &getSettings().musicMod.stallordEnding.volume},
+                  {&getSettings().musicMod.stallordIntro.loopStartMs, &getSettings().musicMod.stallordPhase1.loopStartMs, &getSettings().musicMod.stallordPhase2Intro.loopStartMs,
+                  &getSettings().musicMod.stallordPhase2.loopStartMs, &getSettings().musicMod.stallordEnding.loopStartMs});
+        // -----------------------------------------------------------------------------------
     });
 
     add_tab("Cutscenes", [this](Rml::Element* content) {

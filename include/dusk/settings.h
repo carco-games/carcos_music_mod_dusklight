@@ -303,6 +303,19 @@ struct UserSettings {
         MusicEntry fyrusMain;
         MusicEntry fyrusVulnerable;
         MusicEntry fyrusEnding;
+
+        // Morpheel
+        MusicEntry morpheelIntro;
+        MusicEntry morpheelPhase1;
+        MusicEntry morpheelPhase2;
+        MusicEntry morpheelEnding;
+
+        // Stallord
+        MusicEntry stallordIntro;
+        MusicEntry stallordPhase1;
+        MusicEntry stallordPhase2Intro;
+        MusicEntry stallordPhase2;
+        MusicEntry stallordEnding;
         // ---------------------------
 
         // Cutscenes -----------------

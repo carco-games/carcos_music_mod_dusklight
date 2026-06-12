@@ -232,6 +232,18 @@ UserSettings g_userSettings = {
         .fyrusMain = SetMusicEntryDefaults("fyrusMain"),
         .fyrusVulnerable = SetMusicEntryDefaults("fyrusVulnerable"),
         .fyrusEnding = SetMusicEntryDefaults("fyrusEnding"),
+
+        // Morpheel
+        .morpheelIntro = SetMusicEntryDefaults("morpheelIntro"),
+        .morpheelPhase1 = SetMusicEntryDefaults("morpheelPhase1"),
+        .morpheelPhase2 = SetMusicEntryDefaults("morpheelPhase2"),
+        .morpheelEnding = SetMusicEntryDefaults("morpheelEnding"),
+
+        .stallordIntro = SetMusicEntryDefaults("stallordIntro"),
+        .stallordPhase1 = SetMusicEntryDefaults("stallordPhase1"),
+        .stallordPhase2Intro = SetMusicEntryDefaults("stallordPhase2Intro"),
+        .stallordPhase2 = SetMusicEntryDefaults("stallordPhase2"),
+        .stallordEnding = SetMusicEntryDefaults("stallordEnding"),
         // ---------------------------
 
         // Misc ----------------------
@@ -432,6 +444,19 @@ void registerSettings() {
     RegisterMusicEntry(g_userSettings.musicMod.fyrusMain);
     RegisterMusicEntry(g_userSettings.musicMod.fyrusVulnerable);
     RegisterMusicEntry(g_userSettings.musicMod.fyrusEnding);
+
+    // Morpheel
+    RegisterMusicEntry(g_userSettings.musicMod.morpheelIntro);
+    RegisterMusicEntry(g_userSettings.musicMod.morpheelPhase1);
+    RegisterMusicEntry(g_userSettings.musicMod.morpheelPhase2);
+    RegisterMusicEntry(g_userSettings.musicMod.morpheelEnding);
+
+    // Stallord
+    RegisterMusicEntry(g_userSettings.musicMod.stallordIntro);
+    RegisterMusicEntry(g_userSettings.musicMod.stallordPhase1);
+    RegisterMusicEntry(g_userSettings.musicMod.stallordPhase2Intro);
+    RegisterMusicEntry(g_userSettings.musicMod.stallordPhase2);
+    RegisterMusicEntry(g_userSettings.musicMod.stallordEnding);
     // ---------------------------
 
     // Misc ----------------------
