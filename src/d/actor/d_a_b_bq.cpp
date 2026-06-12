@@ -622,12 +622,10 @@ static void b_bq_damage(b_bq_class* i_this) {
             }
 
             // Carco's Music Mod
-            if (dusk::getSettings().musicMod.diababaPhase2.original) {
+            // Play vulnerable theme and pause main music
+            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, true,
+                                                   dusk::getSettings().musicMod.diababaPhase2, true)) {
                 Z2GetAudioMgr()->changeBgmStatus(2);
-            } else {
-                dusk::audio::FadeOutToPause(dusk::getSettings().musicMod.diababaPhase2.track.getValue(), 1000);
-                // dusk::audio::PlayWav(GetWavFile("diababa_vuln.wav"), "diababa_vuln", 1515);
-                dusk::audio::FadeIn("diababa_vuln", 1000, 0.3f);
             }
         }
 
@@ -928,9 +926,8 @@ static void action(b_bq_class* i_this) {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
                 Z2GetAudioMgr()->bgmStop(30, 0);
-                dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.diababaPhase2.track.getValue()),
-                                     dusk::getSettings().musicMod.diababaPhase2.loopStartMs,
-                                     dusk::getSettings().musicMod.diababaPhase2.volume);
+                Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, false, false,
+                                                  dusk::getSettings().musicMod.diababaPhaseOok);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again
                 i_this->mAudioFrameCounter = 0;
@@ -941,9 +938,8 @@ static void action(b_bq_class* i_this) {
         case 2: {
             i_this->mAudioFrameCounter++;
             if (i_this->mAudioFrameCounter >= 42) {
-                dusk::audio::FadeOutToDelete("diababa_vuln", 1000);
-                dusk::audio::ResumeWav(dusk::getSettings().musicMod.diababaPhase2.track.getValue(), 1000);
-                dusk::audio::SetWavTargetVolume(dusk::getSettings().musicMod.diababaPhase2.track.getValue(), dusk::getSettings().musicMod.diababaPhase2.volume);
+                Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, true,
+                                                  dusk::getSettings().musicMod.diababaVulnerable);
                 i_this->mSwitchToStreamFlag = 0;
                 i_this->mAudioFrameCounter = 0;
             }
@@ -1553,7 +1549,11 @@ static void demo_camera(b_bq_class* i_this) {
             i_this->field_0x129c = 0.0f;
 
             mDoAud_seStart(Z2SE_EN_BH_JINARI, NULL, 0, 0);
-            Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSSBABA_0);
+
+            // Carco's Music Mod
+            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaIntro)) {
+                Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSSBABA_0);
+            }
         }
         break;
     case 13:
@@ -1653,7 +1653,11 @@ static void demo_camera(b_bq_class* i_this) {
             i_this->mDemoMode = 100;
             i_this->field_0x6f9 = 2;
 
-            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
+            // Carco's Music Mod
+            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase1, false, false,
+                                                   dusk::getSettings().musicMod.diababaIntro)) {
+                Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
+            }
             i_this->field_0x1392 = 2;
         }
         break;
@@ -2704,7 +2708,12 @@ static int daB_BQ_Create(fopAc_ac_c* i_this) {
             a_this->mDisableDraw = true;
         } else {
             a_this->mAction = ACTION_STAY;
-            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
+
+            // Carco's Music Mod
+            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase1, false, false,
+                                                   dusk::getSettings().musicMod.diababaIntro)) {
+                Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
+            }
             a_this->field_0x1392 = 2;
             a_this->mDisableDraw = true;
             a_this->mColpatType = 1;
