@@ -1924,9 +1924,26 @@ void Z2SceneMgr::load2ndDynamicWave() {
 }
 
 // Carco's Music Mod
-bool startCustomMusic(dusk::UserSettings::MusicEntry configEntry) {
+bool Z2SceneMgr::startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bool isResuming, bool fadeIn,
+                                  std::optional<dusk::UserSettings::MusicEntry> otherEntry, bool pauseOtherEntry) {
     if (!configEntry.original) {
-        dusk::audio::PlayWav(GetWavFile(configEntry.track.getValue()), configEntry.loopStartMs, configEntry.volume);
+        if (otherEntry) {
+            if (pauseOtherEntry) {
+                dusk::audio::FadeOutToPause(GetWavFile(otherEntry->track.getValue()), 2000);
+            } else {
+                dusk::audio::FadeOutToDelete(GetWavFile(otherEntry->track.getValue()), 2000);
+            }
+        }
+
+        if (isResuming) {
+            dusk::audio::ResumeWav(GetWavFile(configEntry.track.getValue()), fadeIn ? 2000 : 0);
+        } else if (fadeIn) {
+            dusk::audio::PlayWav(GetWavFile(configEntry.track.getValue()), configEntry.loopStartMs, 0.0f);
+            dusk::audio::FadeIn(GetWavFile(configEntry.track.getValue()), 2000, configEntry.volume);
+        } else {
+            dusk::audio::PlayWav(GetWavFile(configEntry.track.getValue()), configEntry.loopStartMs, configEntry.volume);
+        }
+
         return true;
     }
 

@@ -22,6 +22,12 @@ public:
     void _load1stWaveInner_2();
     bool check1stDynamicWave();
     void load2ndDynamicWave();
+
+    // Carco's Music Mod
+    bool startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bool isResuming = false, bool fadeIn = false,
+                          std::optional<dusk::UserSettings::MusicEntry> otherEntry = std::nullopt,
+                          bool pauseOtherEntry = false);
+
     void sceneBgmStart();
     void loadStaticWaves();
     BOOL checkFirstWaves();

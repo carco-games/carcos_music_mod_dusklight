@@ -226,6 +226,12 @@ UserSettings g_userSettings = {
         .diababaPhase2 = SetMusicEntryDefaults("diababaPhase2"),
         .diababaVulnerable = SetMusicEntryDefaults("diababaVulnerable"),
         .diababaEnding = SetMusicEntryDefaults("diababaEnding"),
+
+        // Fyrus
+        .fyrusIntro = SetMusicEntryDefaults("fyrusIntro"),
+        .fyrusMain = SetMusicEntryDefaults("fyrusMain"),
+        .fyrusVulnerable = SetMusicEntryDefaults("fyrusVulnerable"),
+        .fyrusEnding = SetMusicEntryDefaults("fyrusEnding"),
         // ---------------------------
 
         // Misc ----------------------
@@ -414,30 +420,18 @@ void registerSettings() {
     RegisterMusicEntry(g_userSettings.musicMod.blizzetaEnding);
     
     // Diababa
-    Register(g_userSettings.musicMod.diababaIntro.original);
-    Register(g_userSettings.musicMod.diababaIntro.track);
-    Register(g_userSettings.musicMod.diababaIntro.volume);
-    Register(g_userSettings.musicMod.diababaIntro.loopStartMs);
-    Register(g_userSettings.musicMod.diababaPhase1.original);
-    Register(g_userSettings.musicMod.diababaPhase1.track);
-    Register(g_userSettings.musicMod.diababaPhase1.volume);
-    Register(g_userSettings.musicMod.diababaPhase1.loopStartMs);
-    Register(g_userSettings.musicMod.diababaPhaseOok.original);
-    Register(g_userSettings.musicMod.diababaPhaseOok.track);
-    Register(g_userSettings.musicMod.diababaPhaseOok.volume);
-    Register(g_userSettings.musicMod.diababaPhaseOok.loopStartMs);
-    Register(g_userSettings.musicMod.diababaPhase2.original);
-    Register(g_userSettings.musicMod.diababaPhase2.track);
-    Register(g_userSettings.musicMod.diababaPhase2.volume);
-    Register(g_userSettings.musicMod.diababaPhase2.loopStartMs);
-    Register(g_userSettings.musicMod.diababaVulnerable.original);
-    Register(g_userSettings.musicMod.diababaVulnerable.track);
-    Register(g_userSettings.musicMod.diababaVulnerable.volume);
-    Register(g_userSettings.musicMod.diababaVulnerable.loopStartMs);
-    Register(g_userSettings.musicMod.diababaEnding.original);
-    Register(g_userSettings.musicMod.diababaEnding.track);
-    Register(g_userSettings.musicMod.diababaEnding.volume);
-    Register(g_userSettings.musicMod.diababaEnding.loopStartMs);
+    RegisterMusicEntry(g_userSettings.musicMod.diababaIntro);
+    RegisterMusicEntry(g_userSettings.musicMod.diababaPhase1);
+    RegisterMusicEntry(g_userSettings.musicMod.diababaPhaseOok);
+    RegisterMusicEntry(g_userSettings.musicMod.diababaPhase2);
+    RegisterMusicEntry(g_userSettings.musicMod.diababaVulnerable);
+    RegisterMusicEntry(g_userSettings.musicMod.diababaEnding);
+
+    // Fyrus
+    RegisterMusicEntry(g_userSettings.musicMod.fyrusIntro);
+    RegisterMusicEntry(g_userSettings.musicMod.fyrusMain);
+    RegisterMusicEntry(g_userSettings.musicMod.fyrusVulnerable);
+    RegisterMusicEntry(g_userSettings.musicMod.fyrusEnding);
     // ---------------------------
 
     // Misc ----------------------

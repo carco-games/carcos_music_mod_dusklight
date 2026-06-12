@@ -297,6 +297,12 @@ struct UserSettings {
         MusicEntry diababaPhase2;
         MusicEntry diababaVulnerable;
         MusicEntry diababaEnding;
+
+        // Fyrus
+        MusicEntry fyrusIntro;
+        MusicEntry fyrusMain;
+        MusicEntry fyrusVulnerable;
+        MusicEntry fyrusEnding;
         // ---------------------------
 
         // Cutscenes -----------------
