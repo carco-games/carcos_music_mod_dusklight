@@ -221,30 +221,36 @@ MusicModWindow::MusicModWindow() {
                 getSettings().musicMod.faronWoods.volume, getSettings().musicMod.faronWoods.loopStartMs);
         // -----------------------------------------------------------------------------------
 
+
         // Gerudo Desert ---------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Gerudo Desert"}, getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
                 getSettings().musicMod.gerudoDesert.volume, getSettings().musicMod.gerudoDesert.loopStartMs);
         // -----------------------------------------------------------------------------------
+
 
         // Hidden Village --------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Hidden Village"}, getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
                 getSettings().musicMod.hiddenVillage.volume, getSettings().musicMod.hiddenVillage.loopStartMs);
         // -----------------------------------------------------------------------------------
 
+
         // Hyrule Field ----------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Hyrule Field"}, getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
                 getSettings().musicMod.hyruleField.volume, getSettings().musicMod.hyruleField.loopStartMs);
         // -----------------------------------------------------------------------------------
+
 
         // Kakariko Village ------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Kakariko Village"}, getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
                 getSettings().musicMod.kakarikoVillage.volume, getSettings().musicMod.kakarikoVillage.loopStartMs);
         // -----------------------------------------------------------------------------------
 
+
         // Lake Hylia ------------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Lake Hylia"}, getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
                 getSettings().musicMod.lakeHylia.volume, getSettings().musicMod.lakeHylia.loopStartMs);
         // -----------------------------------------------------------------------------------
+
 
         // Ordon Ranch -----------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Ordon Ranch"}, getSettings().musicMod.ordonRanch.original, getSettings().musicMod.ordonRanch.track,
@@ -263,19 +269,29 @@ MusicModWindow::MusicModWindow() {
         addCategoryOptions(leftPane, rightPane, "Argorok", argorokKeys, argorokEntries);
         // -----------------------------------------------------------------------------------
 
+
+        // Armogohma -------------------------------------------------------------------------
+        Rml::String armogohmaKeys[] = {};
+        dusk::UserSettings::MusicEntry* armogohmaEntries[] = {};
+        addCategoryOptions(leftPane, rightPane, "Armogohma", armogohmaKeys, armogohmaEntries);
+        // -----------------------------------------------------------------------------------
+
+
         // Blizzeta ---------------------------------------------------------------------------
         Rml::String blizzetaKeys[] = {"Blizzeta Intro", "Blizzeta Phase 1", "Blizzeta Phase 2", "Blizzeta Ending"};
         dusk::UserSettings::MusicEntry* blizzetaEntries[] = {&getSettings().musicMod.blizzetaIntro, &getSettings().musicMod.blizzetaPhase1,
                                                              &getSettings().musicMod.blizzetaPhase2, &getSettings().musicMod.blizzetaEnding};
         addCategoryOptions(leftPane, rightPane, "Blizzeta", blizzetaKeys, blizzetaEntries);
         // -----------------------------------------------------------------------------------
-        
+
+
         // Diababa ---------------------------------------------------------------------------
         Rml::String diababaKeys[] = {"Diababa Intro", "Diababa Phase 1", "Diababa Ook Entrance", "Diababa Phase 2", "Diababa Vulnerable", "Diababa Ending"};
         dusk::UserSettings::MusicEntry* diababaEntries[] = {&getSettings().musicMod.diababaIntro, &getSettings().musicMod.diababaPhase1, &getSettings().musicMod.diababaPhase2,
                                                             &getSettings().musicMod.diababaPhaseOok, &getSettings().musicMod.diababaVulnerable, &getSettings().musicMod.diababaEnding};
         addCategoryOptions(leftPane, rightPane, "Diababa", diababaKeys, diababaEntries);
         // -----------------------------------------------------------------------------------
+
 
         // Fyrus -----------------------------------------------------------------------------
         Rml::String fyrusKeys[] = {"Fyrus Intro", "Fyrus Main Theme", "Fyrus Vulnerable", "Fyrus Ending"};
@@ -284,6 +300,14 @@ MusicModWindow::MusicModWindow() {
         addCategoryOptions(leftPane, rightPane, "Fyrus", fyrusKeys, fyrusEntries);
         // -----------------------------------------------------------------------------------
 
+
+        // Ganon -----------------------------------------------------------------------------
+        Rml::String ganonKeys[] = {};
+        dusk::UserSettings::MusicEntry* ganonEntries[] = {};
+        addCategoryOptions(leftPane, rightPane, "Ganon", ganonKeys, ganonEntries);
+        // -----------------------------------------------------------------------------------
+
+
         // Morpheel --------------------------------------------------------------------------
         Rml::String morpheelKeys[] = {"Morpheel Intro", "Morpheel Phase 1", "Morpheel Phase 2", "Morpheel Ending"};
         dusk::UserSettings::MusicEntry* morpheelEntries[] = {&getSettings().musicMod.morpheelIntro, &getSettings().musicMod.morpheelPhase1,
@@ -291,17 +315,99 @@ MusicModWindow::MusicModWindow() {
         addCategoryOptions(leftPane, rightPane, "Morpheel", morpheelKeys, morpheelEntries);
         // -----------------------------------------------------------------------------------
 
+
+        // Puppet Zelda ----------------------------------------------------------------------
+        Rml::String puppetZeldaKeys[] = {};
+        dusk::UserSettings::MusicEntry* puppetZeldaEntries[] = {};
+        addCategoryOptions(leftPane, rightPane, "Puppet Zelda", puppetZeldaKeys, puppetZeldaEntries);
+        // -----------------------------------------------------------------------------------
+
+
         // Stallord --------------------------------------------------------------------------
         Rml::String stallordKeys[] = {"Stallord Intro", "Stallord Phase 1", "Stallord Phase 2 Intro", "Stallord Phase 2", "Stallorf Ending"};
         dusk::UserSettings::MusicEntry* stallordEntries[] = {&getSettings().musicMod.stallordIntro, &getSettings().musicMod.stallordPhase1, &getSettings().musicMod.stallordPhase2Intro,
                                                              &getSettings().musicMod.stallordPhase2, &getSettings().musicMod.stallordEnding};
         addCategoryOptions(leftPane, rightPane, "Stallord", stallordKeys, stallordEntries);
         // -----------------------------------------------------------------------------------
+
+
+        // Zant ------------------------------------------------------------------------------
+        Rml::String zantKeys[] = {};
+        dusk::UserSettings::MusicEntry* zantEntries[] = {};
+        addCategoryOptions(leftPane, rightPane, "Zant", zantKeys, zantEntries);
+        // -----------------------------------------------------------------------------------
+    });
+
+    add_tab("Minibosses", [this](Rml::Element* content) {
+        auto& leftPane = add_child<Pane>(content, Pane::Type::Controlled);
+        auto& rightPane = add_child<Pane>(content, Pane::Type::Uncontrolled);
+        // Aeralfos --------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+        
+        
+        // Darkhammer ------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+        
+        
+        // Darknut ---------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+
+        // Dangoro ---------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+
+        // Death Sword -----------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+
+        // Deku Toad -------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+
+        // King Bulblin ----------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+        
+        // Ook -------------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+
+        // Phantom Zant ----------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
+
+
+        // Twilit Bloat ----------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------
     });
 
     add_tab("Cutscenes", [this](Rml::Element* content) {
         auto& leftPane = add_child<Pane>(content, Pane::Type::Controlled);
         auto& rightPane = add_child<Pane>(content, Pane::Type::Uncontrolled);
+
+        // Cutscene 1 ------------------------------------------------------------------------
+        // Link and Rusl walking back to Ordon
+        
+        // -----------------------------------------------------------------------------------
+
+        // Cutscene 2 ------------------------------------------------------------------------
+        // Meeting Ilia
+        
+        // -----------------------------------------------------------------------------------
+    });
+
+    add_tab("Dungeons", [this](Rml::Element* content) {
+
     });
 
     add_tab("Misc", [this](Rml::Element* content) {
