@@ -623,7 +623,7 @@ static void b_bq_damage(b_bq_class* i_this) {
 
             // Carco's Music Mod
             // Play vulnerable theme and pause main music
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, true,
+            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, 1000,
                                                    dusk::getSettings().musicMod.diababaPhase2, true)) {
                 Z2GetAudioMgr()->changeBgmStatus(2);
             }

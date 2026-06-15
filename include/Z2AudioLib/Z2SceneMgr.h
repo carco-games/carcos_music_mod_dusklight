@@ -24,7 +24,7 @@ public:
     void load2ndDynamicWave();
 
     // Carco's Music Mod
-    bool startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bool isResuming = false, bool fadeIn = false,
+    bool startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bool isResumingPrimary = false, int fadeFrames = 0,
                           std::optional<dusk::UserSettings::MusicEntry> otherEntry = std::nullopt,
                           bool pauseOtherEntry = false);
 
