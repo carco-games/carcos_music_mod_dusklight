@@ -87,12 +87,28 @@ void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
             endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2, false, 0, dusk::getSettings().musicMod.argorokPhase2Intro);
             break;
 
+        case Z2BGM_GOMA_BTL01: // Armogohma Phase 1
+
+            break;
+
+        case Z2BGM_GOMA_BTL02: // Armogohma Phase 2
+
+            break;
+
         case Z2BGM_HARAGIGANT_BTL01: // Stallord Phase 1
             endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase1, false, 1000, dusk::getSettings().musicMod.stallordIntro);
             break;
 
         case Z2BGM_HARAGIGANT_BTL02: // Stallord Phase 2
             endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2);
+            break;
+
+        case Z2BGM_BOSS_SNOWWOMAN_0: // Blizzeta Phase 1
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.blizzetaPhase1, false, 0, dusk::getSettings().musicMod.blizzetaIntro);
+            break;
+
+        case Z2BGM_BOSS_SNOWWOMAN_1: // Blizzeta Phase 2
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.blizzetaPhase2);
             break;
     }
 
@@ -229,43 +245,53 @@ void Z2SeqMgr::subBgmStart(u32 bgmID) {
 
     // Carco's Music Mod
     // Custom Music Switch
-    bool endFunc = false;
-    switch (bgmID) {
-        case Z2BGM_BOSSBABA_0: // Diababa Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaIntro);
-        
-        case Z2BGM_BOSSFIREMAN_1: // Fyrus Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusIntro);
-            break;
+    if (mSubBgmHandle->soundID_ != bgmID) {
+        bool endFunc = false;
+        switch (bgmID) {
+            case Z2BGM_BOSSBABA_0: // Diababa Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaIntro);
+            
+            case Z2BGM_BOSSFIREMAN_1: // Fyrus Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusIntro);
+                break;
 
-        case Z2BGM_BOSS_OCTAEEL_D01: // Morpheel Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelIntro);
-            break;
+            case Z2BGM_BOSS_OCTAEEL_D01: // Morpheel Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelIntro);
+                break;
 
-        case Z2BGM_BOSS_OCTAEEL_D02: // Morhpeel Phase 2 Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2Intro);
-            break;
+            case Z2BGM_BOSS_OCTAEEL_D02: // Morhpeel Phase 2 Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2Intro);
+                break;
 
-        case Z2BGM_DRAGON_D01: // Argorok Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokIntro);
-            break;
+            case Z2BGM_DRAGON_D01: // Argorok Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokIntro);
+                break;
 
-        case Z2BGM_DRAGON_D02: // Argorok Phase 2 Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2Intro, false, 0, dusk::getSettings().musicMod.argorokPhase1);
-            break;
-        
-        case Z2BGM_HARAGIGANT_D01: // Stallord Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordIntro);
-            break;
+            case Z2BGM_DRAGON_D02: // Argorok Phase 2 Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2Intro, false, 0, dusk::getSettings().musicMod.argorokPhase1);
+                break;
 
-        case Z2BGM_HARAGIGANT_D02: // Stallord Phase 2 Intro
-            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2Intro);
-            break;
-    }
+            case Z2BGM_GOMA_D01: // Armogohma Intro
 
-    if (endFunc) {
-        mSubBgmHandle->soundID_ = bgmID;
-        return;
+                break;
+            
+            case Z2BGM_HARAGIGANT_D01: // Stallord Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordIntro);
+                break;
+
+            case Z2BGM_HARAGIGANT_D02: // Stallord Phase 2 Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2Intro);
+                break;
+
+            case Z2BGM_BOSS_SNOWWOMAN_D1: // Blizzeta Intro
+                endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.blizzetaIntro);
+                break;
+        }
+
+        if (endFunc) {
+            mSubBgmHandle->soundID_ = bgmID;
+            return;
+        }
     }
 
     switch (bgmID) {
@@ -695,6 +721,10 @@ void Z2SeqMgr::bgmStreamPlay() {
 
         case 0x2000049: // Argorok Ending
             endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokEnding);
+            break;
+
+        case 0x200004F: // Armogohma Ending
+
             break;
     }
 
