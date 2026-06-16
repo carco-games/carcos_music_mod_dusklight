@@ -20,11 +20,15 @@ Rml::ElementDocument* load_document(const Rml::String& source) {
 
 }  // namespace
 
-Document::Document(const Rml::String& source) : mDocument(load_document(source)) {
+Document::Document(const Rml::String& source, bool passive)
+    : mDocument(load_document(source)), mPassive(passive) {
     // Block events while hidden (except for Menu command); play nav sounds when visible
     listen(
         Rml::EventId::Keydown,
         [this](Rml::Event& event) {
+            if (mPassive) {
+                return;
+            }
             const auto cmd = map_nav_event(event);
             if (cmd != NavCommand::Menu && !visible()) {
                 event.StopImmediatePropagation();
@@ -41,11 +45,14 @@ Document::Document(const Rml::String& source) : mDocument(load_document(source))
     listen(Rml::EventId::Scroll, blockUnlessVisible, true);
 
     listen(Rml::EventId::Keydown, [this](Rml::Event& event) {
-        const auto cmd = map_nav_event(event);
-        if (cmd == NavCommand::None) {
+        if (mPassive) {
+            auto* doc = top_document();
+            if (doc != nullptr && doc->handle_nav_event(event)) {
+                event.StopPropagation();
+            }
             return;
         }
-        if (handle_nav_command(event, cmd)) {
+        if (handle_nav_event(event)) {
             event.StopPropagation();
         }
     });
@@ -98,6 +105,18 @@ void Document::listen(Rml::Element* element, Rml::EventId event,
         std::make_unique<ScopedEventListener>(element, event, std::move(callback), capture));
 }
 
+void Document::listen(Rml::Element* element, const Rml::String& event,
+    ScopedEventListener::Callback callback, bool capture) {
+    if (element == nullptr) {
+        element = mDocument;
+    }
+    if (element == nullptr || event.empty() || !callback) {
+        return;
+    }
+    mListeners.emplace_back(
+        std::make_unique<ScopedEventListener>(element, event, std::move(callback), capture));
+}
+
 bool Document::visible() const {
     if (mDocument == nullptr) {
         return false;
@@ -105,27 +124,21 @@ bool Document::visible() const {
     return *mDocument->GetProperty(Rml::PropertyId::Visibility) == Rml::Style::Visibility::Visible;
 }
 
+bool Document::handle_nav_event(Rml::Event& event) {
+    const auto cmd = map_nav_event(event);
+    if (cmd == NavCommand::None) {
+        return false;
+    }
+    return handle_nav_command(event, cmd);
+}
+
 bool Document::handle_nav_command(Rml::Event& event, NavCommand cmd) {
     if (cmd == NavCommand::Menu) {
-        toggle_cursor_if_gyro(!visible());
         mDoAud_seStartMenu(visible() ? kSoundMenuClose : kSoundMenuOpen);
         toggle();
         return true;
     }
     return false;
-}
-
-void Document::toggle_cursor_if_gyro(bool cursor_enabled) {
-    if (dusk::getSettings().game.gyroMode.getValue() == GyroMode::Mouse)
-    {
-        if (cursor_enabled) {
-            ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouseCursorChange;
-            SDL_ShowCursor();
-        } else {
-            ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-            SDL_HideCursor();
-        }
-    }
 }
 
 }  // namespace dusk::ui
