@@ -236,7 +236,9 @@ UserSettings g_userSettings = {
         // Morpheel
         .morpheelIntro = SetMusicEntryDefaults("morpheelIntro"),
         .morpheelPhase1 = SetMusicEntryDefaults("morpheelPhase1"),
+        .morpheelPhase2Intro = SetMusicEntryDefaults("morpheelPhase2Intro"),
         .morpheelPhase2 = SetMusicEntryDefaults("morpheelPhase2"),
+        .morpheelVulnerable = SetMusicEntryDefaults("morpheelVulnerable"),
         .morpheelEnding = SetMusicEntryDefaults("morpheelEnding"),
 
         // Stallord
@@ -465,7 +467,9 @@ void registerSettings() {
     // Morpheel
     RegisterMusicEntry(g_userSettings.musicMod.morpheelIntro);
     RegisterMusicEntry(g_userSettings.musicMod.morpheelPhase1);
+    RegisterMusicEntry(g_userSettings.musicMod.morpheelPhase2Intro);
     RegisterMusicEntry(g_userSettings.musicMod.morpheelPhase2);
+    RegisterMusicEntry(g_userSettings.musicMod.morpheelVulnerable);
     RegisterMusicEntry(g_userSettings.musicMod.morpheelEnding);
 
     // Stallord

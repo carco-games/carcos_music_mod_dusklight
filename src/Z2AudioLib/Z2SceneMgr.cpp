@@ -1936,6 +1936,7 @@ bool Z2SceneMgr::startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bo
     }
 
     if (otherEntry) {
+        Z2GetAudioMgr()->bgmStop(30, 0);
         dusk::audio::FadeOut(*otherEntry, fadeFrames, pauseOtherEntry);
     }
 

@@ -1353,10 +1353,7 @@ static void demo_camera(e_fm_class* i_this) {
             i_this->mDemoCamCenter.set(2.8f, 496.0f, 162.0f);
             i_this->mDemoCamEye.set(9.7f, 362.0f, 296.0f);
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusIntro)) {
-                Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSSFIREMAN_1);
-            }
+            Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSSFIREMAN_1);
         }
         break;
     case 13:
@@ -1500,11 +1497,8 @@ static void demo_camera(e_fm_class* i_this) {
         i_this->field_0x1aff6 = 0;
         i_this->field_0x1b050 = i_this->field_0x1b054 = i_this->field_0x1b068 = i_this->field_0x1b06c = i_this->field_0x1b074 = i_this->field_0x1b070 = 0.0f;
 
-        // Carco's Music Mod
-        if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusEnding)) {
-            Z2GetAudioMgr()->bgmStreamPrepare(0x200001E);
-            Z2GetAudioMgr()->bgmStreamPlay();
-        }
+        Z2GetAudioMgr()->bgmStreamPrepare(0x200001E);
+        Z2GetAudioMgr()->bgmStreamPlay();
         daPy_getPlayerActorClass()->changeDemoMode(0x17, 1, 2, 0);
         camera->mCamera.SetTrimSize(3);
     case 51:
@@ -1840,12 +1834,7 @@ static s8 e_fm_down(e_fm_class* i_this) {
                 enemy->onDownFlg();
             }
 
-            // Carco's Music Mod
-            // Begin vulnerable music
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusVulnerable, false,
-                                                   true, dusk::getSettings().musicMod.fyrusMain, true)) {
-                Z2GetAudioMgr()->changeBgmStatus(1);
-            }
+            Z2GetAudioMgr()->changeBgmStatus(1);
         }
 
         if (i_this->mpFmModelMorf->isStop()) {
@@ -1887,11 +1876,7 @@ static s8 e_fm_down(e_fm_class* i_this) {
             i_this->mMode = 3;
             enemy->offDownFlg();
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, true, true,
-                                                   dusk::getSettings().musicMod.fyrusVulnerable)) {
-                Z2GetAudioMgr()->changeBgmStatus(2);
-            }
+            Z2GetAudioMgr()->changeBgmStatus(2);
             OS_REPORT(" CHANGE BGM STATUS 2 \n");
         }
         break;
@@ -2085,10 +2070,7 @@ static s8 e_fm_start(e_fm_class* i_this) {
             i_this->mpFmBrk[TEXANM_FM]->setFrame(0.0f);
             i_this->mpFmBtk[TEXANM_FM]->setFrame(0.0f);
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, false, false, dusk::getSettings().musicMod.fyrusIntro)) {
-                Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSFIREMAN_0, 0, 0);
-            }
+            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSFIREMAN_0, 0, 0);
             i_this->mDemoCamMode = 100;
         }
         break;
@@ -2112,8 +2094,6 @@ static s8 e_fm_end(e_fm_class* i_this) {
         anm_init(i_this, BCK_FM_DEMOEND01, 1.0f, 0, 1.0f);
         i_this->mMode = 1;
 
-        // Carco's Music Mod
-        
         Z2GetAudioMgr()->bgmStop(0x1E, 0);
         i_this->mPlayTexAnmNo = TEXANM_DEMO_END01;
         i_this->mpFmBrk[TEXANM_DEMO_END01]->setFrame(0.0f);

@@ -55,6 +55,52 @@ Z2SeqMgr::Z2SeqMgr() : JASGlobalInstance<Z2SeqMgr>(true) {
 void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
     DUSK_AUDIO_SKIP();
 
+    // Carco's Music Mod
+    // Custom Music Switch
+    bool endFunc = false;
+    switch (bgmID) {
+        case Z2BGM_BOSSBABA_1: // Diababa Phase 1
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase1, false, 0, dusk::getSettings().musicMod.diababaIntro);
+            break;
+
+        case Z2BGM_BOSSBABA_2: // Diababa Phase 2
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, false, 0, dusk::getSettings().musicMod.diababaPhaseOok);
+            break;
+
+        case Z2BGM_BOSSFIREMAN_0: // Fyrus
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, false, 0, dusk::getSettings().musicMod.fyrusIntro);
+            break;
+
+        case Z2BGM_BOSS_OCTAEEL_0: // Morpheel Phase 1
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase1, false, 0, dusk::getSettings().musicMod.morpheelIntro);
+            break;
+
+        case Z2BGM_BOSS_OCTAEEL_1: // Morpheel Phase 2
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2, false, 0, dusk::getSettings().musicMod.morpheelPhase2Intro);
+            break;
+
+        case Z2BGM_DRAGON_BTL01: // Argorok Phase 1
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase1, false, 0, dusk::getSettings().musicMod.argorokIntro);
+            break;
+
+        case Z2BGM_DRAGON_BTL02: // Argorok Phase 2
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2, false, 0, dusk::getSettings().musicMod.argorokPhase2Intro);
+            break;
+
+        case Z2BGM_HARAGIGANT_BTL01: // Stallord Phase 1
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase1, false, 1000, dusk::getSettings().musicMod.stallordIntro);
+            break;
+
+        case Z2BGM_HARAGIGANT_BTL02: // Stallord Phase 2
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2);
+            break;
+    }
+
+    if (endFunc) {
+        mMainBgmHandle->soundID_ = bgmID;
+        return;
+    }
+
     switch (bgmID) {
     case 0xFFFFFFFF:
         return;
@@ -154,6 +200,9 @@ void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
 }
 
 void Z2SeqMgr::bgmStop(u32 fadeTime, s32 param_1) {
+    // Carco's Music Mod
+    dusk::audio::FadeOutToDeleteAll(3000);
+    
     if (mMainBgmHandle) {
         mMainBgmHandle->stop(fadeTime);
     }
@@ -177,6 +226,47 @@ void Z2SeqMgr::subBgmStart(u32 bgmID) {
 
     int fadeinTime = 0;
     int fadeoutTime = 0;
+
+    // Carco's Music Mod
+    // Custom Music Switch
+    bool endFunc = false;
+    switch (bgmID) {
+        case Z2BGM_BOSSBABA_0: // Diababa Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaIntro);
+        
+        case Z2BGM_BOSSFIREMAN_1: // Fyrus Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusIntro);
+            break;
+
+        case Z2BGM_BOSS_OCTAEEL_D01: // Morpheel Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelIntro);
+            break;
+
+        case Z2BGM_BOSS_OCTAEEL_D02: // Morhpeel Phase 2 Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2Intro);
+            break;
+
+        case Z2BGM_DRAGON_D01: // Argorok Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokIntro);
+            break;
+
+        case Z2BGM_DRAGON_D02: // Argorok Phase 2 Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2Intro, false, 0, dusk::getSettings().musicMod.argorokPhase1);
+            break;
+        
+        case Z2BGM_HARAGIGANT_D01: // Stallord Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordIntro);
+            break;
+
+        case Z2BGM_HARAGIGANT_D02: // Stallord Phase 2 Intro
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2Intro);
+            break;
+    }
+
+    if (endFunc) {
+        mSubBgmHandle->soundID_ = bgmID;
+        return;
+    }
 
     switch (bgmID) {
     case Z2BGM_ITEM_GET:
@@ -376,6 +466,10 @@ void Z2SeqMgr::subBgmStart(u32 bgmID) {
 }
 
 void Z2SeqMgr::subBgmStop() {
+    // Carco's Music Mod
+    // test this
+    dusk::audio::FadeOutToDeleteAll(3000);
+
     switch (getSubBgmID()) {
     case Z2BGM_ITEM_GET:
     case Z2BGM_ITEM_GET_MINI:
@@ -578,6 +672,33 @@ bool Z2SeqMgr::bgmStreamCheckReady() {
 
 void Z2SeqMgr::bgmStreamPlay() {
     DUSK_AUDIO_SKIP();
+
+    // Carco's Music Mod
+    // Custom Music Switch
+    bool endFunc = false;
+    switch (getStreamBgmID()) {
+        case 0x2000016: // Diababa Ending
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaEnding);
+            break;
+
+        case 0x200001E: // Fyrus Ending
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusEnding);
+            break;
+
+        case 0x2000020: // Morpheel Ending
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelEnding);
+            break;
+        
+        case 0x2000048: // Stallord Ending
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordEnding, false, 1000, dusk::getSettings().musicMod.stallordPhase2);
+            break;
+
+        case 0x2000049: // Argorok Ending
+            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokEnding);
+            break;
+    }
+
+    if (endFunc) return;
     
     if (mStreamBgmHandle) {
         mStreamBgmHandle->unlockIfLocked();
@@ -606,12 +727,14 @@ void Z2SeqMgr::bgmStreamStop(u32 fadeTime) {
 
     if (mStreamBgmHandle) {
         mStreamBgmHandle->stop(fadeTime);
+        // Carco's Music Mod
+        dusk::audio::FadeOutToDeleteAll(3000);
     }
 
     mStreamBgmHandle.releaseSound();
 }
 
-void Z2SeqMgr::changeBgmStatus(s32 status) {
+void Z2SeqMgr::changeBgmStatus(s32 status, bool change_from_ook_intro) {
     if (mMainBgmHandle) {
         u32 moveTime = 0;
         bool mute;
@@ -624,6 +747,50 @@ void Z2SeqMgr::changeBgmStatus(s32 status) {
         #else
         f32 volume1, volume2, volume3, volume4;
         #endif
+
+        // Carco's Music Mod
+        // Custom Music Switch
+        bool endFunc = false;
+        switch (getMainBgmID()) {
+            case Z2BGM_BOSSBABA_2:
+                switch (status) {
+                    case 1: // Diababa Vuln --> Diababa Phase 2
+                        if (change_from_ook_intro) {
+                            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, 0, dusk::getSettings().musicMod.diababaPhaseOok);
+                        } else {
+                            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, 0, dusk::getSettings().musicMod.diababaVulnerable);
+                        }
+                        break;
+
+                    case 2: // Diababa Phase 2 --> Diababa Vuln
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, 1000, dusk::getSettings().musicMod.diababaPhase2, true);
+                }
+                break;
+
+            case Z2BGM_BOSSFIREMAN_0:
+                switch (status) {
+                    case 1: // Fyrus Main --> Fyrus Vuln
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusVulnerable, false, true, dusk::getSettings().musicMod.fyrusMain, true);
+                        break;
+
+                    case 2: // Fyrus Vuln --> Fyrus Main
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, true, true, dusk::getSettings().musicMod.fyrusVulnerable);
+                }
+                break;
+            
+            case Z2BGM_BOSS_OCTAEEL_1:
+                switch (status) {
+                    case 1: // Morpheel Vuln --> Morpheel Phase 2
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2, true, 1000, dusk::getSettings().musicMod.morpheelVulnerable);
+                        break;
+
+                    case 2: // Morpheel Phase 2 --> Morpheel Vuln
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelVulnerable, false, 1000, dusk::getSettings().musicMod.morpheelPhase2, true);
+                }
+                break;
+        }
+
+        if (endFunc) return;
 
         switch (getMainBgmID()) {
         case Z2BGM_TOAL_VILLEGE:

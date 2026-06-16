@@ -309,9 +309,9 @@ MusicModWindow::MusicModWindow() {
 
 
         // Morpheel --------------------------------------------------------------------------
-        Rml::String morpheelKeys[] = {"Morpheel Intro", "Morpheel Phase 1", "Morpheel Phase 2", "Morpheel Ending"};
-        dusk::UserSettings::MusicEntry* morpheelEntries[] = {&getSettings().musicMod.morpheelIntro, &getSettings().musicMod.morpheelPhase1,
-                                                         &getSettings().musicMod.morpheelPhase2, &getSettings().musicMod.morpheelEnding};
+        Rml::String morpheelKeys[] = {"Morpheel Intro", "Morpheel Phase 1", "Morpheel Phase 2 Intro", "Morpheel Phase 2", "Morpheel Vulnerable", "Morpheel Ending"};
+        dusk::UserSettings::MusicEntry* morpheelEntries[] = {&getSettings().musicMod.morpheelIntro, &getSettings().musicMod.morpheelPhase1, &getSettings().musicMod.morpheelPhase2Intro,
+                                                         &getSettings().musicMod.morpheelPhase2, &getSettings().musicMod.morpheelVulnerable, &getSettings().musicMod.morpheelEnding};
         addCategoryOptions(leftPane, rightPane, "Morpheel", morpheelKeys, morpheelEntries);
         // -----------------------------------------------------------------------------------
 

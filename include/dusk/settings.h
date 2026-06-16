@@ -315,7 +315,9 @@ struct UserSettings {
         // Morpheel
         MusicEntry morpheelIntro;
         MusicEntry morpheelPhase1;
+        MusicEntry morpheelPhase2Intro;
         MusicEntry morpheelPhase2;
+        MusicEntry morpheelVulnerable;
         MusicEntry morpheelEnding;
 
         // Stallord

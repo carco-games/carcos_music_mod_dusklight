@@ -18,9 +18,6 @@
 #include "c/c_damagereaction.h"
 #include <cmath>
 
-// Carco's Music Mod
-#include "dusk/audio/DuskAudioSystem.h"
-
 enum B_bq_RES_File_ID {
     /* BCK */
     /* 0x07 */ BCK_BQ_APPEAR = 0x7,
@@ -600,7 +597,6 @@ static void b_bq_damage(b_bq_class* i_this) {
         i_this->field_0x1392 = 4;
         // fallthrough
     case 1:
-        // Carco's Music Mod
         if (i_this->mpMorf->checkFrame(YREG_F(8) + 113)) {
             dComIfGp_getVibration().StartShock(YREG_S(2) + 5, 14, cXyz(0.0f, 1.0f, 0.0f));
             dComIfGp_getVibration().StartShock(8, 31, cXyz(0.0f, 1.0f, 0.0f));
@@ -621,12 +617,7 @@ static void b_bq_damage(b_bq_class* i_this) {
                 a_this->health = 50;
             }
 
-            // Carco's Music Mod
-            // Play vulnerable theme and pause main music
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, 1000,
-                                                   dusk::getSettings().musicMod.diababaPhase2, true)) {
-                Z2GetAudioMgr()->changeBgmStatus(2);
-            }
+            Z2GetAudioMgr()->changeBgmStatus(2);
         }
 
         if (i_this->mpMorf->isStop()) {
@@ -705,9 +696,7 @@ static void b_bq_damage(b_bq_class* i_this) {
         i_this->field_0x6f6 = 0;
         i_this->mTimers[0] = 0;
         i_this->mTimers[2] = 80;
-        // Z2GetAudioMgr()->changeBgmStatus(1);
-        // Carco's Music Mod
-        i_this->mSwitchToStreamFlag = 2;
+        Z2GetAudioMgr()->changeBgmStatus(1);
     }
 
     MTXCopy(i_this->mpMorf->getModel()->getAnmMtx(YREG_S(0) + 53), mDoMtx_stack_c::get());
@@ -919,33 +908,6 @@ static void action(b_bq_class* i_this) {
     fopAc_ac_c* a_this = (fopAc_ac_c*)i_this;
     cXyz sp40;
     cXyz sp4C;
-
-    // Carco's Music Mod
-    switch (i_this->mSwitchToStreamFlag) {
-        case 1: {
-            i_this->mAudioFrameCounter++;
-            if (i_this->mAudioFrameCounter >= 42) {
-                Z2GetAudioMgr()->bgmStop(30, 0);
-                Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, false, false,
-                                                  dusk::getSettings().musicMod.diababaPhaseOok);
-                i_this->mSwitchToStreamFlag = 0;
-                i_this->mDemoMode = 100; // Change demo mode so mSwitchToStreamFlag is not set to 1 again
-                i_this->mAudioFrameCounter = 0;
-            }
-            break;
-        }
-
-        case 2: {
-            i_this->mAudioFrameCounter++;
-            if (i_this->mAudioFrameCounter >= 42) {
-                Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, true,
-                                                  dusk::getSettings().musicMod.diababaVulnerable);
-                i_this->mSwitchToStreamFlag = 0;
-                i_this->mAudioFrameCounter = 0;
-            }
-            break;
-        }
-    }
 
     i_this->mAngleToPlayer = fopAcM_searchPlayerAngleY(a_this);
     i_this->mDistToPlayer = fopAcM_searchPlayerDistance(a_this);
@@ -1550,10 +1512,7 @@ static void demo_camera(b_bq_class* i_this) {
 
             mDoAud_seStart(Z2SE_EN_BH_JINARI, NULL, 0, 0);
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaIntro)) {
-                Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSSBABA_0);
-            }
+            Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSSBABA_0);
         }
         break;
     case 13:
@@ -1653,11 +1612,7 @@ static void demo_camera(b_bq_class* i_this) {
             i_this->mDemoMode = 100;
             i_this->field_0x6f9 = 2;
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase1, false, false,
-                                                   dusk::getSettings().musicMod.diababaIntro)) {
-                Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
-            }
+            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
             i_this->field_0x1392 = 2;
         }
         break;
@@ -1747,7 +1702,7 @@ static void demo_camera(b_bq_class* i_this) {
 
         daPy_getPlayerActorClass()->changeOriginalDemo();
         daPy_getPlayerActorClass()->changeDemoMode(1, 1, 0, 0);
-        Z2GetAudioMgr()->changeBgmStatus(1);
+        Z2GetAudioMgr()->changeBgmStatus(1, true);
         dComIfGs_onOneZoneSwitch(7, -1);
         // fallthrough
     case 31:
@@ -1867,8 +1822,6 @@ static void demo_camera(b_bq_class* i_this) {
         i_this->field_0x1288.set(0.0f, 0.0f, 0.0f);
         i_this->field_0x129c = 0.0f;
 
-        // Carco's Music Mod
-        dusk::audio::FadeOutToDeleteAll(1000);
         Z2GetAudioMgr()->bgmStop(30, 0);
         Z2GetAudioMgr()->bgmStreamPrepare(0x2000016);
         Z2GetAudioMgr()->bgmStreamPlay();
@@ -2709,11 +2662,7 @@ static int daB_BQ_Create(fopAc_ac_c* i_this) {
         } else {
             a_this->mAction = ACTION_STAY;
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase1, false, false,
-                                                   dusk::getSettings().musicMod.diababaIntro)) {
-                Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
-            }
+            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSSBABA_1, 0, 0);
             a_this->field_0x1392 = 2;
             a_this->mDisableDraw = true;
             a_this->mColpatType = 1;

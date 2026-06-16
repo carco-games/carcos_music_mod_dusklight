@@ -778,11 +778,7 @@ void daE_PH_c::CamAction() {
         mCamCenter.set(0.0f, 100.0f, 0.0f);
         SetReleaseCam();
 
-        // Carco's Music Mod
-        if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2, false, 0,
-                                               dusk::getSettings().musicMod.argorokPhase2Intro)) {
-            Z2GetAudioMgr()->bgmStart(Z2BGM_DRAGON_BTL02, 0, 0);
-        }
+        Z2GetAudioMgr()->bgmStart(Z2BGM_DRAGON_BTL02, 0, 0);
         fopAcM_onSwitch(this, 0x3F);
         break;
     }
