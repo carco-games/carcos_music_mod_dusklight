@@ -1738,7 +1738,6 @@ void Z2SceneMgr::setSceneName(char* spot, s32 room, s32 layer) {
 
 void Z2SceneMgr::sceneChange(JAISoundID bgm, u8 seWave1, u8 seWave2, u8 bgmWave1, u8 bgmWave2,
                              u8 demoWave, bool param_6) {
-    dusk::audio::FadeOutToDeleteAll(4000);
     OS_REPORT("[Z2SceneMgr::sceneChange] bgm:0x%08x, SeWave1:%d, SeWave2:%d BgmWave1:%d BgmWave2:%d demoWave:%d (%d)\n",
         *(u32*)&bgm, seWave1, seWave2, bgmWave1, bgmWave2, demoWave, param_6);
 
@@ -1758,6 +1757,12 @@ void Z2SceneMgr::sceneChange(JAISoundID bgm, u8 seWave1, u8 seWave2, u8 bgmWave1
         } else {
             field_0x1a = true;
         }
+    }
+
+    // Carco's Music Mod
+    // test this
+    if (field_0x1a) {
+        dusk::audio::FadeOutToDeleteAll(4000);
     }
 
     requestSeWave_1 = seWave1;
@@ -1924,30 +1929,24 @@ void Z2SceneMgr::load2ndDynamicWave() {
 }
 
 // Carco's Music Mod
-bool Z2SceneMgr::startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bool isResuming, bool fadeIn,
+bool Z2SceneMgr::startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bool isResumingPrimary, int fadeFrames,
                                   std::optional<dusk::UserSettings::MusicEntry> otherEntry, bool pauseOtherEntry) {
-    if (!configEntry.original) {
-        if (otherEntry) {
-            if (pauseOtherEntry) {
-                dusk::audio::FadeOutToPause(GetWavFile(otherEntry->track.getValue()), 2000);
-            } else {
-                dusk::audio::FadeOutToDelete(GetWavFile(otherEntry->track.getValue()), 2000);
-            }
-        }
-
-        if (isResuming) {
-            dusk::audio::ResumeWav(GetWavFile(configEntry.track.getValue()), fadeIn ? 2000 : 0);
-        } else if (fadeIn) {
-            dusk::audio::PlayWav(GetWavFile(configEntry.track.getValue()), configEntry.loopStartMs, 0.0f);
-            dusk::audio::FadeIn(GetWavFile(configEntry.track.getValue()), 2000, configEntry.volume);
-        } else {
-            dusk::audio::PlayWav(GetWavFile(configEntry.track.getValue()), configEntry.loopStartMs, configEntry.volume);
-        }
-
-        return true;
+    if (configEntry.original) {
+        return false;
     }
 
-    return false;
+    if (otherEntry) {
+        Z2GetAudioMgr()->bgmStop(30, 0);
+        dusk::audio::FadeOut(*otherEntry, fadeFrames, pauseOtherEntry);
+    }
+
+    if (isResumingPrimary) {
+        dusk::audio::ResumeWav(configEntry, fadeFrames);
+    } else {
+        dusk::audio::PlayWav(configEntry, fadeFrames ? dusk::audio::FADE_IN : dusk::audio::NONE, fadeFrames);   
+    }
+
+    return true;
 }
 
 void Z2SceneMgr::sceneBgmStart() {
@@ -1966,9 +1965,7 @@ void Z2SceneMgr::sceneBgmStart() {
     if (BGM_ID == Z2BGM_MIDNA_SOS && !hasStartedMidnaSOSMusic && !dusk::getSettings().musicMod.midnaLament.original && !BGM_ID.isAnonymous() && Z2GetStatusMgr()->getDemoStatus() != 11) {
         hasStartedMidnaSOSMusic = true;
         Z2GetSeqMgr()->mFlags.mFieldBgmPlay = 0;
-        dusk::audio::PlayWav(GetWavFile(dusk::getSettings().musicMod.midnaLament.track.getValue()),
-                                dusk::getSettings().musicMod.midnaLament.loopStartMs,
-                                dusk::getSettings().musicMod.midnaLament.volume);
+        startCustomMusic(dusk::getSettings().musicMod.midnaLament);
         field_0x1a = false;
     }
 

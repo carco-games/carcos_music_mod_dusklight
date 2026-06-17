@@ -1626,11 +1626,7 @@ void daB_DR_c::executeTailHit() {
         ato = current.pos + mBoot_c_trance;
         parentActorID = fopAcM_createChild(fpcNm_B_DRE_e, fopAcM_GetID(this), 1, &ato, fopAcM_GetRoomNo(this), &shape_angle, NULL, -1, NULL);
 
-        // Carco's Music Mod
-        if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase2Intro, false, false,
-                                               dusk::getSettings().musicMod.argorokPhase1)) {
-            Z2GetAudioMgr()->subBgmStart(Z2BGM_DRAGON_D02);
-        }
+        Z2GetAudioMgr()->subBgmStart(Z2BGM_DRAGON_D02);
         dComIfGs_onZoneSwitch(23, fopAcM_GetRoomNo(this));
         field_0x7e0 = 0;
         mTimer[0] = BREG_S(3) + 100;
@@ -1833,12 +1829,8 @@ void daB_DR_c::executeWeekHit() {
                 }
 
                 Z2GetAudioMgr()->bgmStop(0x1E, 0);
-
-                // Carco's Music Mod
-                if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokEnding)) {
-                    Z2GetAudioMgr()->bgmStreamPrepare(0x2000049);
-                    Z2GetAudioMgr()->bgmStreamPlay();
-                }
+                Z2GetAudioMgr()->bgmStreamPrepare(0x2000049);
+                Z2GetAudioMgr()->bgmStreamPlay();
 
                 cXyz sp44(current.pos);
                 sp44.z = 0.0f;
@@ -3880,11 +3872,7 @@ int daB_DR_c::execute() {
                 dComIfGs_onZoneSwitch(0, fopAcM_GetRoomNo(this));
                 dComIfGs_onZoneSwitch(20, fopAcM_GetRoomNo(this));
                 
-                // Carco's Music Mod
-                if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase1, false, false,
-                                                       dusk::getSettings().musicMod.argorokIntro)) {
-                    Z2GetAudioMgr()->bgmStart(Z2BGM_DRAGON_BTL01, 0, 0);
-                }
+                Z2GetAudioMgr()->bgmStart(Z2BGM_DRAGON_BTL01, 0, 0);
                 arg0 = 0;
             }
         }
@@ -4272,11 +4260,7 @@ int daB_DR_c::create() {
                 }
 
                 if (cDmr_SkipInfo != 0 || dComIfGs_isZoneSwitch(0, fopAcM_GetRoomNo(this)) ) {
-                    // Carco's Music Mod
-                    if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.argorokPhase1, false, false,
-                                                        dusk::getSettings().musicMod.argorokIntro)) {
-                        Z2GetAudioMgr()->bgmStart(Z2BGM_DRAGON_BTL01, 0, 0);
-                    }
+                    Z2GetAudioMgr()->bgmStart(Z2BGM_DRAGON_BTL01, 0, 0);
                     field_0x7d5 = 0xC;
                     cDmr_SkipInfo = 0;
 
@@ -4302,7 +4286,7 @@ static int daB_DR_Create(daB_DR_c* i_this) {
     return i_this->create();
 }
 
-static actor_method_class l_daB_DR_Method = {
+static DUSK_CONST actor_method_class l_daB_DR_Method = {
     (process_method_func)daB_DR_Create,
     (process_method_func)daB_DR_Delete,
     (process_method_func)daB_DR_Execute,
@@ -4310,7 +4294,7 @@ static actor_method_class l_daB_DR_Method = {
     (process_method_func)daB_DR_Draw,
 };
 
-actor_process_profile_definition g_profile_B_DR = {
+DUSK_PROFILE actor_process_profile_definition DUSK_CONST g_profile_B_DR = {
     /* Layer ID     */ fpcLy_CURRENT_e,
     /* List ID      */ 4,
     /* List Prio    */ fpcPi_CURRENT_e,

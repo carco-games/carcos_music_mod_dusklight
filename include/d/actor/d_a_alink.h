@@ -88,6 +88,10 @@ public:
     /* 0x02C */ cXyz field_0x2c;
     /* 0x038 */ cXyz field_0x38[60];
     /* 0x308 */ cXyz field_0x308[60];
+#if TARGET_PC
+    TGXTexObj mBlurTexObj;
+    ResTIMG* mpCachedBlurTex = nullptr;
+#endif
 };  // Size = 0x5D8
 
 class dAlink_bottleWaterPcallBack_c : public JPAParticleCallBack {
@@ -4545,13 +4549,14 @@ public:
     /* 0x03840 */ cXyz* mIronBallChainPos;
     /* 0x03844 */ csXyz* mIronBallChainAngle;
     /* 0x03848 */ cXyz* field_0x3848;
-    /* 0x0384C */ cXyz* field_0x384c;
+    /* 0x0384C */ cXyz DUSK_CONST* field_0x384c;
     /* 0x03850 */ daAlink_procFunc mpProcFunc;
 
 #if TARGET_PC
     void handleWolfHowl();
     void handleQuickTransform();
-    bool checkGyroAimContext();
+    bool checkAimContext();
+    bool checkTouchAimCaptureContext();
 
     void onIronBallChainInterpCallback();
 
@@ -4564,6 +4569,19 @@ public:
     cXyz mIBChainInterpCurrHandRoot;
     bool mIBChainInterpPrevValid;
     bool mIBChainInterpCurrValid;
+
+    cXyz mHsChainInterpPrevTop;
+    cXyz mHsChainInterpCurrTop;
+    cXyz mHsChainInterpPrevRoot;
+    cXyz mHsChainInterpCurrRoot;
+    cXyz mHsChainInterpPrevSubRoot;
+    cXyz mHsChainInterpCurrSubRoot;
+    cXyz mHsChainInterpPrevSubTop;
+    cXyz mHsChainInterpCurrSubTop;
+    bool mHsChainInterpPrevValid;
+    bool mHsChainInterpCurrValid;
+
+    bool mIsRollstab = false;
 #endif
 };  // Size: 0x385C
 

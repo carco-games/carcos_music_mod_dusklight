@@ -141,7 +141,7 @@ class Wav {
 public:
     Wav(const char* name, int loop_start_pos, int freq, int channels);
     void setStep(float value) { step = value; }
-    void fadeOut();
+    bool fadeOut();
     void fadeIn();
 
     std::vector<float> samples;
@@ -170,7 +170,7 @@ Wav::Wav(const char* name, int loop_start_pos, int freq, int channels) : name(na
     this->name = name;
 }
 
-void Wav::fadeOut() {
+bool Wav::fadeOut() {
     if (fadeOutFrames > 0 && !paused) {
         int divisor = fadeOutFrames - fadeOutTimer;
         if (divisor > 0) {
@@ -181,19 +181,27 @@ void Wav::fadeOut() {
 
         fadeOutTimer++;
 
-        if (volume <= 0.0f) {
+        // Check if the track would fade out in one more pass. If so, finish fading now
+        divisor = fadeOutFrames - fadeOutTimer;
+        float nextVolume = volume - (1.0f / divisor);
+        if (nextVolume <= 0.0f) {
             volume = 0.0f;
             fadeOutFrames = 0;
             fadeOutTimer = 0;
 
             if (pauseOnceFadedOut) {
                 paused = true;
-                // to-do: delete wav stream if not pausing after fade
-            } else if (deleteOnceFadedOut) {
+                return true;
+            }
+            
+            if (deleteOnceFadedOut) {
                 dusk::audio::DeleteWav(name);
+                return true;
             }
         }
     }
+
+    return false;
 }
 
 void Wav::fadeIn() {
@@ -220,21 +228,32 @@ std::mutex audioMutex;
 std::vector<std::unique_ptr<Wav>> ActiveWavs;
 std::vector<std::unique_ptr<Wav>> PendingWavs;
 
-void dusk::audio::PlayWav(const char* path, int loop_start_pos, f32 volume) {
+void dusk::audio::PlayWav(dusk::UserSettings::MusicEntry entry, u8 fade, int fade_frames) {
     SDL_AudioSpec spec;
     Uint8* data = nullptr;
     u32 len = 0;
 
+    const char* path = GetWavFile(entry.track.getValue());
+
     SDL_LoadWAV(path, &spec, &data, &len);
 
-    auto wav = std::make_unique<Wav>(path, loop_start_pos, spec.freq, spec.channels);
+    auto wav = std::make_unique<Wav>(path, entry.loopStartMs, spec.freq, spec.channels);
     if (spec.channels != 2) {
         SDL_free(data);
         return;
     }
 
-    wav->volume = volume;
-    wav->targetVolume = volume;
+    switch (fade) {
+        case FADE_IN:
+            wav->volume = 0.0f;
+            wav->targetVolume = entry.volume;
+            wav->fadeInFrames = fade_frames;
+            break;
+
+        default:
+            wav->targetVolume = wav->volume = entry.volume;
+            break;
+    }
 
     wav->setStep((float)wav->sampleRate / (float)SampleRate);
 
@@ -278,18 +297,25 @@ void RenderAudioSubframe() {
     // Carco's Music Mod
     // Add WAV samples to buffer
     for (auto& wav : ActiveWavs) {
+        if (wav->paused) {
+            continue;
+        }
+
         // Handle fading out or fading in if necessary
+        bool stop = false;
         if (wav->targetVolume != wav->volume) {
-            wav->fadeOut();
+            stop = wav->fadeOut();
             wav->fadeIn();
         }
-        
-        if (wav->paused)
+
+        if (stop) {
             continue;
+        }
 
         int maxFrame = wav->samples.size() / wav->channels;
-        if (maxFrame <= 1)
+        if (maxFrame <= 1) {
             continue;
+        }
 
         float pos = wav->pos;
 
@@ -400,31 +426,28 @@ void dusk::audio::PauseWav(std::string name) {
     }
 }
 
-void dusk::audio::ResumeWav(std::string name, int fadeInFrames) {
+void dusk::audio::ResumeWav(dusk::UserSettings::MusicEntry entry, int fadeInFrames) {
+    std::string name = GetWavFile(entry.track.getValue());
     for (auto& wav : ActiveWavs) {
         if (wav->name == name) {
             wav->paused = false;
+            wav->targetVolume = entry.volume;
             wav->fadeInFrames = fadeInFrames;
         }
     }
 }
 
-void dusk::audio::FadeOutToPause(std::string name, int frames) {
+void dusk::audio::FadeOut(dusk::UserSettings::MusicEntry entry, int fade_frames, bool pause_on_fade) {
+    std::string name = GetWavFile(entry.track.getValue());
     for (auto& wav : ActiveWavs) {
         if (wav->name == name) {
-            wav->fadeOutFrames = frames;
+            wav->fadeOutFrames = fade_frames;
             wav->targetVolume = 0.0f;
-            wav->pauseOnceFadedOut = true;
-        }
-    }
-}
-
-void dusk::audio::FadeOutToDelete(std::string name, int frames) {
-    for (auto& wav : ActiveWavs) {
-        if (wav->name == name) {
-            wav->fadeOutFrames = frames;
-            wav->targetVolume = 0.0f;
-            wav->deleteOnceFadedOut = true;
+            if (pause_on_fade) {
+                wav->pauseOnceFadedOut = true;
+            } else {
+                wav->deleteOnceFadedOut = true;
+            }
         }
     }
 }

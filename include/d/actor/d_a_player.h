@@ -50,6 +50,10 @@ public:
     /* 0x14 */ Mtx mProjMtx;
     /* 0x44 */ ResTIMG* mpImg;
     /* 0x48 */ u8* mpData;
+#if TARGET_PC
+    TGXTexObj mTexObj;
+    ResTIMG* mpCachedImg = nullptr;
+#endif
 };
 
 class daPy_boomerangMove_c {
@@ -77,7 +81,7 @@ private:
 #define PLAYER_CREATE_ANM_HEAP_F(heap, type, fmt, ...) \
     { \
         char pcah_name_buf[32]; \
-        sprintf(pcah_name_buf, fmt, ##__VA_ARGS__); \
+        snprintf(pcah_name_buf, sizeof(pcah_name_buf), fmt, ##__VA_ARGS__); \
         (heap).createHeap(type, pcah_name_buf); \
         \
     }

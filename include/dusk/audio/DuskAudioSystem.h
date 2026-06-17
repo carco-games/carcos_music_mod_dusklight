@@ -29,13 +29,18 @@ namespace dusk::audio {
 
     f32 VolumeFromU16(u16 value);
 
-    void PlayWav(const char* path, int loop_start_pos, f32 volume);
+    enum FadeType {
+        /* 0 */ NONE,
+        /* 1 */ FADE_IN,
+        /* 2 */ FADE_OUT,
+    };
+
+    void PlayWav(dusk::UserSettings::MusicEntry entry, u8 fade = NONE, int fade_frames = 0);
     void SetWavVolume(std::string name, f32 volume);
     void SetWavTargetVolume(std::string name, f32 targetVolume);
     void PauseWav(std::string name);
-    void ResumeWav(std::string name, int fadeInFrames);
-    void FadeOutToPause(std::string name, int frames);
-    void FadeOutToDelete(std::string name, int frames);
+    void ResumeWav(dusk::UserSettings::MusicEntry entry, int fadeInFrames);
+    void FadeOut(dusk::UserSettings::MusicEntry entry, int fade_frames, bool pause_on_fade = true);
     void FadeOutToDeleteAll(int frames);
     void FadeIn(std::string name, int frames, f32 targetVolume);
     void DeleteWav(std::string name);

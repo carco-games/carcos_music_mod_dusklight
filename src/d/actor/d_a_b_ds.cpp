@@ -1572,10 +1572,7 @@ void daB_DS_c::executeOpeningDemo() {
             break;
         }
 
-        // Carco's Music Mod
-        if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordIntro)) {
-            Z2GetAudioMgr()->subBgmStart(Z2BGM_HARAGIGANT_D01);
-        }
+        Z2GetAudioMgr()->subBgmStart(Z2BGM_HARAGIGANT_D01);
         mSound.startCreatureSound(Z2SE_EN_DS_OPDEMO, 0, -1);
         mModeTimer = 50;
         mMode = 40;
@@ -1679,11 +1676,7 @@ void daB_DS_c::executeOpeningDemo() {
             fopAcM_SetGroup(this, 2);
             fopAcM_OnStatus(this, 0);
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase1, false, false,
-                                                   dusk::getSettings().musicMod.stallordIntro)) {
-                Z2GetAudioMgr()->bgmStart(Z2BGM_HARAGIGANT_BTL01, 0, 0);
-            }
+            Z2GetAudioMgr()->bgmStart(Z2BGM_HARAGIGANT_BTL01, 0, 0);
             Z2GetAudioMgr()->setDemoName("force_end");
 
             dComIfGs_onZoneSwitch(5, fopAcM_GetRoomNo(this));
@@ -2602,10 +2595,7 @@ void daB_DS_c::executeBattle2OpeningDemo() {
         mCameraCenter = mOp2CenterDt[0];
         mCameraEye = mOp2EyeDt[0];
 
-        // Carco's Music Mod
-        if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2Intro)) {
-            Z2GetAudioMgr()->subBgmStart(Z2BGM_HARAGIGANT_D02);
-        }
+        Z2GetAudioMgr()->subBgmStart(Z2BGM_HARAGIGANT_D02);
         mMode++;
         // fallthrough
     case 2:
@@ -2829,10 +2819,7 @@ void daB_DS_c::executeBattle2OpeningDemo() {
             attention_info.flags = fopAc_AttnFlag_BATTLE_e;
             fopAcM_SetGroup(this, 2);
 
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase2)) {
-                Z2GetAudioMgr()->bgmStart(Z2BGM_HARAGIGANT_BTL02, 0, 0);
-            }
+            Z2GetAudioMgr()->bgmStart(Z2BGM_HARAGIGANT_BTL02, 0, 0);
             mSetFirstPos();
             setActionMode(ACT_B2_WAIT, 0);
         }
@@ -4916,12 +4903,8 @@ bool daB_DS_c::mBattle2_damage_check() {
             }
 
             Z2GetAudioMgr()->bgmStop(0x1e, 0);
-            // Carco's Music Mod
-            if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordEnding, false, false,
-                                                   dusk::getSettings().musicMod.stallordPhase2)) {
-                Z2GetAudioMgr()->bgmStreamPrepare(0x2000048);
-                Z2GetAudioMgr()->bgmStreamPlay();
-            }
+            Z2GetAudioMgr()->bgmStreamPrepare(0x2000048);
+            Z2GetAudioMgr()->bgmStreamPlay();
             mSound.startCreatureVoice(Z2SE_EN_DS_END_V, -1);
 
             setBck(ANM_HEAD_DOWN_DAMAGE, 0, 3.0f, 1.0f);
@@ -5662,11 +5645,7 @@ cPhs_Step daB_DS_c::create() {
                 if (mAction != ACT_OPENING_DEMO) {
                     field_0x7f8 = 0.5f;
 
-                    // Carco's Music Mod
-                    if (!Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.stallordPhase1, false, false,
-                                                        dusk::getSettings().musicMod.stallordIntro)) {
-                        Z2GetAudioMgr()->bgmStart(Z2BGM_HARAGIGANT_BTL01, 0, 0);
-                    }
+                    Z2GetAudioMgr()->bgmStart(Z2BGM_HARAGIGANT_BTL01, 0, 0);
                     dKy_change_colpat(1);
                     mCreateTrap(true);
                     setActionMode(ACT_WAIT, 0);
@@ -5703,13 +5682,13 @@ static cPhs_Step daB_DS_Create(daB_DS_c* i_this) {
     return i_this->create();
 }
 
-static actor_method_class l_daB_DS_Method = {
+static DUSK_CONST actor_method_class l_daB_DS_Method = {
     (process_method_func)daB_DS_Create,  (process_method_func)daB_DS_Delete,
     (process_method_func)daB_DS_Execute, (process_method_func)daB_DS_IsDelete,
     (process_method_func)daB_DS_Draw,
 };
 
-actor_process_profile_definition g_profile_B_DS = {
+DUSK_PROFILE actor_process_profile_definition DUSK_CONST g_profile_B_DS = {
     /* Layer ID     */ fpcLy_CURRENT_e,
     /* List ID      */ 4,
     /* List Prio    */ fpcPi_CURRENT_e,

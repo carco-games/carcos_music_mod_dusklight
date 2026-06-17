@@ -17,7 +17,10 @@
 #include "d/d_msg_scrn_explain.h"
 #include "m_Do/m_Do_graphic.h"
 #include "d/actor/d_a_midna.h"
+#if TARGET_PC
 #include "dusk/frame_interpolation.h"
+#include "dusk/ui/touch_controls.hpp"
+#endif
 #include <cstring>
 
 #if TARGET_PC
@@ -1943,6 +1946,12 @@ void dMenu_Fmap2DBack_c::regionMapMove(STControl* i_stick) {
     calcAllMapPos2D(mArrowPos3DX + control_xpos - mStageTransX,
                     mArrowPos3DZ + control_ypos - mStageTransZ, &pos_x, &pos_y);
 
+#if TARGET_PC
+    if (dusk::getSettings().game.enableMirrorMode) {
+        pos_x = getMirrorPosX(pos_x, 0.0f);
+    }
+#endif
+
     mSelectRegion = 0xff;
     int region = mRegionCursor;
     if (region != 0xff && region != 7) {
@@ -1973,6 +1982,11 @@ void dMenu_Fmap2DBack_c::stageMapMove(STControl* i_stick, u8 param_1, bool param
     if (stick_value >= slow_bound && param_2 && field_0x1238 != 2) {
         bVar6 = true;
         s16 angle = i_stick->getAngleStick();
+#if TARGET_PC
+        if (dusk::getSettings().game.enableMirrorMode) {
+            angle = -angle;
+        }
+#endif
         f32 local_68 = mTexMaxX - mTexMinX;
         f32 spot_zoom = getSpotMapZoomRate();
         f32 region_zoom = getRegionMapZoomRate(mRegionCursor);
@@ -2498,6 +2512,10 @@ dMenu_Fmap2DTop_c::dMenu_Fmap2DTop_c(JKRExpHeap* i_heap, STControl* i_stick) {
 }
 
 dMenu_Fmap2DTop_c::~dMenu_Fmap2DTop_c() {
+#if TARGET_PC
+    dusk::ui::set_control_override(dusk::ui::Control::Z, dusk::ui::ControlOverride::Default);
+#endif
+
     deleteExplain();
     JKR_DELETE(mpTitleScreen);
     mpTitleScreen = NULL;
@@ -2730,7 +2748,7 @@ void dMenu_Fmap2DTop_c::setTitleNameString(u32 param_0) {
 #endif
     for (int i = 0; i < 7; i++) {
         if (param_0 == 0) {
-            strcpy(((J2DTextBox*)(mpTitleScreen->search(setTitleNameString_font_name[i])))
+            SAFE_STRCPY(((J2DTextBox*)(mpTitleScreen->search(setTitleNameString_font_name[i])))
                        ->getStringPtr(),
                    "");
         } else {
@@ -2753,7 +2771,7 @@ void dMenu_Fmap2DTop_c::setAreaNameString(u32 param_0) {
 #endif
     for (int i = 0; i < 3; i++) {
         if (param_0 == 0) {
-            strcpy(((J2DTextBox*)(mpTitleScreen->search(setAreaNameString_area_name[i])))
+            SAFE_STRCPY(((J2DTextBox*)(mpTitleScreen->search(setAreaNameString_area_name[i])))
                        ->getStringPtr(),
                    "");
         } else {
@@ -2770,6 +2788,12 @@ void dMenu_Fmap2DTop_c::setZButtonString(u32 param_0, u8 i_alpha) {
     if (param_0 == 0x529 && ((daMidna_c*)daPy_py_c::getMidnaActor())->checkPortalObjRide()) {
         param_0 = 0x533;
     }
+
+#if TARGET_PC
+    dusk::ui::set_control_override(dusk::ui::Control::Z,
+        param_0 != 0 && isWarpAccept() ? dusk::ui::ControlOverride::Action :
+                                         dusk::ui::ControlOverride::Default);
+#endif
 
 #if VERSION == VERSION_GCN_JPN
     static const u64 cont_zt[5] = {MULTI_CHAR('cont_zt'), MULTI_CHAR('cont_zt1'), MULTI_CHAR('cont_zt2'), MULTI_CHAR('cont_zt3'), MULTI_CHAR('cont_zt4')};
@@ -2866,7 +2890,7 @@ void dMenu_Fmap2DTop_c::setCrossLRString(u32 param_0) {
     if (param_0 == 0) {
         for (int i = 0; i < 5; i++) {
             J2DTextBox* text_box = static_cast<J2DTextBox*>(mpTitleScreen->search(juji_c[i]));
-            strcpy(text_box->getStringPtr(), "");
+            SAFE_STRCPY(text_box->getStringPtr(), "");
         }
         mpTitleScreen->search(MULTI_CHAR('juy_sha0'))->show();
         mAlphaDpad = 1;
@@ -2891,7 +2915,7 @@ void dMenu_Fmap2DTop_c::set3DStickString(u32 param_0) {
     if (param_0 == 0) {
         for (int i = 0; i < 5; i++) {
             J2DTextBox* text_box = static_cast<J2DTextBox*>(mpTitleScreen->search(ast_c[i]));
-            strcpy(text_box->getStringPtr(), "");
+            SAFE_STRCPY(text_box->getStringPtr(), "");
         }
         mpTitleScreen->search(MULTI_CHAR('as_sha0'))->show();
         mAlphaAnalogStick = 1;

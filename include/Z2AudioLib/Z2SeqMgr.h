@@ -82,7 +82,7 @@ public:
     bool bgmStreamCheckReady();
     void bgmStreamPlay();
     void bgmStreamStop(u32 fadeTime);
-    void changeBgmStatus(s32 status);
+    void changeBgmStatus(s32 status, bool change_from_ook_intro = false);
     void changeSubBgmStatus(s32 status);
     void onVariantBgmJumpEnd(bool);
     void changeFishingBgm(s32);

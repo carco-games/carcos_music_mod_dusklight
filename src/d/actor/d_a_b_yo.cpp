@@ -792,13 +792,7 @@ void daB_YO_c::executeOpening() {
         ystone_pos.set(0.0f, 0.0f, 3000.0f);
         mYstoneID = fopAcM_create(fpcNm_OBJ_YSTONE_e, 5, &ystone_pos, fopAcM_GetRoomNo(this),
                                   NULL, NULL, 0xff);
-        if (!hasPlayedIntro) {
-            // Modified - Carco: Begin Blizetta intro music
-            Z2GetAudioMgr()->bgmStreamPrepare(0x2000081);
-            Z2GetAudioMgr()->bgmStreamPlay();
-            hasPlayedIntro = true;
-        }
-        // Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSS_SNOWWOMAN_D1);
+        Z2GetAudioMgr()->subBgmStart(Z2BGM_BOSS_SNOWWOMAN_D1);
         mAcch.CrrPos(dComIfG_Bgsp());
         break;
 
@@ -1245,11 +1239,7 @@ void daB_YO_c::executeOpening() {
             dComIfGp_event_reset();
             field_0xfb5 = 0;
             setActionMode(ACT_CHASE, 0);
-            // Modified - Carco: Begin phase 1 music
-            // Z2GetAudioMgr()->setFade(30);
-            Z2GetAudioMgr()->bgmStreamPrepare(0x2000082);
-            Z2GetAudioMgr()->bgmStreamPlay();
-            // Z2GetAudioMgr()->bgmStart(Z2BGM_BOSS_SNOWWOMAN_0, 0, 0);
+            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSS_SNOWWOMAN_0, 0, 0);
             return;
         }
         break;
@@ -1722,10 +1712,7 @@ void daB_YO_c::executeSeriousDemo() {
             mColBlend = 0.0f;
             setIcicleOperate(3);
             setActionMode(ACT_JUMP, 0);
-            // Modified - Carco: Begin phase 2 music
-            Z2GetAudioMgr()->bgmStreamPrepare(0x2000083);
-            Z2GetAudioMgr()->bgmStreamPlay();
-            // Z2GetAudioMgr()->bgmStart(Z2BGM_BOSS_SNOWWOMAN_1, 0, 0);
+            Z2GetAudioMgr()->bgmStart(Z2BGM_BOSS_SNOWWOMAN_1, 0, 0);
             camera->mCamera.Reset(mCamCenter, mCamEye);
             camera->mCamera.Start();
             camera->mCamera.SetTrimSize(0);
@@ -3379,10 +3366,7 @@ cPhs_Step daB_YO_c::create() {
                 cDmr_SkipInfo = 0;
                 field_0xfb5 = 0;
                 setActionMode(ACT_CHASE, 0);
-                // Modified - Carco: Begin phase 1 music
-                Z2GetAudioMgr()->bgmStreamPrepare(0x2000082);
-                Z2GetAudioMgr()->bgmStreamPlay();
-                // Z2GetAudioMgr()->bgmStart(Z2BGM_BOSS_SNOWWOMAN_0, 0, 0);
+                Z2GetAudioMgr()->bgmStart(Z2BGM_BOSS_SNOWWOMAN_0, 0, 0);
 
                 if (!dComIfGs_isSwitch(mSwNo, fopAcM_GetRoomNo(this))) {
                     dComIfGs_onSwitch(mSwNo, fopAcM_GetRoomNo(this));
@@ -3444,7 +3428,7 @@ static u32 m_common_count;
 
 }  // namespace
 
-static actor_method_class l_daB_YO_Method = {
+static DUSK_CONST actor_method_class l_daB_YO_Method = {
     (process_method_func)daB_YO_Create,
     (process_method_func)daB_YO_Delete,
     (process_method_func)daB_YO_Execute,
@@ -3452,7 +3436,7 @@ static actor_method_class l_daB_YO_Method = {
     (process_method_func)daB_YO_Draw,
 };
 
-actor_process_profile_definition g_profile_B_YO = {
+DUSK_PROFILE actor_process_profile_definition DUSK_CONST g_profile_B_YO = {
     /* Layer ID     */ fpcLy_CURRENT_e,
     /* List ID      */ 7,
     /* List Prio    */ fpcPi_CURRENT_e,
