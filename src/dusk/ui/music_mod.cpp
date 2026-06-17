@@ -53,11 +53,12 @@ void addOption(Pane& leftPane, Pane& rightPane, const Rml::String& key, ConfigVa
             });
             pane.add_child<FilePickerButton>(FilePickerButton::Props{
                 .key = "Track",
-                .getValue = [&] {
+                .getValue = [&track] {
                     return track.getValue();
                 },
-                .setValue = [&](const std::string& path) {
+                .setValue = [&track](const std::string& path) {
                     track.setValue(path);
+                    config::Save();
                 }
             });
             pane.add_child<NumberButton>(NumberButton::Props{
@@ -85,10 +86,10 @@ void addOption(Pane& leftPane, Pane& rightPane, const Rml::String& key, ConfigVa
     );
 }
 
-void addCategoryOptions(Pane& leftPane, Pane& rightPane, Rml::String sectionKey, Rml::String keys[], dusk::UserSettings::MusicEntry* entries[]) {
+void addCategoryOptions(Pane& leftPane, Pane& rightPane, Rml::String sectionKey, Rml::String keys[], dusk::UserSettings::MusicEntry* entries[], size_t size) {
     leftPane.add_section(sectionKey);
-    for (size_t i = 0; i < sizeof(entries); i++) {
-        addOption(leftPane, rightPane, *keys[i], entries[i]->original, entries[i]->track,
+    for (size_t i = 0; i < size; i++) {
+        addOption(leftPane, rightPane, keys[i], entries[i]->original, entries[i]->track,
                   entries[i]->volume, entries[i]->loopStartMs);
     }
 }
@@ -260,42 +261,42 @@ MusicModWindow::MusicModWindow() {
         Rml::String argorokKeys[] = {"Argorok Intro", "Argorok Phase 1", "Argorok Phase 2 Intro", "Argorok Phase 2", "Argorok Vulnerable", "Argorok Ending"};
         dusk::UserSettings::MusicEntry* argorokEntries[] = {&getSettings().musicMod.argorokIntro, &getSettings().musicMod.argorokPhase1, &getSettings().musicMod.argorokPhase2Intro,
                                                         &getSettings().musicMod.argorokPhase2, &getSettings().musicMod.argorokVulnerable, &getSettings().musicMod.argorokEnding};
-        addCategoryOptions(leftPane, rightPane, "Argorok", argorokKeys, argorokEntries);
+        addCategoryOptions(leftPane, rightPane, "Argorok", argorokKeys, argorokEntries, 6);
         // -----------------------------------------------------------------------------------
 
         // Blizzeta ---------------------------------------------------------------------------
         Rml::String blizzetaKeys[] = {"Blizzeta Intro", "Blizzeta Phase 1", "Blizzeta Phase 2", "Blizzeta Ending"};
         dusk::UserSettings::MusicEntry* blizzetaEntries[] = {&getSettings().musicMod.blizzetaIntro, &getSettings().musicMod.blizzetaPhase1,
                                                              &getSettings().musicMod.blizzetaPhase2, &getSettings().musicMod.blizzetaEnding};
-        addCategoryOptions(leftPane, rightPane, "Blizzeta", blizzetaKeys, blizzetaEntries);
+        addCategoryOptions(leftPane, rightPane, "Blizzeta", blizzetaKeys, blizzetaEntries, 4);
         // -----------------------------------------------------------------------------------
         
         // Diababa ---------------------------------------------------------------------------
         Rml::String diababaKeys[] = {"Diababa Intro", "Diababa Phase 1", "Diababa Ook Entrance", "Diababa Phase 2", "Diababa Vulnerable", "Diababa Ending"};
         dusk::UserSettings::MusicEntry* diababaEntries[] = {&getSettings().musicMod.diababaIntro, &getSettings().musicMod.diababaPhase1, &getSettings().musicMod.diababaPhase2,
                                                             &getSettings().musicMod.diababaPhaseOok, &getSettings().musicMod.diababaVulnerable, &getSettings().musicMod.diababaEnding};
-        addCategoryOptions(leftPane, rightPane, "Diababa", diababaKeys, diababaEntries);
+        addCategoryOptions(leftPane, rightPane, "Diababa", diababaKeys, diababaEntries, 6);
         // -----------------------------------------------------------------------------------
 
         // Fyrus -----------------------------------------------------------------------------
         Rml::String fyrusKeys[] = {"Fyrus Intro", "Fyrus Main Theme", "Fyrus Vulnerable", "Fyrus Ending"};
         dusk::UserSettings::MusicEntry* fyrusEntries[] = {&getSettings().musicMod.fyrusIntro, &getSettings().musicMod.fyrusMain, &getSettings().musicMod.fyrusVulnerable,
                                                           &getSettings().musicMod.fyrusEnding};
-        addCategoryOptions(leftPane, rightPane, "Fyrus", fyrusKeys, fyrusEntries);
+        addCategoryOptions(leftPane, rightPane, "Fyrus", fyrusKeys, fyrusEntries, 4);
         // -----------------------------------------------------------------------------------
 
         // Morpheel --------------------------------------------------------------------------
         Rml::String morpheelKeys[] = {"Morpheel Intro", "Morpheel Phase 1", "Morpheel Phase 2", "Morpheel Ending"};
         dusk::UserSettings::MusicEntry* morpheelEntries[] = {&getSettings().musicMod.morpheelIntro, &getSettings().musicMod.morpheelPhase1,
                                                          &getSettings().musicMod.morpheelPhase2, &getSettings().musicMod.morpheelEnding};
-        addCategoryOptions(leftPane, rightPane, "Morpheel", morpheelKeys, morpheelEntries);
+        addCategoryOptions(leftPane, rightPane, "Morpheel", morpheelKeys, morpheelEntries, 4);
         // -----------------------------------------------------------------------------------
 
         // Stallord --------------------------------------------------------------------------
-        Rml::String stallordKeys[] = {"Stallord Intro", "Stallord Phase 1", "Stallord Phase 2 Intro", "Stallord Phase 2", "Stallorf Ending"};
+        Rml::String stallordKeys[] = {"Stallord Intro", "Stallord Phase 1", "Stallord Phase 2 Intro", "Stallord Phase 2", "Stallord Ending"};
         dusk::UserSettings::MusicEntry* stallordEntries[] = {&getSettings().musicMod.stallordIntro, &getSettings().musicMod.stallordPhase1, &getSettings().musicMod.stallordPhase2Intro,
                                                              &getSettings().musicMod.stallordPhase2, &getSettings().musicMod.stallordEnding};
-        addCategoryOptions(leftPane, rightPane, "Stallord", stallordKeys, stallordEntries);
+        addCategoryOptions(leftPane, rightPane, "Stallord", stallordKeys, stallordEntries, 5);
         // -----------------------------------------------------------------------------------
     });
 

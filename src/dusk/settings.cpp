@@ -2,12 +2,21 @@
 #include "dusk/config.hpp"
 
 namespace dusk {
-dusk::UserSettings::MusicEntry SetMusicEntryDefaults(const std::string& name) {
+static std::unordered_map<std::string, std::string> cache;
+
+const char* makeKey(const char* name, std::string type) {
+    std::string key = std::string("musicMod.") + name + type;
+    auto& stored = cache[key];
+    stored = key;
+    return stored.c_str();
+}
+
+dusk::UserSettings::MusicEntry SetMusicEntryDefaults(const char* name) {
     return {
-        .original {("musicMod." + name + ".original").c_str(), false},
-        .track {("musicMod." + name + ".track").c_str(), ""},
-        .volume {("musicMod." + name + ".volume").c_str(), 0.2f},
-        .loopStartMs {("musicMod." + name + ".loopStartMs").c_str(), 0}
+        .original {makeKey(name, "original"), true},
+        .track {makeKey(name, "track"), ""},
+        .volume {makeKey(name, "volume"), 0.2f},
+        .loopStartMs {makeKey(name, "loopStartMs"), 0}
     };
 }
 
@@ -213,6 +222,14 @@ UserSettings g_userSettings = {
         // ---------------------------
 
         // Bosses --------------------
+        // Argorok
+        .argorokIntro = SetMusicEntryDefaults("argorokIntro"),
+        .argorokPhase1 = SetMusicEntryDefaults("argorokPhase1"),
+        .argorokPhase2Intro = SetMusicEntryDefaults("argorokPhase2Intro"),
+        .argorokPhase2 = SetMusicEntryDefaults("argorokPhase2"),
+        .argorokVulnerable = SetMusicEntryDefaults("argorokVulnerable"),
+        .argorokEnding = SetMusicEntryDefaults("argorokEnding"),
+
         // Blizzeta
         .blizzetaIntro = SetMusicEntryDefaults("blizzetaIntro"),
         .blizzetaPhase1 = SetMusicEntryDefaults("blizzetaPhase1"),
@@ -246,13 +263,13 @@ UserSettings g_userSettings = {
         .stallordPhase2 = SetMusicEntryDefaults("stallordPhase2"),
         .stallordEnding = SetMusicEntryDefaults("stallordEnding"),
 
-        // Argorok
-        .argorokIntro = SetMusicEntryDefaults("argorokIntro"),
-        .argorokPhase1 = SetMusicEntryDefaults("argorokPhase1"),
-        .argorokPhase2Intro = SetMusicEntryDefaults("argorokPhase2Intro"),
-        .argorokPhase2 = SetMusicEntryDefaults("argorokPhase2"),
-        .argorokVulnerable = SetMusicEntryDefaults("argorokVulnerable"),
-        .argorokEnding = SetMusicEntryDefaults("argorokEnding"),
+        // // Argorok
+        // .argorokIntro = SetMusicEntryDefaults("argorokIntro"),
+        // .argorokPhase1 = SetMusicEntryDefaults("argorokPhase1"),
+        // .argorokPhase2Intro = SetMusicEntryDefaults("argorokPhase2Intro"),
+        // .argorokPhase2 = SetMusicEntryDefaults("argorokPhase2"),
+        // .argorokVulnerable = SetMusicEntryDefaults("argorokVulnerable"),
+        // .argorokEnding = SetMusicEntryDefaults("argorokEnding"),
         // ---------------------------
 
         // Misc ----------------------

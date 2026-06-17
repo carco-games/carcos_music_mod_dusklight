@@ -141,51 +141,51 @@ for json_file in json_to_use:
                         subprocess.run(["ASTCreate.exe", f"output_wavs/{track_data["new_track_name"]}.wav", "-n"])
                         
 # Handle adding all ast files to the game
-ast_names = []
-wav_folder = Path("output_wavs")
-wav_files = []
-for wav_file in wav_folder.glob("*.wav"):
-    wav_files.append(wav_file)
-stream_table_path = str()
-stream_table_data = BytesIO()
+# ast_names = []
+# wav_folder = Path("output_wavs")
+# wav_files = []
+# for wav_file in wav_folder.glob("*.wav"):
+#     wav_files.append(wav_file)
+# stream_table_path = str()
+# stream_table_data = BytesIO()
 
-for iso_path, gcm_file in gcm.files_by_path.items():
-    if iso_path.lower().endswith(".baa"):
-        stream_table_path = iso_path
-        stream_table_data = gcm.read_file_data(iso_path)
-        continue
-    if not iso_path.lower().endswith(".ast"):
-        continue
-    if not iso_path.startswith("files/Audiores/Stream/"):
-        continue
+# for iso_path, gcm_file in gcm.files_by_path.items():
+#     if iso_path.lower().endswith(".baa"):
+#         stream_table_path = iso_path
+#         stream_table_data = gcm.read_file_data(iso_path)
+#         continue
+#     if not iso_path.lower().endswith(".ast"):
+#         continue
+#     if not iso_path.startswith("files/Audiores/Stream/"):
+#         continue
 
-    ast_name = Path(iso_path).stem
-    for wav in wav_files:
-        if ast_name == wav.stem:
-            with open(f"{wav_folder}/{wav.stem}.ast", "rb") as f:
-                new_data = BytesIO(f.read())
-            ast_names.append(ast_name)
-            gcm.changed_files[iso_path] = new_data
+#     ast_name = Path(iso_path).stem
+#     for wav in wav_files:
+#         if ast_name == wav.stem:
+#             with open(f"{wav_folder}/{wav.stem}.ast", "rb") as f:
+#                 new_data = BytesIO(f.read())
+#             ast_names.append(ast_name)
+#             gcm.changed_files[iso_path] = new_data
 
-stream_table = BAA(stream_table_data)
-new_wavs: List[str] = []
+# stream_table = BAA(stream_table_data)
+# new_wavs: List[str] = []
 
-for wav in wav_files:
-    if wav.stem in ast_names:
-        continue
-    with open(f"{wav_folder}/{wav.stem}.ast", "rb") as f:
-        new_data = BytesIO(f.read())
-    gcm.add_new_file(f"files/Audiores/Stream/{wav.stem}.ast", new_data)
-    new_wavs.append(wav.stem)
+# for wav in wav_files:
+#     if wav.stem in ast_names:
+#         continue
+#     with open(f"{wav_folder}/{wav.stem}.ast", "rb") as f:
+#         new_data = BytesIO(f.read())
+#     gcm.add_new_file(f"files/Audiores/Stream/{wav.stem}.ast", new_data)
+#     new_wavs.append(wav.stem)
 
-for name in new_wavs:
-    stream_table.add_new_ast(name)
+# for name in new_wavs:
+#     stream_table.add_new_ast(name)
 
-stream_table.write_new_baa(Path("new_table.baa"))
-with open(f"new_table.baa", "rb") as f:
-    new_data = BytesIO(f.read())
-gcm.changed_files[stream_table_path] = new_data
+# stream_table.write_new_baa(Path("new_table.baa"))
+# with open(f"new_table.baa", "rb") as f:
+#     new_data = BytesIO(f.read())
+# gcm.changed_files[stream_table_path] = new_data
 
-for _ in gcm.export_disc_to_iso_with_changed_files(f"carcos_music_mod.iso"):
-    pass
+# for _ in gcm.export_disc_to_iso_with_changed_files(f"carcos_music_mod.iso"):
+#     pass
 print("Done")

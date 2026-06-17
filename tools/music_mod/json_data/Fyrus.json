@@ -1,0 +1,65 @@
+{
+    "track_name": "Fyrus",
+    "track_duration_no_intro_silence": 195441,
+    "total_track_duration": 196354,
+    "tracks" : [
+        {
+            "new_track_name": "fyrus_intro",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 1325,
+                    "clip_end_pos": 33939
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 6500
+                }
+            ],
+            "fade_out": 167
+        },
+        {
+            "new_track_name": "fyrus_main",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 33749,
+                    "clip_end_pos": 149289
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 1378,
+                    "overlay_start_pos": 114162,
+                    "fade_out_pre_clip": 736,
+                    "clip_fade_in": 1378
+                }
+            ],
+            "fade_in": 808,
+            "loop_start_pos": 1378
+        },
+        {
+            "new_track_name": "fyrus_vulnerable",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 155843,
+                    "clip_end_pos": 162455
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 736,
+                    "overlay_start_pos": 5876,
+                    "fade_out_pre_clip": 128,
+                    "clip_fade_in": 736
+                }
+            ],
+            "loop_start_pos": 736
+        }
+    ]
+}
