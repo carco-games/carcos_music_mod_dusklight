@@ -9,6 +9,7 @@
 #include "JSystem/JAudio2/JAISoundChild.h"
 #include "JSystem/JAudio2/JAISeq.h"
 #include "Z2AudioLib/SpotName.h"
+#include "dusk/logging.h"
 #include "os_report.h"
 
 #include "dusk/audio.h"
@@ -54,6 +55,7 @@ Z2SeqMgr::Z2SeqMgr() : JASGlobalInstance<Z2SeqMgr>(true) {
 
 void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
     DUSK_AUDIO_SKIP();
+    DuskLog.info("In bgmStart func\n");
 
     // Carco's Music Mod
     // Custom Music Switch
@@ -68,6 +70,7 @@ void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
             break;
 
         case Z2BGM_BOSSFIREMAN_0: // Fyrus
+            DuskLog.info("Playing Fyrus Music");
             endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, false, 0, dusk::getSettings().musicMod.fyrusIntro);
             break;
 
@@ -113,7 +116,7 @@ void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
     }
 
     if (endFunc) {
-        mMainBgmHandle->soundID_ = bgmID;
+        dusk::audio::setCurrentBgmID(bgmID);
         return;
     }
 
@@ -218,6 +221,7 @@ void Z2SeqMgr::bgmStart(u32 bgmID, u32 fadeTime, s32 param_2) {
 void Z2SeqMgr::bgmStop(u32 fadeTime, s32 param_1) {
     // Carco's Music Mod
     dusk::audio::FadeOutToDeleteAll(3000);
+    dusk::audio::setCurrentBgmID(0);
     
     if (mMainBgmHandle) {
         mMainBgmHandle->stop(fadeTime);
@@ -236,6 +240,7 @@ void Z2SeqMgr::bgmStop(u32 fadeTime, s32 param_1) {
 }
 
 void Z2SeqMgr::subBgmStart(u32 bgmID) {
+    DuskLog.info("In subBgmStart func\n");
     if (bgmID == -1) {
         return;
     }
@@ -245,13 +250,14 @@ void Z2SeqMgr::subBgmStart(u32 bgmID) {
 
     // Carco's Music Mod
     // Custom Music Switch
-    if (mSubBgmHandle->soundID_ != bgmID) {
+    // if (dusk::audio::getCurrentSubBgmID() != bgmID) {
         bool endFunc = false;
         switch (bgmID) {
             case Z2BGM_BOSSBABA_0: // Diababa Intro
                 endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaIntro);
             
             case Z2BGM_BOSSFIREMAN_1: // Fyrus Intro
+                DuskLog.info("Starting Fyrus Intro\n");
                 endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusIntro);
                 break;
 
@@ -289,10 +295,10 @@ void Z2SeqMgr::subBgmStart(u32 bgmID) {
         }
 
         if (endFunc) {
-            mSubBgmHandle->soundID_ = bgmID;
+            dusk::audio::setCurrentSubBgmID(bgmID);
             return;
         }
-    }
+    // }
 
     switch (bgmID) {
     case Z2BGM_ITEM_GET:
@@ -495,6 +501,7 @@ void Z2SeqMgr::subBgmStop() {
     // Carco's Music Mod
     // test this
     dusk::audio::FadeOutToDeleteAll(3000);
+    dusk::audio::setCurrentSubBgmID(0);
 
     switch (getSubBgmID()) {
     case Z2BGM_ITEM_GET:
@@ -765,6 +772,58 @@ void Z2SeqMgr::bgmStreamStop(u32 fadeTime) {
 }
 
 void Z2SeqMgr::changeBgmStatus(s32 status, bool change_from_ook_intro) {
+    DuskLog.info("In changeBgmStatus func with status = {}\n", status);
+    DuskLog.info("current bgm id = {}", dusk::audio::getCurrentBgmID());
+    // Carco's Music Mod
+    // Custom Music Switch
+    bool endFunc = false;
+    switch (dusk::audio::getCurrentBgmID()) {
+        case Z2BGM_BOSSBABA_2:
+            switch (status) {
+                case 1: // Diababa Vuln --> Diababa Phase 2
+                    if (change_from_ook_intro) {
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, 0, dusk::getSettings().musicMod.diababaPhaseOok);
+                    } else {
+                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, 0, dusk::getSettings().musicMod.diababaVulnerable);
+                    }
+                    break;
+
+                case 2: // Diababa Phase 2 --> Diababa Vuln
+                    endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, 1000, dusk::getSettings().musicMod.diababaPhase2, true);
+            }
+            break;
+
+        case Z2BGM_BOSSFIREMAN_0:
+            switch (status) {
+                case 1: // Fyrus Main --> Fyrus Vuln
+                    DuskLog.info("Pausing main music\n");
+                    endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusVulnerable, false, 500, dusk::getSettings().musicMod.fyrusMain, true);
+                    break;
+
+                case 2: // Fyrus Vuln --> Fyrus Main
+                    DuskLog.info("Ending vulnerable music\n");
+                    endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, true, 500, dusk::getSettings().musicMod.fyrusVulnerable);
+                    break;
+
+                default:
+                    endFunc = true;
+            }
+            break;
+        
+        case Z2BGM_BOSS_OCTAEEL_1:
+            switch (status) {
+                case 1: // Morpheel Vuln --> Morpheel Phase 2
+                    endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2, true, 500, dusk::getSettings().musicMod.morpheelVulnerable);
+                    break;
+
+                case 2: // Morpheel Phase 2 --> Morpheel Vuln
+                    endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelVulnerable, false, 500, dusk::getSettings().musicMod.morpheelPhase2, true);
+            }
+            break;
+    }
+
+    if (endFunc) return;
+
     if (mMainBgmHandle) {
         u32 moveTime = 0;
         bool mute;
@@ -777,50 +836,6 @@ void Z2SeqMgr::changeBgmStatus(s32 status, bool change_from_ook_intro) {
         #else
         f32 volume1, volume2, volume3, volume4;
         #endif
-
-        // Carco's Music Mod
-        // Custom Music Switch
-        bool endFunc = false;
-        switch (getMainBgmID()) {
-            case Z2BGM_BOSSBABA_2:
-                switch (status) {
-                    case 1: // Diababa Vuln --> Diababa Phase 2
-                        if (change_from_ook_intro) {
-                            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, 0, dusk::getSettings().musicMod.diababaPhaseOok);
-                        } else {
-                            endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaPhase2, true, 0, dusk::getSettings().musicMod.diababaVulnerable);
-                        }
-                        break;
-
-                    case 2: // Diababa Phase 2 --> Diababa Vuln
-                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.diababaVulnerable, false, 1000, dusk::getSettings().musicMod.diababaPhase2, true);
-                }
-                break;
-
-            case Z2BGM_BOSSFIREMAN_0:
-                switch (status) {
-                    case 1: // Fyrus Main --> Fyrus Vuln
-                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusVulnerable, false, true, dusk::getSettings().musicMod.fyrusMain, true);
-                        break;
-
-                    case 2: // Fyrus Vuln --> Fyrus Main
-                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.fyrusMain, true, true, dusk::getSettings().musicMod.fyrusVulnerable);
-                }
-                break;
-            
-            case Z2BGM_BOSS_OCTAEEL_1:
-                switch (status) {
-                    case 1: // Morpheel Vuln --> Morpheel Phase 2
-                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelPhase2, true, 1000, dusk::getSettings().musicMod.morpheelVulnerable);
-                        break;
-
-                    case 2: // Morpheel Phase 2 --> Morpheel Vuln
-                        endFunc = Z2GetSceneMgr()->startCustomMusic(dusk::getSettings().musicMod.morpheelVulnerable, false, 1000, dusk::getSettings().musicMod.morpheelPhase2, true);
-                }
-                break;
-        }
-
-        if (endFunc) return;
 
         switch (getMainBgmID()) {
         case Z2BGM_TOAL_VILLEGE:

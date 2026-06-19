@@ -34,8 +34,11 @@ namespace dusk::audio {
         /* 1 */ FADE_IN,
         /* 2 */ FADE_OUT,
     };
+    
+    static u32 bgmID;
+    static u32 subBgmID;
 
-    void PlayWav(dusk::UserSettings::MusicEntry entry, u8 fade = NONE, int fade_frames = 0);
+    void PlayWav(dusk::UserSettings::MusicEntry entry);
     void SetWavVolume(std::string name, f32 volume);
     void SetWavTargetVolume(std::string name, f32 targetVolume);
     void PauseWav(std::string name);
@@ -44,4 +47,8 @@ namespace dusk::audio {
     void FadeOutToDeleteAll(int frames);
     void FadeIn(std::string name, int frames, f32 targetVolume);
     void DeleteWav(std::string name);
+    void setCurrentBgmID(u32 id);
+    u32 getCurrentBgmID();
+    void setCurrentSubBgmID(u32 id);
+    u32 getCurrentSubBgmID();
 }

@@ -41,7 +41,8 @@ SelectButton& config_bool_select(
 }
 
 void addOption(Pane& leftPane, Pane& rightPane, const Rml::String& key, ConfigVar<bool>& originalAudio,
-               ConfigVar<std::string>& track, ConfigVar<f32>& volume, ConfigVar<int>& loopStartMs) {
+               ConfigVar<std::string>& track, ConfigVar<f32>& volume, ConfigVar<int>& loopStartMs,
+               ConfigVar<int>& fadeInMs, ConfigVar<int>& fadeOutMs) {
     leftPane.register_control(
         leftPane.add_select_button({
             .key = key
@@ -82,6 +83,26 @@ void addOption(Pane& leftPane, Pane& rightPane, const Rml::String& key, ConfigVa
                 .min = 0,
                 .max = 999999,
             });
+            pane.add_child<NumberButton>(NumberButton::Props{
+                .key = "Fade In Frames",
+                .getValue = [&] { return static_cast<int>(fadeInMs.getValue()); },
+                .setValue = [&](int value) {
+                    fadeInMs.setValue(value);
+                    config::Save();
+                },
+                .min = 0,
+                .max = 999999,
+            });
+            pane.add_child<NumberButton>(NumberButton::Props{
+                .key = "Fade Out Frames",
+                .getValue = [&] { return static_cast<int>(fadeOutMs.getValue()); },
+                .setValue = [&](int value) {
+                    fadeOutMs.setValue(value);
+                    config::Save();
+                },
+                .min = 0,
+                .max = 999999,
+            });
         }
     );
 }
@@ -90,7 +111,8 @@ void addCategoryOptions(Pane& leftPane, Pane& rightPane, Rml::String sectionKey,
     leftPane.add_section(sectionKey);
     for (size_t i = 0; i < size; i++) {
         addOption(leftPane, rightPane, keys[i], entries[i]->original, entries[i]->track,
-                  entries[i]->volume, entries[i]->loopStartMs);
+                  entries[i]->volume, entries[i]->loopStartMs,
+                  entries[i]->fadeInMs, entries[i]->fadeOutMs);
     }
 }
 
@@ -219,43 +241,50 @@ MusicModWindow::MusicModWindow() {
 
         // Faron Woods -----------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Faron Woods"}, getSettings().musicMod.faronWoods.original, getSettings().musicMod.faronWoods.track,
-                getSettings().musicMod.faronWoods.volume, getSettings().musicMod.faronWoods.loopStartMs);
+                getSettings().musicMod.faronWoods.volume, getSettings().musicMod.faronWoods.loopStartMs,
+                getSettings().musicMod.faronWoods.fadeInMs, getSettings().musicMod.faronWoods.fadeOutMs);
         // -----------------------------------------------------------------------------------
 
 
         // Gerudo Desert ---------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Gerudo Desert"}, getSettings().musicMod.gerudoDesert.original, getSettings().musicMod.gerudoDesert.track,
-                getSettings().musicMod.gerudoDesert.volume, getSettings().musicMod.gerudoDesert.loopStartMs);
+                getSettings().musicMod.gerudoDesert.volume, getSettings().musicMod.gerudoDesert.loopStartMs,
+                getSettings().musicMod.gerudoDesert.fadeInMs, getSettings().musicMod.gerudoDesert.fadeOutMs);
         // -----------------------------------------------------------------------------------
 
 
         // Hidden Village --------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Hidden Village"}, getSettings().musicMod.hiddenVillage.original, getSettings().musicMod.hiddenVillage.track,
-                getSettings().musicMod.hiddenVillage.volume, getSettings().musicMod.hiddenVillage.loopStartMs);
+                getSettings().musicMod.hiddenVillage.volume, getSettings().musicMod.hiddenVillage.loopStartMs,
+                getSettings().musicMod.hiddenVillage.fadeInMs, getSettings().musicMod.hiddenVillage.fadeOutMs);
         // -----------------------------------------------------------------------------------
 
 
         // Hyrule Field ----------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Hyrule Field"}, getSettings().musicMod.hyruleField.original, getSettings().musicMod.hyruleField.track,
-                getSettings().musicMod.hyruleField.volume, getSettings().musicMod.hyruleField.loopStartMs);
+                getSettings().musicMod.hyruleField.volume, getSettings().musicMod.hyruleField.loopStartMs,
+                getSettings().musicMod.hyruleField.fadeInMs, getSettings().musicMod.hyruleField.fadeOutMs);
         // -----------------------------------------------------------------------------------
 
 
         // Kakariko Village ------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Kakariko Village"}, getSettings().musicMod.kakarikoVillage.original, getSettings().musicMod.kakarikoVillage.track,
-                getSettings().musicMod.kakarikoVillage.volume, getSettings().musicMod.kakarikoVillage.loopStartMs);
+                getSettings().musicMod.kakarikoVillage.volume, getSettings().musicMod.kakarikoVillage.loopStartMs,
+                getSettings().musicMod.kakarikoVillage.fadeInMs, getSettings().musicMod.kakarikoVillage.fadeOutMs);
         // -----------------------------------------------------------------------------------
 
 
         // Lake Hylia ------------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Lake Hylia"}, getSettings().musicMod.lakeHylia.original, getSettings().musicMod.lakeHylia.track,
-                getSettings().musicMod.lakeHylia.volume, getSettings().musicMod.lakeHylia.loopStartMs);
+                getSettings().musicMod.lakeHylia.volume, getSettings().musicMod.lakeHylia.loopStartMs,
+                getSettings().musicMod.lakeHylia.fadeInMs, getSettings().musicMod.lakeHylia.fadeOutMs);
         // -----------------------------------------------------------------------------------
 
 
         // Ordon Ranch -----------------------------------------------------------------------
         addOption(leftPane, rightPane, Rml::String{"Ordon Ranch"}, getSettings().musicMod.ordonRanch.original, getSettings().musicMod.ordonRanch.track,
-                getSettings().musicMod.ordonRanch.volume, getSettings().musicMod.ordonRanch.loopStartMs);
+                getSettings().musicMod.ordonRanch.volume, getSettings().musicMod.ordonRanch.loopStartMs,
+                getSettings().musicMod.ordonRanch.fadeInMs, getSettings().musicMod.ordonRanch.fadeOutMs);
         // -----------------------------------------------------------------------------------
     });
 
@@ -272,9 +301,9 @@ MusicModWindow::MusicModWindow() {
 
 
         // Armogohma -------------------------------------------------------------------------
-        Rml::String armogohmaKeys[] = {};
-        dusk::UserSettings::MusicEntry* armogohmaEntries[] = {};
-        addCategoryOptions(leftPane, rightPane, "Armogohma", armogohmaKeys, armogohmaEntries, 0);
+        // Rml::String armogohmaKeys[] = {};
+        // dusk::UserSettings::MusicEntry* armogohmaEntries[] = {};
+        // addCategoryOptions(leftPane, rightPane, "Armogohma", armogohmaKeys, armogohmaEntries, 0);
         // -----------------------------------------------------------------------------------
 
 
@@ -303,9 +332,9 @@ MusicModWindow::MusicModWindow() {
 
 
         // Ganon -----------------------------------------------------------------------------
-        Rml::String ganonKeys[] = {};
-        dusk::UserSettings::MusicEntry* ganonEntries[] = {};
-        addCategoryOptions(leftPane, rightPane, "Ganon", ganonKeys, ganonEntries, 0);
+        // Rml::String ganonKeys[] = {};
+        // dusk::UserSettings::MusicEntry* ganonEntries[] = {};
+        // addCategoryOptions(leftPane, rightPane, "Ganon", ganonKeys, ganonEntries, 0);
         // -----------------------------------------------------------------------------------
 
 
@@ -313,14 +342,14 @@ MusicModWindow::MusicModWindow() {
         Rml::String morpheelKeys[] = {"Morpheel Intro", "Morpheel Phase 1", "Morpheel Phase 2 Intro", "Morpheel Phase 2", "Morpheel Vulnerable", "Morpheel Ending"};
         dusk::UserSettings::MusicEntry* morpheelEntries[] = {&getSettings().musicMod.morpheelIntro, &getSettings().musicMod.morpheelPhase1, &getSettings().musicMod.morpheelPhase2Intro,
                                                          &getSettings().musicMod.morpheelPhase2, &getSettings().musicMod.morpheelVulnerable, &getSettings().musicMod.morpheelEnding};
-        addCategoryOptions(leftPane, rightPane, "Morpheel", morpheelKeys, morpheelEntries, 4);
+        addCategoryOptions(leftPane, rightPane, "Morpheel", morpheelKeys, morpheelEntries, 6);
         // -----------------------------------------------------------------------------------
 
 
         // Puppet Zelda ----------------------------------------------------------------------
-        Rml::String puppetZeldaKeys[] = {};
-        dusk::UserSettings::MusicEntry* puppetZeldaEntries[] = {};
-        addCategoryOptions(leftPane, rightPane, "Puppet Zelda", puppetZeldaKeys, puppetZeldaEntries, 0);
+        // Rml::String puppetZeldaKeys[] = {};
+        // dusk::UserSettings::MusicEntry* puppetZeldaEntries[] = {};
+        // addCategoryOptions(leftPane, rightPane, "Puppet Zelda", puppetZeldaKeys, puppetZeldaEntries, 0);
         // -----------------------------------------------------------------------------------
 
 
@@ -333,9 +362,9 @@ MusicModWindow::MusicModWindow() {
 
 
         // Zant ------------------------------------------------------------------------------
-        Rml::String zantKeys[] = {};
-        dusk::UserSettings::MusicEntry* zantEntries[] = {};
-        addCategoryOptions(leftPane, rightPane, "Zant", zantKeys, zantEntries, 0);
+        // Rml::String zantKeys[] = {};
+        // dusk::UserSettings::MusicEntry* zantEntries[] = {};
+        // addCategoryOptions(leftPane, rightPane, "Zant", zantKeys, zantEntries, 0);
         // -----------------------------------------------------------------------------------
     });
 

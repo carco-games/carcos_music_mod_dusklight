@@ -15,6 +15,7 @@
 #include "DuskDsp.hpp"
 #include "JSystem/JAudio2/JASAudioThread.h"
 #include "JSystem/JAudio2/JASDriverIF.h"
+#include "dusk/logging.h"
 #include "tracy/Tracy.hpp"
 
 using namespace dusk::audio;
@@ -159,6 +160,7 @@ public:
     int fadeOutTimer = 0;
     bool pauseOnceFadedOut = false;
     bool deleteOnceFadedOut = false;
+    bool markedForDelete = false;
     int fadeInFrames = 0;
     int fadeInTimer = 0;
 };
@@ -182,20 +184,24 @@ bool Wav::fadeOut() {
         fadeOutTimer++;
 
         // Check if the track would fade out in one more pass. If so, finish fading now
-        divisor = fadeOutFrames - fadeOutTimer;
-        float nextVolume = volume - (1.0f / divisor);
-        if (nextVolume <= 0.0f) {
+        // divisor = fadeOutFrames - fadeOutTimer;
+        // float nextVolume = volume - (1.0f / divisor);
+        // DuskLog.info("Remaining = {}", remaining);
+        if (volume <= 0.0f) {
+            DuskLog.info("Finishing fade out");
             volume = 0.0f;
             fadeOutFrames = 0;
             fadeOutTimer = 0;
 
             if (pauseOnceFadedOut) {
+                DuskLog.info("Pausing Wav");
                 paused = true;
                 return true;
             }
             
             if (deleteOnceFadedOut) {
-                dusk::audio::DeleteWav(name);
+                DuskLog.info("Deleting Wav");
+                markedForDelete = true;
                 return true;
             }
         }
@@ -206,6 +212,7 @@ bool Wav::fadeOut() {
 
 void Wav::fadeIn() {
     if (fadeInFrames > 0 && !paused) {
+        DuskLog.info("Fading in");
         int divisor = fadeInFrames - fadeInTimer;
         if (divisor > 0) {
             volume += targetVolume / divisor;
@@ -228,7 +235,7 @@ std::mutex audioMutex;
 std::vector<std::unique_ptr<Wav>> ActiveWavs;
 std::vector<std::unique_ptr<Wav>> PendingWavs;
 
-void dusk::audio::PlayWav(dusk::UserSettings::MusicEntry entry, u8 fade, int fade_frames) {
+void dusk::audio::PlayWav(dusk::UserSettings::MusicEntry entry) {
     SDL_AudioSpec spec;
     Uint8* data = nullptr;
     u32 len = 0;
@@ -236,23 +243,18 @@ void dusk::audio::PlayWav(dusk::UserSettings::MusicEntry entry, u8 fade, int fad
     const char* path = GetWavFile(entry.track.getValue());
 
     SDL_LoadWAV(path, &spec, &data, &len);
+    DuskLog.info("Loaded Wav");
 
     auto wav = std::make_unique<Wav>(path, entry.loopStartMs, spec.freq, spec.channels);
-    if (spec.channels != 2) {
-        SDL_free(data);
-        return;
-    }
+    DuskLog.info("Created Wav Pointer");
 
-    switch (fade) {
-        case FADE_IN:
-            wav->volume = 0.0f;
-            wav->targetVolume = entry.volume;
-            wav->fadeInFrames = fade_frames;
-            break;
-
-        default:
-            wav->targetVolume = wav->volume = entry.volume;
-            break;
+    if (entry.fadeInMs != 0) {
+        wav->targetVolume = entry.volume;
+        wav->volume = 0.0f;
+        wav->fadeInFrames = entry.fadeInMs;
+    } else {
+        wav->fadeInFrames = 0;
+        wav->volume = entry.volume;
     }
 
     wav->setStep((float)wav->sampleRate / (float)SampleRate);
@@ -270,6 +272,7 @@ void dusk::audio::PlayWav(dusk::UserSettings::MusicEntry entry, u8 fade, int fad
         std::lock_guard<std::mutex> lock(audioMutex);
         PendingWavs.emplace_back(std::move(wav));
     }
+    DuskLog.info("Added wav to PendingWavs");
 }
 
 void CommitAudioWavs() {
@@ -301,11 +304,11 @@ void RenderAudioSubframe() {
             continue;
         }
 
-        // Handle fading out or fading in if necessary
+        // Handle fading in or fading out if necessary
         bool stop = false;
         if (wav->targetVolume != wav->volume) {
-            stop = wav->fadeOut();
             wav->fadeIn();
+            stop = wav->fadeOut();
         }
 
         if (stop) {
@@ -316,6 +319,8 @@ void RenderAudioSubframe() {
         if (maxFrame <= 1) {
             continue;
         }
+
+        DuskLog.info("Wav: {} playing at volume: {}", wav->name, wav->volume);
 
         float pos = wav->pos;
 
@@ -377,6 +382,11 @@ void RenderAudioSubframe() {
     // Clean WAV samples
     for (size_t i = 0; i < ActiveWavs.size();) {
         auto& wav = ActiveWavs[i];
+
+        if (wav->markedForDelete) {
+            ActiveWavs.erase(ActiveWavs.begin() + i);
+            continue;
+        }
 
         int maxFrame = wav->samples.size() / wav->channels;
 
@@ -442,11 +452,22 @@ void dusk::audio::FadeOut(dusk::UserSettings::MusicEntry entry, int fade_frames,
     for (auto& wav : ActiveWavs) {
         if (wav->name == name) {
             wav->fadeOutFrames = fade_frames;
+            DuskLog.info("Setting fadeOutFrames = {}", wav->fadeOutFrames);
             wav->targetVolume = 0.0f;
             if (pause_on_fade) {
-                wav->pauseOnceFadedOut = true;
+                if (wav->fadeOutFrames == 0) {
+                    wav->paused = true;
+                } else {
+                    wav->pauseOnceFadedOut = true;
+                }
             } else {
-                wav->deleteOnceFadedOut = true;
+                DuskLog.info("Setting wav to delete");
+                if (wav->fadeOutFrames == 0) {
+                    wav->paused = true;
+                    wav->markedForDelete = true;
+                } else {
+                    wav->deleteOnceFadedOut = true;
+                } 
             }
         }
     }
@@ -475,4 +496,20 @@ void dusk::audio::DeleteWav(std::string name) {
             ActiveWavs.erase(ActiveWavs.begin() + i);
         }
     }
+}
+
+void dusk::audio::setCurrentBgmID(u32 id) {
+    bgmID = id;
+}
+
+u32 dusk::audio::getCurrentBgmID() {
+    return bgmID;
+}
+
+void dusk::audio::setCurrentSubBgmID(u32 id) {
+    subBgmID = id;
+}
+
+u32 dusk::audio::getCurrentSubBgmID() {
+    return subBgmID;
 }

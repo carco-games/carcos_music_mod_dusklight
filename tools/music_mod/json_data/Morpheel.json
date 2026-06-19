@@ -1,0 +1,96 @@
+{
+    "track_name": "Morpheel",
+    "track_duration_no_intro_silence": 281184,
+    "total_track_duration": 281300,
+    "tracks": [
+        {
+            "new_track_name": "morpheel_intro",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 23099
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 3400
+                }
+            ],
+            "fade_out": 432
+        },
+        {
+            "new_track_name": "morpheel_phase_1",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 23099,
+                    "clip_end_pos": 115348
+                },
+                {
+                   "type": "trim",
+                   "clip_start_pos": 0,
+                   "clip_end_pos": 68423
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 33938,
+                    "clip_end_pos": 34748,
+                    "overlay_start_pos": 67613,
+                    "fade_out_pre_clip": 434,
+                    "clip_fade_in": 810
+                }
+            ],
+            "fade_in": 382,
+            "loop_start_pos": 34748
+        },
+        {
+            "new_track_name": "morpheel_phase_2_intro",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 119915,
+                    "clip_end_pos": 140087
+                }
+            ],
+            "silence_blocks": [
+                {
+                    "silence_start": 0,
+                    "silence_end": 11000
+                },
+                {
+                    "silence_start": 31172,
+                    "silence_end": 70000
+                }
+            ],
+            "fade_in": 504
+        },
+        {
+            "new_track_name": "morpheel_phase_2",
+            "clips": [
+                {
+                    "type": "trim",
+                    "clip_start_pos": 157943,
+                    "clip_end_pos": 248887
+                },
+                {
+                    "type": "trim",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 87587
+                },
+                {
+                    "type": "overlay",
+                    "overlay_type": "loop_setup",
+                    "clip_start_pos": 0,
+                    "clip_end_pos": 765,
+                    "overlay_start_pos": 86822,
+                    "fade_out_pre_clip": 765
+                }
+            ],
+            "fade_in": 713,
+            "loop_start_pos": 765
+        }
+    ]
+}

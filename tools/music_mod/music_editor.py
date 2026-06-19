@@ -133,12 +133,6 @@ for json_file in json_to_use:
                             "-af", f"acompressor=threshold={track_data.get("compressor_threshold", -1)}dB:ratio={track_data.get("compressor_ratio", 4)}:attack={track_data.get("compressor_attack", 5)}:release={track_data.get("compressor_release", 50)}"
                         ]
                     )
-
-                    # Determine if result ast should loop
-                    if track_data.get("loop_start_pos"):
-                        subprocess.run(["ASTCreate.exe", f"output_wavs/{track_data["new_track_name"]}.wav", "-t", f"{track_data["loop_start_pos"] * 1000}"])
-                    else:
-                        subprocess.run(["ASTCreate.exe", f"output_wavs/{track_data["new_track_name"]}.wav", "-n"])
                         
 # Handle adding all ast files to the game
 # ast_names = []

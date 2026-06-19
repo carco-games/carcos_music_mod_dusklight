@@ -297,6 +297,8 @@ struct UserSettings {
         ConfigVar<std::string> track;
         ConfigVar<f32> volume;
         ConfigVar<int> loopStartMs;
+        ConfigVar<int> fadeInMs;
+        ConfigVar<int> fadeOutMs;
     };
     struct {
         ConfigVar<int> musicVolume;

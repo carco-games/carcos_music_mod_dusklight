@@ -16,7 +16,9 @@ dusk::UserSettings::MusicEntry SetMusicEntryDefaults(const char* name) {
         .original {makeKey(name, "original"), true},
         .track {makeKey(name, "track"), ""},
         .volume {makeKey(name, "volume"), 0.2f},
-        .loopStartMs {makeKey(name, "loopStartMs"), 0}
+        .loopStartMs {makeKey(name, "loopStartMs"), 0},
+        .fadeInMs {makeKey(name, "fadeInMs"), 0},
+        .fadeOutMs {makeKey(name, "fadeOutMs"), 0},
     };
 }
 
@@ -25,6 +27,8 @@ void RegisterMusicEntry(dusk::UserSettings::MusicEntry& entry) {
     Register(entry.track);
     Register(entry.volume);
     Register(entry.loopStartMs);
+    Register(entry.fadeInMs);
+    Register(entry.fadeOutMs);
 }
 
 UserSettings g_userSettings = {

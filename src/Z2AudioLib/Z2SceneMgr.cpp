@@ -16,6 +16,7 @@
 
 // Carco's Music Mod
 #include "dusk/audio/DuskAudioSystem.h"
+#include "dusk/logging.h"
 
 Z2SceneMgr::Z2SceneMgr() : JASGlobalInstance<Z2SceneMgr>(true) {
     sceneNum = -1;
@@ -1936,14 +1937,15 @@ bool Z2SceneMgr::startCustomMusic(dusk::UserSettings::MusicEntry configEntry, bo
     }
 
     if (otherEntry) {
-        Z2GetAudioMgr()->bgmStop(30, 0);
-        dusk::audio::FadeOut(*otherEntry, fadeFrames, pauseOtherEntry);
+        dusk::audio::FadeOut(*otherEntry, otherEntry->fadeOutMs, pauseOtherEntry);
     }
 
     if (isResumingPrimary) {
+        DuskLog.info("Resuming Song\n");
         dusk::audio::ResumeWav(configEntry, fadeFrames);
     } else {
-        dusk::audio::PlayWav(configEntry, fadeFrames ? dusk::audio::FADE_IN : dusk::audio::NONE, fadeFrames);   
+        DuskLog.info("Playing Wav\n");
+        dusk::audio::PlayWav(configEntry);
     }
 
     return true;
